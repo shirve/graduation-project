@@ -51,81 +51,73 @@ const PostItem = ({ post, userCanManage }: Props): ReactElement => {
 
   return (
     <>
-      <div className='container mt-3'>
-        <div className='row'>
-          <div className='content-wrapper p-4'>
-            <div className='row'>
-              <div className='col-6'>
-                <p className='mb-0'>
-                  <NavLink to={`/user/${post.user?._id}`}>
-                    <small className='text-muted'>{post.user?.name}</small>
-                  </NavLink>
-                </p>
-              </div>
-              <div className='col-6'>
-                <p className='mb-0 text-end'>
-                  <small className='text-muted'>
-                    {new Date(post.createdAt!).toLocaleString('pl-PL')}
-                  </small>
-                </p>
-              </div>
+      <div className='container'>
+        <div className='content-wrapper'>
+          <div className='row'>
+            <div className='col-6'>
+              <p className='mb-0'>
+                <NavLink to={`/user/${post.user?._id}`}>
+                  <small className='text-muted'>{post.user?.name}</small>
+                </NavLink>
+              </p>
             </div>
-            <h2>{post.title}</h2>
-            <p>
-              Fabuła: <br />
-              {post.story}
-            </p>
-            <p>
-              Rozgrywka: <br />
-              {post.gameplay}
-            </p>
-            <p>
-              Mechanika: <br />
-              {post.mechanics}
-            </p>
-            <p>
-              Bohaterowie: <br />
-              {post.characters}
-            </p>
-            <p>
-              Poziomy: <br />
-              {post.levels}
-            </p>
-            <p>
-              Grafika: <br />
-              {post.graphics}
-            </p>
-            <p>
-              Muzyka: <br />
-              {post.music}
-            </p>
-            <div className='row'>
-              <div className='col-4'>
-                <button className='btn'>Dołącz</button>
-              </div>
-              {userCanManage && (
-                <div className='col-8 text-end'>
-                  {userIsAdmin || postBelongsToUser ? (
-                    <button
-                      onClick={() => {
-                        post._id !== undefined && deletePostHandler(post._id)
-                      }}
-                      className='btn'
-                    >
-                      Usuń
-                    </button>
-                  ) : null}
-                  {!post.approved && user?.ROLE_ADMIN ? (
-                    <button
-                      onClick={() => updatePostHandler(post)}
-                      className='btn ms-2'
-                    >
-                      Zatwierdź
-                    </button>
-                  ) : null}
-                </div>
-              )}
+            <div className='col-6'>
+              <p className='mb-0 text-end'>
+                <small className='text-muted'>
+                  {new Date(post.createdAt!).toLocaleString('pl-PL')}
+                </small>
+              </p>
             </div>
+          </div>
+          <h2>{post.title}</h2>
+          <p>
+            Fabuła: <br />
+            {post.story}
+          </p>
+          <p>
+            Rozgrywka: <br />
+            {post.gameplay}
+          </p>
+          <p>
+            Mechanika: <br />
+            {post.mechanics}
+          </p>
+          <p>
+            Bohaterowie: <br />
+            {post.characters}
+          </p>
+          <p>
+            Poziomy: <br />
+            {post.levels}
+          </p>
+          <p>
+            Grafika: <br />
+            {post.graphics}
+          </p>
+          <p>
+            Muzyka: <br />
+            {post.music}
+          </p>
+          <div className='text-end'>
+            <button className='btn'>DOŁĄCZ</button>
+            {(userCanManage && userIsAdmin) || postBelongsToUser ? (
+              <button
+                onClick={() => {
+                  post._id !== undefined && deletePostHandler(post._id)
+                }}
+                className='btn ms-2'
+              >
+                USUŃ
+              </button>
+            ) : null}
+            {!post.approved && user?.ROLE_ADMIN ? (
+              <button
+                onClick={() => updatePostHandler(post)}
+                className='btn ms-2'
+              >
+                ZATWIERDŹ
+              </button>
+            ) : null}
           </div>
         </div>
       </div>

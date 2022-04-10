@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { FaChevronDown } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { logout, reset } from '../../features/auth/authSlice'
-import { FaChevronDown } from 'react-icons/fa'
 import { RootState } from '../../app/store'
+import { logout, reset } from '../../features/auth/authSlice'
 
 function Navbar() {
   const navigate = useNavigate()
@@ -30,7 +30,7 @@ function Navbar() {
       <nav className='navbar navbar-expand-lg navbar-dark'>
         <div className='container-fluid'>
           <NavLink className='navbar-brand' to='/'>
-            Navbar
+            NAVBAR
           </NavLink>
           <button
             className='navbar-toggler'
@@ -50,19 +50,19 @@ function Navbar() {
             <ul className='navbar-nav'>
               <li className='nav-item'>
                 <NavLink className='nav-link' to='/posts'>
-                  Propozycje gier
+                  PROPOZYCJE GIER
                 </NavLink>
               </li>
               <li className='nav-item'>
                 <NavLink className='nav-link' to='/repository'>
-                  Projekty
+                  PROJEKTY
                 </NavLink>
               </li>
               {user ? (
                 <>
                   <li className='nav-item'>
                     <div className='nav-link' onClick={handleDropdown}>
-                      Twoje konto&nbsp;
+                      TWOJE KONTO&nbsp;
                       <FaChevronDown />
                     </div>
                     {dropdownListOpen && (
@@ -73,12 +73,12 @@ function Navbar() {
                               className='nav-link'
                               to='/dashboard/profile'
                             >
-                              Twój profil
+                              TWÓJ PROFIL
                             </NavLink>
                           </li>
                           <li>
                             <NavLink className='nav-link' to='/dashboard/posts'>
-                              Twoje propozycje gier
+                              TWOJE PROPOZYCJE GIER
                             </NavLink>
                           </li>
                           <li>
@@ -86,7 +86,7 @@ function Navbar() {
                               className='nav-link'
                               to='/dashboard/repository'
                             >
-                              Twoje projekty
+                              TWOJE PROJEKTY
                             </NavLink>
                           </li>
                           {user.ROLE_ADMIN && (
@@ -97,7 +97,7 @@ function Navbar() {
                                   className='nav-link'
                                   to='/dashboard/unapproved-posts'
                                 >
-                                  Niezatwierdzone posty
+                                  NIEZATWIERDZONE POSTY
                                 </NavLink>
                               </li>
                             </>
@@ -106,7 +106,7 @@ function Navbar() {
 
                           <li>
                             <div className='nav-link' onClick={onLogout}>
-                              Wyloguj
+                              WYLOGUJ
                             </div>
                           </li>
                         </ul>
@@ -118,12 +118,12 @@ function Navbar() {
                 <>
                   <li className='nav-item'>
                     <NavLink className='nav-link' to='/login'>
-                      Login
+                      LOGIN
                     </NavLink>
                   </li>
                   <li className='nav-item'>
                     <NavLink className='nav-link' to='/register'>
-                      Rejestracja
+                      REJESTRACJA
                     </NavLink>
                   </li>
                 </>

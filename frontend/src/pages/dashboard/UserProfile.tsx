@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import Header from '../../components/PageHeader'
 import { RootState } from '../../app/store'
 
 const UserProfile = () => {
@@ -20,11 +19,7 @@ const UserProfile = () => {
     }
   }, [])
 
-  return (
-    <>
-      <Header title='Twój profil' />
-    </>
-  )
+  return <div>Twój profil</div>
 }
 
 export default UserProfile

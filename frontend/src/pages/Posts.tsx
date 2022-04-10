@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import PostForm from '../components/PostForm'
@@ -6,20 +6,29 @@ import { getPosts } from '../features/posts/postSlice'
 import PostItem from '../components/common/PostItem'
 import Pagination from '../components/common/Pagination'
 import { paginate } from '../utils/paginate'
-import Header from '../components/PageHeader'
 import { RootState, useAppDispatch } from '../app/store'
+import HeaderContext from '../context/header/HeaderContext'
 
 function Posts() {
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [pageSize, setPageSize] = useState<number>(10)
+
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const [currentPage, setCurrentPage] = useState<number>(1)
-  const [pageSize, setPageSize] = useState<number>(10)
+  const { setHeaderText } = useContext(HeaderContext)
 
   const { user } = useSelector((state: RootState) => state.auth)
   const { posts, isLoading, isError, message } = useSelector(
     (state: RootState) => state.posts
   )
+
+  useEffect(() => {
+    setHeaderText('PROPOZYCJE GIER')
+    return () => {
+      setHeaderText('')
+    }
+  }, [])
 
   useEffect(() => {
     if (isError) {
@@ -46,16 +55,13 @@ function Posts() {
   const { totalCount, postsFiltered } = getPagedData()
 
   return (
-    <div className='container col-xl-8 col-lg-10 col-md-12'>
-      <Header title='Propozycje gier' withButton={true}>
-        Przeglądaj pomysły innych studentów z podobnymi zainteresowaniami,
-        nawiązuj nowe kontakty i łącz się w grupy projektowe. Opisz swój pomysł
-        na projekt w formularzu poniżej.
-      </Header>
-      <PostForm />
-      {postsFiltered.length > 0 && (
-        <>
-          <div>
+    <div className='row'>
+      <div className='col-xl-3 col-lg-4 p-0'>
+        <PostForm />
+      </div>
+      <div className='col-xl-9 col-lg-8 p-0'>
+        {postsFiltered.length > 0 && (
+          <>
             {postsFiltered.map((post, index) => (
               <PostItem
                 key={index}
@@ -63,15 +69,15 @@ function Posts() {
                 userCanManage={user?.ROLE_ADMIN && true}
               />
             ))}
-          </div>
-          <Pagination
-            itemsCount={totalCount}
-            pageSize={pageSize}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-          />
-        </>
-      )}
+            <Pagination
+              itemsCount={totalCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
+          </>
+        )}
+      </div>
     </div>
   )
 }

@@ -57,64 +57,58 @@ function Login() {
         handleBlur,
         handleSubmit,
       }) => (
-        <>
-          <div className='container content-wrapper mt-3 col-xl-4 col-lg-6 col-md-8 p-4'>
-            <section className='page-header-text-primary'>Zaloguj się</section>
-            <hr className='mb-4' />
-            <section className='form'>
-              <form onSubmit={handleSubmit}>
-                <InputField
-                  type='email'
-                  name='email'
-                  value={values.email}
-                  placeholder='Adres e-mail'
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  className={`form-control input-field ${
-                    errors.email && touched.email && 'is-invalid'
-                  }`}
-                  icon={<FaEnvelope className='me-3 fs-4' />}
-                />
-                {errors.email && touched.email && (
-                  <div className='invalid-feedback d-flex justify-content-end'>
-                    {errors.email}
-                  </div>
-                )}
-                <InputField
-                  type='password'
-                  name='password'
-                  value={values.password}
-                  placeholder='Hasło'
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  className={`form-control input-field ${
-                    errors.password && touched.password && 'is-invalid'
-                  }`}
-                  icon={<FaKey className='me-3 fs-4' />}
-                />
-                {errors.password && touched.password && (
-                  <div className='invalid-feedback d-flex justify-content-end'>
-                    {errors.password}
-                  </div>
-                )}
-                <hr className='mt-4' />
-                <div className='d-grid gap-2'>
-                  <button
-                    type='submit'
-                    disabled={isSubmitting}
-                    className='btn btn-lg mt-3'
-                  >
-                    Zaloguj
-                  </button>
-                </div>
-              </form>
-            </section>
-            <div className='text-center pt-3'>
-              Nie masz jeszcze konta?{' '}
-              <NavLink to='/register'>Zarejestruj się</NavLink>
+        <div className='container mt-3 col-xl-4 col-lg-6 col-md-8 p-4'>
+          <div className='header-title'>ZALOGUJ SIĘ</div>
+          <form onSubmit={handleSubmit}>
+            <InputField
+              type='email'
+              name='email'
+              value={values.email}
+              placeholder='Adres e-mail'
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className={`form-control input-field ${
+                errors.email && touched.email && 'is-invalid'
+              }`}
+              icon={<FaEnvelope className='me-3 fs-4' />}
+            />
+            {errors.email && touched.email && (
+              <div className='invalid-feedback d-flex justify-content-end'>
+                {errors.email}
+              </div>
+            )}
+            <InputField
+              type='password'
+              name='password'
+              value={values.password}
+              placeholder='Hasło'
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className={`form-control input-field ${
+                errors.password && touched.password && 'is-invalid'
+              }`}
+              icon={<FaKey className='me-3 fs-4' />}
+            />
+            {errors.password && touched.password && (
+              <div className='invalid-feedback d-flex justify-content-end'>
+                {errors.password}
+              </div>
+            )}
+            <div className='d-grid gap-2'>
+              <button
+                type='submit'
+                disabled={isSubmitting}
+                className='btn btn-lg mt-3'
+              >
+                Zaloguj
+              </button>
             </div>
+          </form>
+          <div className='text-center pt-3'>
+            Nie masz jeszcze konta?{' '}
+            <NavLink to='/register'>Zarejestruj się</NavLink>
           </div>
-        </>
+        </div>
       )}
     </Formik>
   )

@@ -89,82 +89,67 @@ const PostForm = () => {
         handleBlur,
         handleSubmit,
       }) => (
-        <>
-          {user ? (
-            <section className='form'>
-              <div className='d-grid'>
-                <button onClick={showPostForm} className='btn btn-lg'>
-                  Nowa propozycja gry
-                </button>
-              </div>
+        <React.Fragment>
+          {user && (
+            <div className='container d-flex'>
+              <button
+                onClick={showPostForm}
+                className='post-form-button btn-lg flex-fill'
+              >
+                NOWA PROPOZYCJA GRY
+              </button>
+            </div>
+          )}
+          <Modal
+            appElement={document.getElementById('root') || undefined}
+            isOpen={showForm}
+            overlayClassName='modal-overlay'
+            className='modal-content'
+          >
+            <form className='post-form' onSubmit={handleSubmit}>
               <div className='row'>
-                <div className='container'>
-                  <Modal
-                    appElement={document.getElementById('root') || undefined}
-                    isOpen={showForm}
-                    overlayClassName='modal-overlay'
-                    className='modal-content'
-                  >
-                    <div className='post-form'>
-                      <form onSubmit={handleSubmit}>
-                        <div className='row'>
-                          <div className='page-header-text-secondary col-10'>
-                            Nowa propozycja gry
-                          </div>
-                          <div className='col-2 d-flex justify-content-end align-items-center'>
-                            <div onClick={showPostForm}>
-                              <FaTimes className='close' />
-                            </div>
-                          </div>
-                        </div>
-                        {PostFormInputFields.map((field) => (
-                          <React.Fragment key={field.name}>
-                            <InputField
-                              component={field.component}
-                              type='text'
-                              name={field.name}
-                              value={values[field.name as keyof typeof values]}
-                              placeholder={field.placeholder}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              className={
-                                errors[field.name as keyof typeof values] &&
-                                touched[field.name as keyof typeof values]
-                                  ? 'form-control input-field is-invalid'
-                                  : 'form-control input-field'
-                              }
-                            />
-                            {errors[field.name as keyof typeof values] &&
-                              touched[field.name as keyof typeof values] && (
-                                <div className='invalid-feedback d-flex justify-content-end'>
-                                  {errors[field.name as keyof typeof values]}
-                                </div>
-                              )}
-                          </React.Fragment>
-                        ))}
-                        <div className='d-flex justify-content-end gap-2 mt-3'>
-                          <button
-                            type='submit'
-                            disabled={isSubmitting}
-                            className='btn btn-outline-dark'
-                          >
-                            Wyślij
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </Modal>
+                <div className='page-header-text-secondary col-10'>
+                  Nowa propozycja gry
+                </div>
+                <div className='col-2 d-flex justify-content-end align-items-center'>
+                  <div onClick={showPostForm}>
+                    <FaTimes className='close' />
+                  </div>
                 </div>
               </div>
-            </section>
-          ) : (
-            <Link to='/login' className='d-grid page-header-button'>
-              <button className='btn btn-lg'>
-                Zaloguj się aby dodać nową propozycję gry
-              </button>
-            </Link>
-          )}
-        </>
+              {PostFormInputFields.map((field) => (
+                <React.Fragment key={field.name}>
+                  <InputField
+                    component={field.component}
+                    type='text'
+                    name={field.name}
+                    value={values[field.name as keyof typeof values]}
+                    placeholder={field.placeholder}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    className={
+                      errors[field.name as keyof typeof values] &&
+                      touched[field.name as keyof typeof values]
+                        ? 'form-control input-field is-invalid'
+                        : 'form-control input-field'
+                    }
+                  />
+                  {errors[field.name as keyof typeof values] &&
+                    touched[field.name as keyof typeof values] && (
+                      <div className='invalid-feedback d-flex justify-content-end'>
+                        {errors[field.name as keyof typeof values]}
+                      </div>
+                    )}
+                </React.Fragment>
+              ))}
+              <div className='d-flex justify-content-end gap-2 mt-3'>
+                <button type='submit' disabled={isSubmitting} className='btn'>
+                  WYŚLIJ
+                </button>
+              </div>
+            </form>
+          </Modal>
+        </React.Fragment>
       )}
     </Formik>
   )

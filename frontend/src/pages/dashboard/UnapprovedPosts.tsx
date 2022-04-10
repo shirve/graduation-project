@@ -1,14 +1,16 @@
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { getPosts } from '../../features/posts/postSlice'
 import PostItem from '../../components/common/PostItem'
-import Header from '../../components/PageHeader'
 import { RootState } from '../../app/store'
+import HeaderContext from '../../context/header/HeaderContext'
 
 const DashboardUnapprovedPosts = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  const { setHeaderText } = useContext(HeaderContext)
 
   const { user } = useSelector((state: RootState) => state.auth)
   const { posts, isError, message } = useSelector(
@@ -18,6 +20,13 @@ const DashboardUnapprovedPosts = () => {
   const filteredPostsLength = posts.filter(
     (post) => post.approved === false
   ).length
+
+  useEffect(() => {
+    setHeaderText('NIEZATWIERDZONE POSTY')
+    return () => {
+      setHeaderText('')
+    }
+  }, [])
 
   useEffect(() => {
     if (isError) {
@@ -31,10 +40,6 @@ const DashboardUnapprovedPosts = () => {
 
   return (
     <>
-      <Header title='Niezatwierdzone posty'>
-        {filteredPostsLength === 0 &&
-          'Brak postów oczekujących na zatwierdzenie'}
-      </Header>
       {filteredPostsLength > 0 && (
         <>
           {posts

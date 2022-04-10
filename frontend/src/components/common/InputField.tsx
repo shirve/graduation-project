@@ -30,7 +30,7 @@ const InputField = ({
 
   return (
     <div className='input-group align-items-center mt-3'>
-      {icon && <span className='input-group-icon'>{icon}</span>}
+      {icon && <span className='input-icon'>{icon}</span>}
       <div className='form-floating flex-fill'>
         <Field
           component={component}

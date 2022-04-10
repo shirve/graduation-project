@@ -70,115 +70,109 @@ function Register() {
         handleBlur,
         handleSubmit,
       }) => (
-        <div className='container content-wrapper mt-3 col-xl-4 col-lg-6 col-md-8 p-4'>
-          <section className='page-header-text-primary'>
-            Zarejestruj się
-          </section>
-          <hr className='mb-4' />
-          <section className='form'>
-            <form onSubmit={handleSubmit}>
-              <InputField
-                type='text'
-                name='firstName'
-                value={values.firstName}
-                placeholder='Imię'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className={`form-control input-field ${
-                  errors.firstName && touched.firstName && 'is-invalid'
-                }`}
-                icon={<FaUser className='me-3 fs-4' />}
-              />
-              {errors.firstName && touched.firstName && (
-                <div className='invalid-feedback d-flex justify-content-end'>
-                  {errors.firstName}
-                </div>
-              )}
-              <InputField
-                type='text'
-                name='lastName'
-                value={values.lastName}
-                placeholder='Nazwisko'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className={`form-control input-field ${
-                  errors.lastName && touched.lastName && 'is-invalid'
-                }`}
-                icon={<FaUser className='me-3 fs-4' />}
-              />
-              {errors.lastName && touched.lastName && (
-                <div className='invalid-feedback d-flex justify-content-end'>
-                  {errors.lastName}
-                </div>
-              )}
-              <InputField
-                type='email'
-                name='email'
-                value={values.email}
-                placeholder='Adres e-mail'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className={`form-control input-field ${
-                  errors.email && touched.email && 'is-invalid'
-                }`}
-                icon={<FaEnvelope className='me-3 fs-4' />}
-              />
-              {errors.email && touched.email && (
-                <div className='invalid-feedback d-flex justify-content-end'>
-                  {errors.email}
-                </div>
-              )}
-              <InputField
-                type='password'
-                name='password'
-                value={values.password}
-                placeholder='Hasło'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className={`form-control input-field ${
-                  errors.password && touched.password && 'is-invalid'
-                }`}
-                icon={<FaLock className='me-3 fs-4' />}
-              />
-              {errors.password && touched.password && (
-                <div className='invalid-feedback d-flex justify-content-end'>
-                  {errors.password}
-                </div>
-              )}
-              <InputField
-                type='password'
-                name='password2'
-                value={values.password2}
-                placeholder='Potwierdź hasło'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className={`form-control input-field ${
-                  errors.password2 && touched.password2 && 'is-invalid'
-                }`}
-                icon={<FaKey className='me-3 fs-4' />}
-              />
-              {errors.password2 && touched.password2 && (
-                <div className='invalid-feedback d-flex justify-content-end'>
-                  {errors.password2}
-                </div>
-              )}
-              <hr className='mt-4' />
-              <div className='d-grid gap-2'>
-                <button
-                  type='submit'
-                  disabled={isSubmitting}
-                  className='btn btn-lg mt-3'
-                >
-                  Zarejstruj
-                </button>
+        <div className='container mt-3 col-xl-4 col-lg-6 col-md-8 p-4'>
+          <div className='header-title'>ZAREJESTRUJ SIĘ</div>
+          <form onSubmit={handleSubmit}>
+            <InputField
+              type='text'
+              name='firstName'
+              value={values.firstName}
+              placeholder='Imię'
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className={`form-control input-field ${
+                errors.firstName && touched.firstName && 'is-invalid'
+              }`}
+              icon={<FaUser className='me-3 fs-4' />}
+            />
+            {errors.firstName && touched.firstName && (
+              <div className='invalid-feedback d-flex justify-content-end'>
+                {errors.firstName}
               </div>
-              <div className='text-center pt-3'>
-                Rejestrując się, zgadzasz się na{' '}
-                <NavLink to='/tos'>Warunki korzystania</NavLink> {' oraz '}
-                <NavLink to='/privacy'>Politykę prywatności</NavLink>
+            )}
+            <InputField
+              type='text'
+              name='lastName'
+              value={values.lastName}
+              placeholder='Nazwisko'
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className={`form-control input-field ${
+                errors.lastName && touched.lastName && 'is-invalid'
+              }`}
+              icon={<FaUser className='me-3 fs-4' />}
+            />
+            {errors.lastName && touched.lastName && (
+              <div className='invalid-feedback d-flex justify-content-end'>
+                {errors.lastName}
               </div>
-            </form>
-          </section>
+            )}
+            <InputField
+              type='email'
+              name='email'
+              value={values.email}
+              placeholder='Adres e-mail'
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className={`form-control input-field ${
+                errors.email && touched.email && 'is-invalid'
+              }`}
+              icon={<FaEnvelope className='me-3 fs-4' />}
+            />
+            {errors.email && touched.email && (
+              <div className='invalid-feedback d-flex justify-content-end'>
+                {errors.email}
+              </div>
+            )}
+            <InputField
+              type='password'
+              name='password'
+              value={values.password}
+              placeholder='Hasło'
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className={`form-control input-field ${
+                errors.password && touched.password && 'is-invalid'
+              }`}
+              icon={<FaLock className='me-3 fs-4' />}
+            />
+            {errors.password && touched.password && (
+              <div className='invalid-feedback d-flex justify-content-end'>
+                {errors.password}
+              </div>
+            )}
+            <InputField
+              type='password'
+              name='password2'
+              value={values.password2}
+              placeholder='Potwierdź hasło'
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className={`form-control input-field ${
+                errors.password2 && touched.password2 && 'is-invalid'
+              }`}
+              icon={<FaKey className='me-3 fs-4' />}
+            />
+            {errors.password2 && touched.password2 && (
+              <div className='invalid-feedback d-flex justify-content-end'>
+                {errors.password2}
+              </div>
+            )}
+            <div className='text-center pt-3'>
+              Rejestrując się, zgadzasz się na{' '}
+              <NavLink to='/tos'>Warunki korzystania</NavLink> {' oraz '}
+              <NavLink to='/privacy'>Politykę prywatności</NavLink>
+            </div>
+            <div className='d-grid gap-2'>
+              <button
+                type='submit'
+                disabled={isSubmitting}
+                className='btn btn-lg mt-3'
+              >
+                ZAREJESTRUJ
+              </button>
+            </div>
+          </form>
         </div>
       )}
     </Formik>
