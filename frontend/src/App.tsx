@@ -16,12 +16,15 @@ import UnapprovedPosts from './pages/dashboard/UnapprovedPosts'
 import Dashboard from './pages/dashboard/Dashboard'
 import LookupUserProfile from './pages/LookupUserProfile'
 import NotFound from './pages/NotFound'
+import Header from './components/layout/Header'
+import { HeaderProvider } from './context/header/HeaderContext'
 
 function App() {
   return (
-    <>
+    <HeaderProvider>
       <Router>
         <Navbar />
+        <Header />
         <main className='container'>
           <Routes>
             <Route path='/dashboard/*' element={<Dashboard />}>
@@ -40,7 +43,7 @@ function App() {
         </main>
       </Router>
       <ToastContainer />
-    </>
+    </HeaderProvider>
   )
 }
 
