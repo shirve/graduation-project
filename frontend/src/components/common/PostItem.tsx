@@ -1,4 +1,4 @@
-import { ReactElement, useState, useEffect } from 'react'
+import React, { ReactElement, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import {
@@ -9,7 +9,8 @@ import {
 import { Post } from '../../models/Post'
 import { User } from '../../models/User'
 import { ObjectId } from 'mongoose'
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { PostItemFields } from '../../data/post/PostItemFields'
 
 interface Props {
   user?: User
@@ -17,7 +18,7 @@ interface Props {
   userCanManage?: boolean
 }
 
-const PostItem = ({ post, userCanManage }: Props): ReactElement => {
+const PostItem = ({ post, userCanManage = false }: Props): ReactElement => {
   const [userIsAdmin, setUserIsAdmin] = useState<boolean>(false)
   const [postBelongsToUser, setPostBelongsToUser] = useState<boolean>()
 
@@ -51,74 +52,55 @@ const PostItem = ({ post, userCanManage }: Props): ReactElement => {
 
   return (
     <>
-      <div className='container'>
-        <div className='content-wrapper'>
-          <div className='row'>
-            <div className='col-6'>
-              <p className='mb-0'>
-                <NavLink to={`/user/${post.user?._id}`}>
-                  <small className='text-muted'>{post.user?.name}</small>
-                </NavLink>
-              </p>
-            </div>
-            <div className='col-6'>
-              <p className='mb-0 text-end'>
-                <small className='text-muted'>
-                  {new Date(post.createdAt!).toLocaleString('pl-PL')}
-                </small>
-              </p>
-            </div>
+      <div className='content-wrapper'>
+        <div className='row'>
+          <div className='col-6'>
+            <p className='mb-0'>
+              <Link to={`/user/${post.user?._id}`}>
+                <small className='text-muted'>{post.user?.name}</small>
+              </Link>
+            </p>
           </div>
-          <h2>{post.title}</h2>
-          <p>
-            Fabuła: <br />
-            {post.story}
-          </p>
-          <p>
-            Rozgrywka: <br />
-            {post.gameplay}
-          </p>
-          <p>
-            Mechanika: <br />
-            {post.mechanics}
-          </p>
-          <p>
-            Bohaterowie: <br />
-            {post.characters}
-          </p>
-          <p>
-            Poziomy: <br />
-            {post.levels}
-          </p>
-          <p>
-            Grafika: <br />
-            {post.graphics}
-          </p>
-          <p>
-            Muzyka: <br />
-            {post.music}
-          </p>
-          <div className='text-end'>
-            <button className='btn'>DOŁĄCZ</button>
-            {(userCanManage && userIsAdmin) || postBelongsToUser ? (
-              <button
-                onClick={() => {
-                  post._id !== undefined && deletePostHandler(post._id)
-                }}
-                className='btn ms-2'
-              >
-                USUŃ
-              </button>
-            ) : null}
-            {!post.approved && user?.ROLE_ADMIN ? (
-              <button
-                onClick={() => updatePostHandler(post)}
-                className='btn ms-2'
-              >
-                ZATWIERDŹ
-              </button>
-            ) : null}
+          <div className='col-6'>
+            <p className='mb-0 text-end'>
+              <small className='text-muted'>
+                {new Date(post.createdAt!).toLocaleString('pl-PL')}
+              </small>
+            </p>
           </div>
+        </div>
+        {PostItemFields.map((field) => (
+          <React.Fragment key={field.name}>
+            {field.placeholder === 'Tytuł' ? (
+              <h2 className='fw-bold'>
+                {post[field.name as keyof typeof post]}
+              </h2>
+            ) : (
+              <>
+                <h4 className='mb-0'>{field.placeholder}</h4>
+                <p>{post[field.name as keyof typeof post]}</p>
+              </>
+            )}
+          </React.Fragment>
+        ))}
+        <div className='text-end'>
+          {post.approved! && <button className='btn'>DOŁĄCZ</button>}
+          {userCanManage && userIsAdmin && postBelongsToUser && (
+            <button
+              onClick={() => deletePostHandler(post._id!)}
+              className='btn btn-delete ms-2'
+            >
+              USUŃ
+            </button>
+          )}
+          {!post.approved && user?.ROLE_ADMIN && (
+            <button
+              onClick={() => updatePostHandler(post)}
+              className='btn btn-approve ms-2'
+            >
+              ZATWIERDŹ
+            </button>
+          )}
         </div>
       </div>
     </>

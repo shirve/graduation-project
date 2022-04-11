@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate, NavLink } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { register, reset } from '../features/auth/authSlice'
 import { FaUser, FaEnvelope, FaLock, FaKey } from 'react-icons/fa'
@@ -160,8 +160,8 @@ function Register() {
             )}
             <div className='text-center pt-3'>
               Rejestrując się, zgadzasz się na{' '}
-              <NavLink to='/tos'>Warunki korzystania</NavLink> {' oraz '}
-              <NavLink to='/privacy'>Politykę prywatności</NavLink>
+              <Link to='/tos'>Warunki korzystania</Link> {' oraz '}
+              <Link to='/privacy'>Politykę prywatności</Link>
             </div>
             <div className='d-grid gap-2'>
               <button

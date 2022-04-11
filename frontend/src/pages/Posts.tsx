@@ -55,29 +55,21 @@ function Posts() {
   const { totalCount, postsFiltered } = getPagedData()
 
   return (
-    <div className='row'>
-      <div className='col-xl-3 col-lg-4 p-0'>
-        <PostForm />
-      </div>
-      <div className='col-xl-9 col-lg-8 p-0'>
-        {postsFiltered.length > 0 && (
-          <>
-            {postsFiltered.map((post, index) => (
-              <PostItem
-                key={index}
-                post={post}
-                userCanManage={user?.ROLE_ADMIN && true}
-              />
-            ))}
-            <Pagination
-              itemsCount={totalCount}
-              pageSize={pageSize}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
-            />
-          </>
-        )}
-      </div>
+    <div className='container col-xl-8 col-lg-10 mt-3'>
+      <PostForm />
+      {postsFiltered.length > 0 && (
+        <>
+          {postsFiltered.map((post) => (
+            <PostItem key={post._id} post={post} />
+          ))}
+          <Pagination
+            itemsCount={totalCount}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </>
+      )}
     </div>
   )
 }

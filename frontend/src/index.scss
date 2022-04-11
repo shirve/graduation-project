@@ -4,14 +4,14 @@
 body {
   --background-color-primary: #0D2857;
   --background-color-secondary: #ffffff;
-  --text-color-primary: #dadce1;
+  --text-color-primary: #fafafa;
   --text-color-secondary: #121212;
   --color-primary: #17376E;
   --color-primary-hover: #17376E;
-  --color-danger: #D4293D;
-  --color-danger-hover: rgb(231, 52, 73);
-  --color-success: #00943b;
-  --color-success-hover: #00a341;
+  --color-danger: #dc4c3b;
+  --color-danger-hover: #dc4c3b;
+  --color-success: #3e9a6f;
+  --color-success-hover: #3e9a6f;
 }
 
 body {
@@ -86,7 +86,7 @@ a {
   margin-top: 1rem;
   color: var(--text-color-secondary);
   background-color: var(--background-color-secondary);
-  border-radius: 0.5rem;
+  border-radius: 2rem;
   padding: 1.5rem;
   white-space: pre-wrap;
 }
@@ -106,7 +106,7 @@ a {
     border: 1px var(--text-color-secondary) solid;
     background: var(--background-color-secondary);
     overflow: auto;
-    border-radius: 1.2rem;
+    border-radius: 2rem;
     outline: none;
     padding: 1.5rem;
   } 
@@ -167,6 +167,18 @@ a {
   .disabled {
     margin-top: -1rem;
     opacity: 0.7;
+  }
+  &-delete {
+    background-color: var(--color-danger);
+    &:hover {
+      background-color: var(--color-danger-hover);
+    }
+  }
+  &-approve {
+    background-color: var(--color-success);
+    &:hover {
+      background-color: var(--color-success-hover);
+    }
   }
 }
 

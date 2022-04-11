@@ -8,8 +8,8 @@ import { FaTimes } from 'react-icons/fa'
 import { useAppDispatch } from '../app/store'
 import { useSelector } from 'react-redux'
 import { RootState } from '../app/store'
-import { Link } from 'react-router-dom'
 import Modal from 'react-modal'
+import { PostItemFields } from '../data/post/PostItemFields'
 
 interface IFormModel {
   title: string
@@ -29,17 +29,6 @@ const PostForm = () => {
   const { user } = useSelector((state: RootState) => state.auth)
 
   const dispatch = useAppDispatch()
-
-  const PostFormInputFields = [
-    { name: 'title', placeholder: 'Tytuł' },
-    { name: 'story', placeholder: 'Fabuła', component: 'textarea' },
-    { name: 'gameplay', placeholder: 'Rozgrywka', component: 'textarea' },
-    { name: 'mechanics', placeholder: 'Mechanika', component: 'textarea' },
-    { name: 'characters', placeholder: 'Bohaterowie', component: 'textarea' },
-    { name: 'levels', placeholder: 'Poziomy', component: 'textarea' },
-    { name: 'graphics', placeholder: 'Grafika', component: 'textarea' },
-    { name: 'music', placeholder: 'Muzyka', component: 'textarea' },
-  ]
 
   const showPostForm = () => {
     if (showForm) {
@@ -90,16 +79,19 @@ const PostForm = () => {
         handleSubmit,
       }) => (
         <React.Fragment>
-          {user && (
-            <div className='container d-flex'>
-              <button
-                onClick={showPostForm}
-                className='post-form-button btn-lg flex-fill'
-              >
-                NOWA PROPOZYCJA GRY
-              </button>
-            </div>
-          )}
+          <p className='m-0'>
+            Przeglądaj pomysły innych studentów z podobnymi zainteresowaniami,
+            nawiązuj nowe kontakty i łącz się w grupy projektowe. Opisz swój
+            pomysł na projekt w formularzu klikając poniższy przycisk.
+          </p>
+          <div className='d-flex'>
+            <button
+              onClick={user && showPostForm}
+              className='post-form-button btn flex-fill'
+            >
+              NOWA PROPOZYCJA GRY
+            </button>
+          </div>
           <Modal
             appElement={document.getElementById('root') || undefined}
             isOpen={showForm}
@@ -117,7 +109,7 @@ const PostForm = () => {
                   </div>
                 </div>
               </div>
-              {PostFormInputFields.map((field) => (
+              {PostItemFields.map((field) => (
                 <React.Fragment key={field.name}>
                   <InputField
                     component={field.component}

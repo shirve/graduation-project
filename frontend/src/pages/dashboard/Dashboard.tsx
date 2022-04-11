@@ -25,7 +25,7 @@ const Dashboard = () => {
   }, [])
 
   return (
-    <div className='container'>
+    <div className='container col-xl-8 col-lg-10'>
       <Routes>
         <Route path='/' element={<Navigate to='/dashboard/account' />} />
         <Route path='profile' element={<UserProfile />} />

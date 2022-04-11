@@ -1,10 +1,9 @@
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { login, reset } from '../features/auth/authSlice'
 import { FaEnvelope, FaKey } from 'react-icons/fa'
-import { NavLink } from 'react-router-dom'
 import InputField from '../components/common/InputField'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -100,13 +99,12 @@ function Login() {
                 disabled={isSubmitting}
                 className='btn btn-lg mt-3'
               >
-                Zaloguj
+                ZALOGUJ
               </button>
             </div>
           </form>
           <div className='text-center pt-3'>
-            Nie masz jeszcze konta?{' '}
-            <NavLink to='/register'>Zarejestruj się</NavLink>
+            Nie masz jeszcze konta? <Link to='/register'>Zarejestruj się</Link>
           </div>
         </div>
       )}
