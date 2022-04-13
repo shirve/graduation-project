@@ -119,12 +119,11 @@ const PostForm = () => {
                     placeholder={field.placeholder}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className={
+                    className={`form-control input-field ${
                       errors[field.name as keyof typeof values] &&
-                      touched[field.name as keyof typeof values]
-                        ? 'form-control input-field is-invalid'
-                        : 'form-control input-field'
-                    }
+                      touched[field.name as keyof typeof values] &&
+                      'is-invalid'
+                    }`}
                   />
                   {errors[field.name as keyof typeof values] &&
                     touched[field.name as keyof typeof values] && (

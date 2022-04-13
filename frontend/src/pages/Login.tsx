@@ -57,7 +57,7 @@ function Login() {
         handleSubmit,
       }) => (
         <div className='container mt-3 col-xl-4 col-lg-6 col-md-8 p-4'>
-          <div className='header-title'>ZALOGUJ SIĘ</div>
+          <div className='header-title'>Zaloguj się</div>
           <form onSubmit={handleSubmit}>
             <InputField
               type='email'
@@ -66,10 +66,11 @@ function Login() {
               placeholder='Adres e-mail'
               onChange={handleChange}
               onBlur={handleBlur}
-              className={`form-control input-field ${
+              className={`form-control input-field input-field-rounded ${
                 errors.email && touched.email && 'is-invalid'
               }`}
               icon={<FaEnvelope className='me-3 fs-4' />}
+              formFloating={true}
             />
             {errors.email && touched.email && (
               <div className='invalid-feedback d-flex justify-content-end'>
@@ -83,10 +84,11 @@ function Login() {
               placeholder='Hasło'
               onChange={handleChange}
               onBlur={handleBlur}
-              className={`form-control input-field ${
+              className={`form-control input-field input-field-rounded ${
                 errors.password && touched.password && 'is-invalid'
               }`}
               icon={<FaKey className='me-3 fs-4' />}
+              formFloating={true}
             />
             {errors.password && touched.password && (
               <div className='invalid-feedback d-flex justify-content-end'>
@@ -99,7 +101,7 @@ function Login() {
                 disabled={isSubmitting}
                 className='btn btn-lg mt-3'
               >
-                ZALOGUJ
+                Zaloguj
               </button>
             </div>
           </form>

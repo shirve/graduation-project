@@ -71,7 +71,7 @@ function Register() {
         handleSubmit,
       }) => (
         <div className='container mt-3 col-xl-4 col-lg-6 col-md-8 p-4'>
-          <div className='header-title'>ZAREJESTRUJ SIĘ</div>
+          <div className='header-title'>Zarejestruj się</div>
           <form onSubmit={handleSubmit}>
             <InputField
               type='text'
@@ -80,10 +80,11 @@ function Register() {
               placeholder='Imię'
               onChange={handleChange}
               onBlur={handleBlur}
-              className={`form-control input-field ${
+              className={`form-control input-field input-field-rounded ${
                 errors.firstName && touched.firstName && 'is-invalid'
               }`}
               icon={<FaUser className='me-3 fs-4' />}
+              formFloating={true}
             />
             {errors.firstName && touched.firstName && (
               <div className='invalid-feedback d-flex justify-content-end'>
@@ -97,10 +98,11 @@ function Register() {
               placeholder='Nazwisko'
               onChange={handleChange}
               onBlur={handleBlur}
-              className={`form-control input-field ${
+              className={`form-control input-field input-field-rounded ${
                 errors.lastName && touched.lastName && 'is-invalid'
               }`}
               icon={<FaUser className='me-3 fs-4' />}
+              formFloating={true}
             />
             {errors.lastName && touched.lastName && (
               <div className='invalid-feedback d-flex justify-content-end'>
@@ -114,10 +116,11 @@ function Register() {
               placeholder='Adres e-mail'
               onChange={handleChange}
               onBlur={handleBlur}
-              className={`form-control input-field ${
+              className={`form-control input-field input-field-rounded ${
                 errors.email && touched.email && 'is-invalid'
               }`}
               icon={<FaEnvelope className='me-3 fs-4' />}
+              formFloating={true}
             />
             {errors.email && touched.email && (
               <div className='invalid-feedback d-flex justify-content-end'>
@@ -131,10 +134,11 @@ function Register() {
               placeholder='Hasło'
               onChange={handleChange}
               onBlur={handleBlur}
-              className={`form-control input-field ${
+              className={`form-control input-field input-field-rounded ${
                 errors.password && touched.password && 'is-invalid'
               }`}
               icon={<FaLock className='me-3 fs-4' />}
+              formFloating={true}
             />
             {errors.password && touched.password && (
               <div className='invalid-feedback d-flex justify-content-end'>
@@ -148,10 +152,11 @@ function Register() {
               placeholder='Potwierdź hasło'
               onChange={handleChange}
               onBlur={handleBlur}
-              className={`form-control input-field ${
+              className={`form-control input-field input-field-rounded ${
                 errors.password2 && touched.password2 && 'is-invalid'
               }`}
               icon={<FaKey className='me-3 fs-4' />}
+              formFloating={true}
             />
             {errors.password2 && touched.password2 && (
               <div className='invalid-feedback d-flex justify-content-end'>
@@ -169,7 +174,7 @@ function Register() {
                 disabled={isSubmitting}
                 className='btn btn-lg mt-3'
               >
-                ZAREJESTRUJ
+                Zarejestruj
               </button>
             </div>
           </form>

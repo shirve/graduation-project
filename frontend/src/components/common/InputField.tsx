@@ -11,6 +11,7 @@ interface Props {
   onBlur: (e: FocusEvent) => void
   className: string
   icon?: ReactNode
+  formFloating?: boolean
 }
 
 const InputField = ({
@@ -23,15 +24,13 @@ const InputField = ({
   onBlur,
   className,
   icon,
+  formFloating = false,
 }: Props): ReactElement => {
-  const TextAreaStyle = () => {
-    if (component === 'textarea') return { height: 100 }
-  }
-
   return (
     <div className='input-group align-items-center mt-3'>
       {icon && <span className='input-icon'>{icon}</span>}
-      <div className='form-floating flex-fill'>
+      <div className={`flex-fill ${formFloating && 'form-floating'}`}>
+        {!formFloating && <label htmlFor={name}>{placeholder}</label>}
         <Field
           component={component}
           type={type}
@@ -39,11 +38,11 @@ const InputField = ({
           id={name}
           name={name}
           value={value}
-          placeholder={placeholder}
+          placeholder={formFloating && placeholder}
           onChange={onChange}
-          style={TextAreaStyle()}
+          style={{ height: component === 'textarea' && 100 }}
         />
-        <label htmlFor={name}>{placeholder}</label>
+        {formFloating && <label htmlFor={name}>{placeholder}</label>}
       </div>
     </div>
   )
