@@ -14,6 +14,7 @@ export interface Post {
   levels: string
   graphics: string
   music: string
+  tags?: string[]
   approved?: boolean
   createdAt?: Date
   updatedAt?: Date

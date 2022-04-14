@@ -46,6 +46,12 @@ const postSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    tags: [
+      {
+        type: String,
+        required: false,
+      },
+    ],
     approved: {
       type: Boolean,
       default: false,
