@@ -7,4 +7,13 @@ export const PostItemFields = [
   { name: 'levels', placeholder: 'Poziomy', component: 'textarea' },
   { name: 'graphics', placeholder: 'Grafika', component: 'textarea' },
   { name: 'music', placeholder: 'Muzyka', component: 'textarea' },
+  {
+    name: 'tags',
+    placeholder: 'Tagi',
+    tags: [
+      { value: 'MMO', label: 'MMO' },
+      { value: 'RPG', label: 'RPG' },
+      { value: 'FPS', label: 'FPS' },
+    ],
+  },
 ]

@@ -5,7 +5,7 @@ interface Props {
   component?: string
   type: string
   name: string
-  value: string
+  value: string | string[]
   placeholder: string
   onChange: (e: ChangeEvent) => void
   onBlur: (e: FocusEvent) => void
@@ -21,7 +21,6 @@ const InputField = ({
   value,
   placeholder,
   onChange,
-  onBlur,
   className,
   icon,
   formFloating = false,
@@ -38,7 +37,7 @@ const InputField = ({
           id={name}
           name={name}
           value={value}
-          placeholder={formFloating && placeholder}
+          placeholder={formFloating ? placeholder : null}
           onChange={onChange}
           style={{ height: component === 'textarea' && 100 }}
         />

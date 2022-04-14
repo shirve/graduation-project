@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../app/store'
 import Modal from 'react-modal'
 import { PostItemFields } from '../data/post/PostItemFields'
+import SelectField from './common/SelectField'
 
 interface IFormModel {
   title: string
@@ -20,6 +21,7 @@ interface IFormModel {
   levels: string
   graphics: string
   music: string
+  tags: string[]
 }
 
 const PostForm = () => {
@@ -47,6 +49,7 @@ const PostForm = () => {
     levels: Yup.string().required('To pole jest wymagane'),
     graphics: Yup.string().required('To pole jest wymagane'),
     music: Yup.string().required('To pole jest wymagane'),
+    tags: Yup.array().of(Yup.string()),
   })
 
   return (
@@ -60,6 +63,7 @@ const PostForm = () => {
         levels: '',
         graphics: '',
         music: '',
+        tags: [],
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(createPost(values))
@@ -111,20 +115,37 @@ const PostForm = () => {
               </div>
               {PostItemFields.map((field) => (
                 <React.Fragment key={field.name}>
-                  <InputField
-                    component={field.component}
-                    type='text'
-                    name={field.name}
-                    value={values[field.name as keyof typeof values]}
-                    placeholder={field.placeholder}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    className={`form-control input-field ${
-                      errors[field.name as keyof typeof values] &&
-                      touched[field.name as keyof typeof values] &&
-                      'is-invalid'
-                    }`}
-                  />
+                  {field.name === 'tags' && field.tags ? (
+                    <SelectField
+                      name={field.name}
+                      value={values[field.name as keyof typeof values]}
+                      placeholder={field.placeholder}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      className={`form-control input-field ${
+                        errors[field.name as keyof typeof values] &&
+                        touched[field.name as keyof typeof values] &&
+                        'is-invalid'
+                      }`}
+                      options={field.tags}
+                      isMulti={true}
+                    />
+                  ) : (
+                    <InputField
+                      component={field.component}
+                      type='text'
+                      name={field.name}
+                      value={values[field.name as keyof typeof values]}
+                      placeholder={field.placeholder}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      className={`form-control input-field ${
+                        errors[field.name as keyof typeof values] &&
+                        touched[field.name as keyof typeof values] &&
+                        'is-invalid'
+                      }`}
+                    />
+                  )}
                   {errors[field.name as keyof typeof values] &&
                     touched[field.name as keyof typeof values] && (
                       <div className='invalid-feedback d-flex justify-content-end'>
