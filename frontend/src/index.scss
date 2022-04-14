@@ -139,8 +139,8 @@ a {
   &-field {
     color: var(--text-color-secondary);
     background-color: var(--background-color-secondary);
-    border: 1px var(--text-color-secondary) solid;
     &-rounded {
+      border: 1px var(--text-color-secondary) solid;
       border-radius: 2rem;
       border-bottom-left-radius: 0;
       border-top-left-radius: 0;
