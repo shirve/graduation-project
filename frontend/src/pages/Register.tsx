@@ -1,14 +1,14 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { register, reset } from '../features/auth/authSlice'
-import { FaUser, FaEnvelope, FaLock, FaKey } from 'react-icons/fa'
-import InputField from '../components/common/InputField'
+import FormField from '../components/common/FormField'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { RootState } from '../app/store'
 import { useAppDispatch } from '../app/store'
+import { RegisterFormFields } from '../data/auth/RegisterFormFields'
 
 function Register() {
   const navigate = useNavigate()
@@ -70,99 +70,33 @@ function Register() {
         handleBlur,
         handleSubmit,
       }) => (
-        <div className='container mt-3 col-xl-4 col-lg-6 col-md-8 p-4'>
+        <div className='container mt-3 col-xl-4 col-lg-6 col-md-8'>
           <div className='header-title'>Zarejestruj się</div>
           <form onSubmit={handleSubmit}>
-            <InputField
-              type='text'
-              name='firstName'
-              value={values.firstName}
-              placeholder='Imię'
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={`form-control input-field input-field-rounded ${
-                errors.firstName && touched.firstName && 'is-invalid'
-              }`}
-              icon={<FaUser className='me-3 fs-4' />}
-              formFloating={true}
-            />
-            {errors.firstName && touched.firstName && (
-              <div className='invalid-feedback d-flex justify-content-end'>
-                {errors.firstName}
-              </div>
-            )}
-            <InputField
-              type='text'
-              name='lastName'
-              value={values.lastName}
-              placeholder='Nazwisko'
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={`form-control input-field input-field-rounded ${
-                errors.lastName && touched.lastName && 'is-invalid'
-              }`}
-              icon={<FaUser className='me-3 fs-4' />}
-              formFloating={true}
-            />
-            {errors.lastName && touched.lastName && (
-              <div className='invalid-feedback d-flex justify-content-end'>
-                {errors.lastName}
-              </div>
-            )}
-            <InputField
-              type='email'
-              name='email'
-              value={values.email}
-              placeholder='Adres e-mail'
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={`form-control input-field input-field-rounded ${
-                errors.email && touched.email && 'is-invalid'
-              }`}
-              icon={<FaEnvelope className='me-3 fs-4' />}
-              formFloating={true}
-            />
-            {errors.email && touched.email && (
-              <div className='invalid-feedback d-flex justify-content-end'>
-                {errors.email}
-              </div>
-            )}
-            <InputField
-              type='password'
-              name='password'
-              value={values.password}
-              placeholder='Hasło'
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={`form-control input-field input-field-rounded ${
-                errors.password && touched.password && 'is-invalid'
-              }`}
-              icon={<FaLock className='me-3 fs-4' />}
-              formFloating={true}
-            />
-            {errors.password && touched.password && (
-              <div className='invalid-feedback d-flex justify-content-end'>
-                {errors.password}
-              </div>
-            )}
-            <InputField
-              type='password'
-              name='password2'
-              value={values.password2}
-              placeholder='Potwierdź hasło'
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={`form-control input-field input-field-rounded ${
-                errors.password2 && touched.password2 && 'is-invalid'
-              }`}
-              icon={<FaKey className='me-3 fs-4' />}
-              formFloating={true}
-            />
-            {errors.password2 && touched.password2 && (
-              <div className='invalid-feedback d-flex justify-content-end'>
-                {errors.password2}
-              </div>
-            )}
+            {RegisterFormFields.map((field) => (
+              <React.Fragment key={field.name}>
+                <FormField
+                  component={field.component}
+                  type={field.type}
+                  name={field.name}
+                  value={values[field.name as keyof typeof values]}
+                  label={field.label}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  className={`form-control input-field ${
+                    errors[field.name as keyof typeof values] &&
+                    touched[field.name as keyof typeof values] &&
+                    'is-invalid'
+                  }`}
+                />
+                {errors[field.name as keyof typeof values] &&
+                  touched[field.name as keyof typeof values] && (
+                    <div className='invalid-feedback d-flex justify-content-end'>
+                      {errors.email}
+                    </div>
+                  )}
+              </React.Fragment>
+            ))}
             <div className='text-center pt-3'>
               Rejestrując się, zgadzasz się na{' '}
               <Link to='/tos'>Warunki korzystania</Link> {' oraz '}
