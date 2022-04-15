@@ -1,7 +1,6 @@
 import React from 'react'
 import { useState, useRef } from 'react'
 import { createPost } from '../features/posts/postSlice'
-import InputField from './common/InputField'
 import { Formik, FormikProps } from 'formik'
 import * as Yup from 'yup'
 import { FaTimes } from 'react-icons/fa'
@@ -9,8 +8,8 @@ import { useAppDispatch } from '../app/store'
 import { useSelector } from 'react-redux'
 import { RootState } from '../app/store'
 import Modal from 'react-modal'
-import { PostItemFields } from '../data/post/PostItemFields'
-import SelectField from './common/SelectField'
+import FormField from './common/FormField'
+import { PostFormFields } from '../data/post/PostFormFields'
 
 interface IFormModel {
   title: string
@@ -113,39 +112,24 @@ const PostForm = () => {
                   </div>
                 </div>
               </div>
-              {PostItemFields.map((field) => (
+              {PostFormFields.map((field) => (
                 <React.Fragment key={field.name}>
-                  {field.name === 'tags' && field.tags ? (
-                    <SelectField
-                      name={field.name}
-                      value={values[field.name as keyof typeof values]}
-                      placeholder={field.placeholder}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      className={`form-control input-field ${
-                        errors[field.name as keyof typeof values] &&
-                        touched[field.name as keyof typeof values] &&
-                        'is-invalid'
-                      }`}
-                      options={field.tags}
-                      isMulti={true}
-                    />
-                  ) : (
-                    <InputField
-                      component={field.component}
-                      type='text'
-                      name={field.name}
-                      value={values[field.name as keyof typeof values]}
-                      placeholder={field.placeholder}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      className={`form-control input-field ${
-                        errors[field.name as keyof typeof values] &&
-                        touched[field.name as keyof typeof values] &&
-                        'is-invalid'
-                      }`}
-                    />
-                  )}
+                  <FormField
+                    component={field.component}
+                    type={field.type}
+                    name={field.name}
+                    value={values[field.name as keyof typeof values]}
+                    label={field.label}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    className={`form-control input-field ${
+                      errors[field.name as keyof typeof values] &&
+                      touched[field.name as keyof typeof values] &&
+                      'is-invalid'
+                    }`}
+                    options={field.options}
+                    isMulti={field.multipleChoice}
+                  />
                   {errors[field.name as keyof typeof values] &&
                     touched[field.name as keyof typeof values] && (
                       <div className='invalid-feedback d-flex justify-content-end'>
