@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import postService from './postService'
 import { ObjectId } from 'mongoose'
-import { Post } from '../../models/Post'
+import { Post, PostCreate } from '../../models/Post'
 import { RootState } from '../../app/store'
 
 interface IPostsState {
@@ -21,23 +21,22 @@ const initialState: IPostsState = {
 }
 
 // Create new post
-export const createPost = createAsyncThunk<Post, Post, { state: RootState }>(
-  'posts/create',
-  async (postData, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user.token
-      return await postService.createPost(postData, token)
-    } catch (error: any) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
-      return thunkAPI.rejectWithValue(message)
-    }
+export const createPost = createAsyncThunk<
+  PostCreate,
+  PostCreate,
+  { state: RootState }
+>('posts/create', async (postData, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user.token
+    return await postService.createPost(postData, token)
+  } catch (error: any) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString()
+    return thunkAPI.rejectWithValue(message)
   }
-)
+})
 
 // Get all posts
 export const getPosts = createAsyncThunk(
@@ -108,7 +107,7 @@ export const postSlice = createSlice({
       .addCase(createPost.fulfilled, (state, { payload }) => {
         state.isLoading = false
         state.isSuccess = true
-        state.posts.push(payload)
+        state.posts.push(payload as Post)
       })
       .addCase(createPost.rejected, (state, action) => {
         state.isLoading = false

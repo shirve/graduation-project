@@ -1,11 +1,11 @@
 import axios from 'axios'
-import { Post } from '../../models/Post'
+import { Post, PostCreate } from '../../models/Post'
 import { ObjectId } from 'mongoose'
 
 const API_URL = '/api/posts/'
 
 // Create new post
-const createPost = async (postData: Post, token: string | undefined) => {
+const createPost = async (postData: PostCreate, token: string | undefined) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
