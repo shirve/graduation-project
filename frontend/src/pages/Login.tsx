@@ -1,14 +1,14 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { login, reset } from '../features/auth/authSlice'
-import { FaEnvelope, FaKey } from 'react-icons/fa'
-import InputField from '../components/common/InputField'
+import FormField from '../components/common/FormField'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { RootState } from '../app/store'
 import { useAppDispatch } from '../app/store'
+import { LoginFormFields } from '../data/auth/LoginFormFields'
 
 function Login() {
   const navigate = useNavigate()
@@ -56,45 +56,33 @@ function Login() {
         handleBlur,
         handleSubmit,
       }) => (
-        <div className='container mt-3 col-xl-4 col-lg-6 col-md-8 p-4'>
+        <div className='container mt-3 col-xl-4 col-lg-6 col-md-8'>
           <div className='header-title'>Zaloguj się</div>
           <form onSubmit={handleSubmit}>
-            <InputField
-              type='email'
-              name='email'
-              value={values.email}
-              placeholder='Adres e-mail'
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={`form-control input-field input-field-rounded ${
-                errors.email && touched.email && 'is-invalid'
-              }`}
-              icon={<FaEnvelope className='me-3 fs-4' />}
-              formFloating={true}
-            />
-            {errors.email && touched.email && (
-              <div className='invalid-feedback d-flex justify-content-end'>
-                {errors.email}
-              </div>
-            )}
-            <InputField
-              type='password'
-              name='password'
-              value={values.password}
-              placeholder='Hasło'
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={`form-control input-field input-field-rounded ${
-                errors.password && touched.password && 'is-invalid'
-              }`}
-              icon={<FaKey className='me-3 fs-4' />}
-              formFloating={true}
-            />
-            {errors.password && touched.password && (
-              <div className='invalid-feedback d-flex justify-content-end'>
-                {errors.password}
-              </div>
-            )}
+            {LoginFormFields.map((field) => (
+              <React.Fragment key={field.name}>
+                <FormField
+                  component={field.component}
+                  type={field.type}
+                  name={field.name}
+                  value={values[field.name as keyof typeof values]}
+                  label={field.label}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  className={`form-control input-field ${
+                    errors[field.name as keyof typeof values] &&
+                    touched[field.name as keyof typeof values] &&
+                    'is-invalid'
+                  }`}
+                />
+                {errors[field.name as keyof typeof values] &&
+                  touched[field.name as keyof typeof values] && (
+                    <div className='invalid-feedback d-flex justify-content-end'>
+                      {errors.email}
+                    </div>
+                  )}
+              </React.Fragment>
+            ))}
             <div className='d-grid gap-2'>
               <button
                 type='submit'
