@@ -126,29 +126,9 @@ a {
 }
 
 .input {
-  &-icon {
-    display: flex;
-    align-items: center;
-    color: var(--text-color-secondary);
-    background-color: var(--background-color-secondary);
-    height: 58px;
-    padding: 0 0 0 1rem;
-    border: 1px var(--text-color-secondary) solid;
-    border-radius: 2rem;
-  }
   &-field {
     color: var(--text-color-secondary);
     background-color: var(--background-color-secondary);
-    &-rounded {
-      border: 1px var(--text-color-secondary) solid;
-      border-radius: 2rem;
-      border-bottom-left-radius: 0;
-      border-top-left-radius: 0;
-    }
-    &:focus {
-      color: var(--text-color-secondary);
-      background-color: var(--background-color-secondary);
-    }
   }
 }
 

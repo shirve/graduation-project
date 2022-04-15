@@ -1,5 +1,4 @@
-import { Field, FieldProps } from 'formik'
-import { ChangeEvent, ReactElement } from 'react'
+import { FieldProps } from 'formik'
 import Select, { Options, PropsValue } from 'react-select'
 
 interface Option {
@@ -8,50 +7,18 @@ interface Option {
 }
 
 interface Props {
-  name: string
-  value: string | string[]
-  placeholder: string
-  onChange: (e: ChangeEvent) => void
-  onBlur: (e: FocusEvent) => void
-  className: string
   options: Options<Option>
   isMulti?: boolean
+  placeholder?: string
 }
 
 const SelectField = ({
-  name,
-  value,
-  placeholder,
-  onChange,
-  className,
-  options,
-  isMulti = false,
-}: Props): ReactElement => {
-  return (
-    <div className='input-group align-items-center mt-3'>
-      <div className='flex-fill'>
-        <label htmlFor={name}>{placeholder}</label>
-        <Field
-          component={CustomSelectFieldComponent}
-          className={className}
-          id={name}
-          name={name}
-          value={value}
-          onChange={onChange}
-          options={options}
-          isMulti={isMulti}
-        />
-      </div>
-    </div>
-  )
-}
-
-const CustomSelectFieldComponent = ({
   field,
   form,
   options,
   isMulti = false,
-}: FieldProps & { options: Options<Option>; isMulti?: boolean }) => {
+  placeholder = '',
+}: Props & FieldProps) => {
   const onChange = (option: PropsValue<Option | Option[]>) => {
     form.setFieldValue(
       field.name,
@@ -64,11 +31,11 @@ const CustomSelectFieldComponent = ({
   return (
     <Select
       name={field.name}
-      value={options && options.find((option) => option.value === field.value)}
+      value={options.find((option) => option.value === field.value)}
       onChange={onChange}
       options={options}
       isMulti={isMulti}
-      placeholder=''
+      placeholder={placeholder}
     />
   )
 }
