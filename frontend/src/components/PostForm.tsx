@@ -3,7 +3,6 @@ import { useState, useRef } from 'react'
 import { createPost } from '../features/posts/postSlice'
 import { Formik, FormikProps } from 'formik'
 import * as Yup from 'yup'
-import { FaTimes } from 'react-icons/fa'
 import { useAppDispatch } from '../app/store'
 import { useSelector } from 'react-redux'
 import { RootState } from '../app/store'
@@ -107,9 +106,7 @@ const PostForm = () => {
                   Nowa propozycja gry
                 </div>
                 <div className='col-2 d-flex justify-content-end align-items-center'>
-                  <div onClick={showPostForm}>
-                    <FaTimes className='close' />
-                  </div>
+                  <button className='btn-close' onClick={showPostForm}></button>
                 </div>
               </div>
               {PostFormFields.map((field) => (

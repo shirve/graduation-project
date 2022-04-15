@@ -132,11 +132,6 @@ a {
   }
 }
 
-.close {
-  font-size: 2.2rem;
-  cursor: pointer;
-}
-
 .btn {
   color: var(--text-color-primary);
   background-color: var(--color-primary);
@@ -161,6 +156,9 @@ a {
     &:hover {
       background-color: var(--color-success-hover);
     }
+  }
+  &-close {
+    font-size: 1.4rem;
   }
 }
 
@@ -235,6 +233,11 @@ a {
       border: 1px var(--color-primary) solid;
       
   }
+}
+
+.list-group-item {
+  padding: 0 0.5rem 0 0;
+  border: none;
 }
 
 .notfound {
