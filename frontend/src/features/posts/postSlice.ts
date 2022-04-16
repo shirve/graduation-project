@@ -22,9 +22,9 @@ const initialState: IPostsState = {
 
 // Create new post
 export const createPost = createAsyncThunk<
+  Post,
   PostCreate,
-  PostCreate,
-  { state: RootState }
+  { state: RootState; rejectValue: string }
 >('posts/create', async (postData, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user.token
@@ -39,7 +39,7 @@ export const createPost = createAsyncThunk<
 })
 
 // Get all posts
-export const getPosts = createAsyncThunk(
+export const getPosts = createAsyncThunk<Post[], void, { rejectValue: string }>(
   'posts/getPosts',
   async (_, thunkAPI) => {
     try {
@@ -60,7 +60,7 @@ export const getPosts = createAsyncThunk(
 export const deletePost = createAsyncThunk<
   ObjectId,
   ObjectId,
-  { state: RootState }
+  { state: RootState; rejectValue: string }
 >('posts/delete/:id', async (postId: ObjectId, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user.token
@@ -75,85 +75,84 @@ export const deletePost = createAsyncThunk<
 })
 
 // Update post
-export const updatePost = createAsyncThunk<Post, Post, { state: RootState }>(
-  'posts/update/:id',
-  async (updatedData: Post, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user.token
-      return await postService.updatePost(updatedData._id!, updatedData, token)
-    } catch (error: any) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
-      return thunkAPI.rejectWithValue(message)
-    }
+export const updatePost = createAsyncThunk<
+  Post,
+  Post,
+  { state: RootState; rejectValue: string }
+>('posts/update/:id', async (updatedData: Post, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user.token
+    return await postService.updatePost(updatedData._id, updatedData, token)
+  } catch (error: any) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString()
+    return thunkAPI.rejectWithValue(message)
   }
-)
+})
 
 export const postSlice = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    reset: (state) => initialState,
+    reset: () => initialState,
   },
   extraReducers: (builder) => {
     builder
       .addCase(createPost.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(createPost.fulfilled, (state, { payload }) => {
+      .addCase(createPost.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.posts.push(payload as Post)
+        state.posts.push(action.payload)
       })
       .addCase(createPost.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
-        state.message = action.error.message
+        state.message = action.payload
       })
       .addCase(getPosts.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(getPosts.fulfilled, (state, { payload }) => {
+      .addCase(getPosts.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.posts = payload
+        state.posts = action.payload
       })
       .addCase(getPosts.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
-        state.message = action.error.message
+        state.message = action.payload
       })
       .addCase(updatePost.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(updatePost.fulfilled, (state, { payload }) => {
+      .addCase(updatePost.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
         state.posts = state.posts.map((post) =>
-          payload._id === post._id ? payload : post
+          action.payload._id === post._id ? action.payload : post
         )
       })
       .addCase(updatePost.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
-        state.message = action.error.message
+        state.message = action.payload
       })
       .addCase(deletePost.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(deletePost.fulfilled, (state, { payload }) => {
+      .addCase(deletePost.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.posts = state.posts.filter((post) => post._id !== payload)
+        state.posts = state.posts.filter((post) => post._id !== action.payload)
       })
       .addCase(deletePost.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
-        state.message = action.error.message
+        state.message = action.payload
       })
   },
 })

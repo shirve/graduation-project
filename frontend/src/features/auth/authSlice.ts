@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import authService from './authService'
 import { User, UserLogin, UserRegister } from '../../models/User'
 import { RootState } from '../../app/store'
@@ -22,25 +22,24 @@ const initialState: IAuthState = {
 }
 
 // Register user
-export const register = createAsyncThunk(
-  'auth/register',
-  async (user: UserRegister, thunkAPI) => {
-    try {
-      return await authService.register(user)
-    } catch (error: any) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
-      return thunkAPI.rejectWithValue(message)
-    }
+export const register = createAsyncThunk<
+  User,
+  UserRegister,
+  { rejectValue: string }
+>('auth/register', async (user: UserRegister, thunkAPI) => {
+  try {
+    return await authService.register(user)
+  } catch (error: any) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString()
+    return thunkAPI.rejectWithValue(message)
   }
-)
+})
 
 // Login user
-export const login = createAsyncThunk(
+export const login = createAsyncThunk<User, UserLogin, { rejectValue: string }>(
   'auth/login',
   async (user: UserLogin, thunkAPI) => {
     try {
@@ -63,34 +62,28 @@ export const logout = createAsyncThunk('auth/logout', async () => {
 })
 
 // Update user
-export const updateUser = createAsyncThunk<User, User, { state: RootState }>(
-  'users/update/:id',
-  async (updatedData: User, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user.token
-      return await authService.updateUser(updatedData._id!, updatedData, token)
-    } catch (error: any) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
-      return thunkAPI.rejectWithValue(message)
-    }
+export const updateUser = createAsyncThunk<
+  User,
+  User,
+  { state: RootState; rejectValue: string }
+>('users/update/:id', async (updatedData: User, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user.token
+    return await authService.updateUser(updatedData._id!, updatedData, token)
+  } catch (error: any) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString()
+    return thunkAPI.rejectWithValue(message)
   }
-)
+})
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    reset: (state) => {
-      state.isLoading = false
-      state.isSuccess = false
-      state.isError = false
-      state.message = ''
-    },
+    reset: () => initialState,
   },
   extraReducers: (builder) => {
     builder
@@ -105,7 +98,7 @@ export const authSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
-        state.message = action.error.message
+        state.message = action.payload
         state.user = null!
       })
       .addCase(login.pending, (state) => {
@@ -119,7 +112,7 @@ export const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
-        state.message = action.error.message
+        state.message = action.payload
         state.user = null!
       })
       .addCase(logout.fulfilled, (state) => {

@@ -23,22 +23,21 @@ const initialState: IUserInfoState = {
 }
 
 // Get user
-export const getUser = createAsyncThunk(
-  'users/user/:id',
-  async (userId: string, thunkAPI) => {
-    try {
-      return await userService.getUser(userId)
-    } catch (error: any) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
-      return thunkAPI.rejectWithValue(message)
-    }
+export const getUser = createAsyncThunk<
+  UserInfo,
+  string,
+  { rejectValue: string }
+>('users/user/:id', async (userId: string, thunkAPI) => {
+  try {
+    return await userService.getUser(userId)
+  } catch (error: any) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString()
+    return thunkAPI.rejectWithValue(message)
   }
-)
+})
 
 export const userSlice = createSlice({
   name: 'user',
@@ -59,7 +58,7 @@ export const userSlice = createSlice({
       .addCase(getUser.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
-        state.message = action.error.message
+        state.message = action.payload
       })
   },
 })
