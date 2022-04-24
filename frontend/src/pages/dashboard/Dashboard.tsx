@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import { getPosts } from '../../features/posts/postSlice'
+import { useSelector } from 'react-redux'
 import UnapprovedPosts from './UnapprovedPosts'
 import UserPosts from './UserPosts'
 import UserProfile from './UserProfile'
@@ -9,19 +8,13 @@ import { RootState } from '../../app/store'
 
 const Dashboard = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
 
   const { user } = useSelector((state: RootState) => state.auth)
-  const { isError, message } = useSelector((state: RootState) => state.posts)
 
   useEffect(() => {
-    if (isError) {
-      console.log(message)
-    }
     if (!user) {
       navigate('/login')
     }
-    dispatch(getPosts())
   }, [])
 
   return (

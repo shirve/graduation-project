@@ -1,5 +1,4 @@
 import { useEffect, useState, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import PostForm from '../components/PostForm'
 import { getPosts } from '../features/posts/postSlice'
@@ -8,17 +7,16 @@ import Pagination from '../components/common/Pagination'
 import { paginate } from '../utils/paginate'
 import { RootState, useAppDispatch } from '../app/store'
 import HeaderContext from '../context/header/HeaderContext'
+import Spinner from '../components/common/Spinner'
 
 function Posts() {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<number>(10)
 
-  const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
   const { setHeaderText } = useContext(HeaderContext)
 
-  const { user } = useSelector((state: RootState) => state.auth)
   const { posts, isLoading, isError, message } = useSelector(
     (state: RootState) => state.posts
   )
@@ -53,6 +51,8 @@ function Posts() {
   }
 
   const { totalCount, postsFiltered } = getPagedData()
+
+  if (isLoading) return <Spinner />
 
   return (
     <div className='container col-xl-8 col-lg-10 mt-3'>

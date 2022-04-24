@@ -5,6 +5,7 @@ import { getPosts } from '../../features/posts/postSlice'
 import PostItem from '../../components/common/PostItem'
 import { RootState } from '../../app/store'
 import HeaderContext from '../../context/header/HeaderContext'
+import Spinner from '../../components/common/Spinner'
 
 const DashboardUnapprovedPosts = () => {
   const navigate = useNavigate()
@@ -13,7 +14,7 @@ const DashboardUnapprovedPosts = () => {
   const { setHeaderText } = useContext(HeaderContext)
 
   const { user } = useSelector((state: RootState) => state.auth)
-  const { posts, isError, message } = useSelector(
+  const { posts, isError, isLoading, message } = useSelector(
     (state: RootState) => state.posts
   )
 
@@ -37,6 +38,8 @@ const DashboardUnapprovedPosts = () => {
     }
     dispatch(getPosts())
   }, [])
+
+  if (isLoading) return <Spinner />
 
   return (
     <>

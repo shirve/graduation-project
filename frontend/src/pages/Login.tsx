@@ -9,12 +9,13 @@ import * as Yup from 'yup'
 import { RootState } from '../app/store'
 import { useAppDispatch } from '../app/store'
 import { LoginFormFields } from '../data/auth/LoginFormFields'
+import Spinner from '../components/common/Spinner'
 
 function Login() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const { user, isError, isSuccess, message } = useSelector(
+  const { user, isError, isSuccess, isLoading, message } = useSelector(
     (state: RootState) => state.auth
   )
 
@@ -34,6 +35,8 @@ function Login() {
       .required('To pole jest wymagane'),
     password: Yup.string().required('To pole jest wymagane'),
   })
+
+  if (isLoading) return <Spinner />
 
   return (
     <Formik

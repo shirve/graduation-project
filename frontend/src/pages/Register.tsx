@@ -9,12 +9,13 @@ import * as Yup from 'yup'
 import { RootState } from '../app/store'
 import { useAppDispatch } from '../app/store'
 import { RegisterFormFields } from '../data/auth/RegisterFormFields'
+import Spinner from '../components/common/Spinner'
 
 function Register() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const { user, isError, isSuccess, message } = useSelector(
+  const { user, isError, isSuccess, isLoading, message } = useSelector(
     (state: RootState) => state.auth
   )
 
@@ -45,6 +46,8 @@ function Register() {
       .oneOf([Yup.ref('password'), null], 'Hasła się nie zgadzają')
       .required('To pole jest wymagane'),
   })
+
+  if (isLoading) return <Spinner />
 
   return (
     <Formik
