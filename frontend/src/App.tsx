@@ -14,7 +14,7 @@ import UserProfile from './pages/dashboard/UserProfile'
 import UserPosts from './pages/dashboard/UserPosts'
 import UnapprovedPosts from './pages/dashboard/UnapprovedPosts'
 import Dashboard from './pages/dashboard/Dashboard'
-import LookupUserProfile from './pages/LookupUserProfile'
+import SearchUser from './pages/SearchUser'
 import NotFound from './pages/NotFound'
 import Header from './components/layout/Header'
 import { HeaderProvider } from './context/header/HeaderContext'
@@ -32,7 +32,7 @@ function App() {
               <Route path='posts' element={<UserPosts />} />
               <Route path='unapproved-posts' element={<UnapprovedPosts />} />
             </Route>
-            <Route path='/user/:id' element={<LookupUserProfile />} />
+            <Route path='/user/:id' element={<SearchUser />} />
             <Route path='/posts' element={<Posts />} />
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
