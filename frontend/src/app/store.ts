@@ -8,6 +8,7 @@ export const store = configureStore({
     auth: authReducer,
     posts: postReducer,
   },
+  devTools: process.env.NODE_ENV === 'development',
 })
 
 export type RootState = ReturnType<typeof store.getState>

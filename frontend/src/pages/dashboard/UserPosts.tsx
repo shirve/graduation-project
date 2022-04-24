@@ -6,6 +6,7 @@ import PostItem from '../../components/common/PostItem'
 import { RootState } from '../../app/store'
 import HeaderContext from '../../context/header/HeaderContext'
 import Spinner from '../../components/common/Spinner'
+import { toast } from 'react-toastify'
 
 const DashboardUserPosts = () => {
   const navigate = useNavigate()
@@ -14,7 +15,7 @@ const DashboardUserPosts = () => {
   const { setHeaderText } = useContext(HeaderContext)
 
   const { user } = useSelector((state: RootState) => state.auth)
-  const { posts, isError, isLoading, message } = useSelector(
+  const { posts, loading, error } = useSelector(
     (state: RootState) => state.posts
   )
 
@@ -30,8 +31,8 @@ const DashboardUserPosts = () => {
   }, [])
 
   useEffect(() => {
-    if (isError) {
-      console.log(message)
+    if (error) {
+      toast.error(error.message)
     }
     if (!user) {
       navigate('/login')
@@ -39,7 +40,7 @@ const DashboardUserPosts = () => {
     dispatch(getPosts())
   }, [])
 
-  if (isLoading) return <Spinner />
+  if (loading) return <Spinner />
 
   return (
     <>

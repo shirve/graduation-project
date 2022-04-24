@@ -15,7 +15,7 @@ const getPosts = asyncHandler(async (req, res) => {
 //@access Private
 const createPost = asyncHandler(async (req, res) => {
   if (!req.user) {
-    res.status(401).json({ message: 'User not found' })
+    res.status(401).json({ type: 'error', message: 'User not found' })
   }
 
   const post = await Post.create({
@@ -44,15 +44,15 @@ const updatePost = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id)
 
   if (!post) {
-    res.status(400).json({ message: 'Post not found' })
+    res.status(400).json({ type: 'error', message: 'Post not found' })
   }
 
   if (!req.user) {
-    res.status(401).json({ message: 'User not found' })
+    res.status(401).json({ type: 'error', message: 'User not found' })
   }
 
   if (req.user.ROLE_ADMIN === false) {
-    res.status(401).json({ message: 'User not authorized' })
+    res.status(401).json({ type: 'error', message: 'User not authorized' })
   }
 
   const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
@@ -69,17 +69,17 @@ const deletePost = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id)
 
   if (!post) {
-    res.status(400).json({ message: 'Post not found' })
+    res.status(400).json({ type: 'error', message: 'Post not found' })
   }
 
   if (!req.user) {
-    res.status(401).json({ message: 'User not found' })
+    res.status(401).json({ type: 'error', message: 'User not found' })
   }
   if (
     post.user._id.toString() !== req.user._id.toString() &&
     req.user.ROLE_ADMIN === false
   ) {
-    res.status(401).json({ message: 'User not authorized' })
+    res.status(401).json({ type: 'error', message: 'User not authorized' })
   }
 
   await post.remove()

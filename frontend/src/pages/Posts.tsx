@@ -8,6 +8,7 @@ import { paginate } from '../utils/paginate'
 import { RootState, useAppDispatch } from '../app/store'
 import HeaderContext from '../context/header/HeaderContext'
 import Spinner from '../components/common/Spinner'
+import Alert from '../components/common/Alert'
 
 function Posts() {
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -17,22 +18,16 @@ function Posts() {
 
   const { setHeaderText } = useContext(HeaderContext)
 
-  const { posts, isLoading, isError, message } = useSelector(
-    (state: RootState) => state.posts
-  )
+  const { posts, loading } = useSelector((state: RootState) => state.posts)
 
   useEffect(() => {
     setHeaderText('PROPOZYCJE GIER')
+
+    dispatch(getPosts())
+
     return () => {
       setHeaderText('')
     }
-  }, [])
-
-  useEffect(() => {
-    if (isError) {
-      console.log(message)
-    }
-    dispatch(getPosts())
   }, [])
 
   const handlePageChange = (page: number) => {
@@ -52,11 +47,12 @@ function Posts() {
 
   const { totalCount, postsFiltered } = getPagedData()
 
-  if (isLoading) return <Spinner />
+  if (loading) return <Spinner />
 
   return (
     <div className='container col-xl-8 col-lg-10 mt-3'>
       <PostForm />
+      <Alert />
       {postsFiltered.length > 0 && (
         <>
           {postsFiltered.map((post) => (

@@ -15,18 +15,18 @@ function Register() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const { user, isError, isSuccess, isLoading, message } = useSelector(
+  const { user, success, loading, error } = useSelector(
     (state: RootState) => state.auth
   )
 
   useEffect(() => {
-    if (isError) {
-      toast.error(message)
+    if (error) {
+      toast.error(error.message)
     }
-    if (isSuccess || user) {
+    if (success || user) {
       navigate('/')
     }
-  }, [user, isError, isSuccess])
+  }, [user, success, error])
 
   const SignUpSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -47,7 +47,7 @@ function Register() {
       .required('To pole jest wymagane'),
   })
 
-  if (isLoading) return <Spinner />
+  if (loading) return <Spinner />
 
   return (
     <Formik
