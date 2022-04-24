@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { login, reset } from '../features/auth/authSlice'
+import { login } from '../features/auth/authSlice'
 import FormField from '../components/common/FormField'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -22,13 +22,10 @@ function Login() {
     if (isError) {
       toast.error(message)
     }
-
     if (isSuccess || user) {
       navigate('/')
     }
-
-    dispatch(reset())
-  }, [user, isError, isSuccess, message, navigate, dispatch])
+  }, [user, isError, isSuccess])
 
   const SignInSchema = Yup.object().shape({
     email: Yup.string()

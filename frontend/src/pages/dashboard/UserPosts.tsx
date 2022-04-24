@@ -47,12 +47,7 @@ const DashboardUserPosts = () => {
             .reverse()
             .filter((post) => post.user?._id === user?._id)
             .map((post, index) => (
-              <PostItem
-                key={index}
-                post={post}
-                user={user ? user : undefined}
-                userCanManage={true}
-              />
+              <PostItem key={index} post={post} />
             ))}
         </>
       )}

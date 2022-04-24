@@ -47,12 +47,7 @@ const DashboardUnapprovedPosts = () => {
             .reverse()
             .filter((post) => post.approved === false)
             .map((post, index) => (
-              <PostItem
-                key={index}
-                post={post}
-                user={user ? user : undefined}
-                userCanManage={true}
-              />
+              <PostItem key={index} post={post} />
             ))}
         </>
       )}
