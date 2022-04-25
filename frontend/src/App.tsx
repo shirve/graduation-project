@@ -4,8 +4,6 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import Navbar from './components/layout/Navbar'
 import Register from './pages/Register'
 import Login from './pages/Login'
@@ -22,9 +20,9 @@ import { AlertProvider } from './context/alert/AlertContext'
 
 function App() {
   return (
-    <HeaderProvider>
-      <AlertProvider>
-        <Router>
+    <Router>
+      <HeaderProvider>
+        <AlertProvider>
           <Navbar />
           <Header />
           <main className='container'>
@@ -43,10 +41,9 @@ function App() {
               <Route path='*' element={<Navigate to='/not-found' />} />
             </Routes>
           </main>
-        </Router>
-        <ToastContainer />
-      </AlertProvider>
-    </HeaderProvider>
+        </AlertProvider>
+      </HeaderProvider>
+    </Router>
   )
 }
 

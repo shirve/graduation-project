@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import { register } from '../features/auth/authSlice'
 import FormField from '../components/common/FormField'
 import { Formik } from 'formik'
@@ -10,23 +9,27 @@ import { RootState } from '../app/store'
 import { useAppDispatch } from '../app/store'
 import { RegisterFormFields } from '../data/auth/RegisterFormFields'
 import Spinner from '../components/common/Spinner'
+import Alert from '../components/common/Alert'
+import AlertContext from '../context/alert/AlertContext'
 
 function Register() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const { user, success, loading, error } = useSelector(
+  const { setAlert } = useContext(AlertContext)
+
+  const { user, success, loading, alert } = useSelector(
     (state: RootState) => state.auth
   )
 
   useEffect(() => {
-    if (error) {
-      toast.error(error.message)
+    if (alert) {
+      setAlert(alert.type, alert.message)
     }
     if (success || user) {
       navigate('/')
     }
-  }, [user, success, error])
+  }, [user, success, alert])
 
   const SignUpSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -97,6 +100,7 @@ function Register() {
                   )}
               </React.Fragment>
             ))}
+            <Alert />
             <div className='text-center pt-3'>
               Rejestrując się, zgadzasz się na{' '}
               <Link to='/tos'>Warunki korzystania</Link> {' oraz '}

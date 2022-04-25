@@ -1,21 +1,23 @@
-import { useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { getPosts } from '../../features/posts/postSlice'
 import PostItem from '../../components/common/PostItem'
 import { RootState } from '../../app/store'
 import HeaderContext from '../../context/header/HeaderContext'
+import AlertContext from '../../context/alert/AlertContext'
+import Alert from '../../components/common/Alert'
 import Spinner from '../../components/common/Spinner'
-import { toast } from 'react-toastify'
 
 const DashboardUnapprovedPosts = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const { setHeaderText } = useContext(HeaderContext)
+  const { setAlert } = useContext(AlertContext)
 
   const { user } = useSelector((state: RootState) => state.auth)
-  const { posts, loading, error } = useSelector(
+  const { posts, loading, alert } = useSelector(
     (state: RootState) => state.posts
   )
 
@@ -31,14 +33,14 @@ const DashboardUnapprovedPosts = () => {
   }, [])
 
   useEffect(() => {
-    if (error) {
-      toast.error(error.message)
+    if (alert) {
+      setAlert(alert.type, alert.message, 5)
     }
     if (!user || !user.ROLE_ADMIN) {
       navigate('/')
     }
     dispatch(getPosts())
-  }, [])
+  }, [user, alert])
 
   if (loading) return <Spinner />
 
@@ -51,7 +53,10 @@ const DashboardUnapprovedPosts = () => {
             .reverse()
             .filter((post) => post.approved === false)
             .map((post, index) => (
-              <PostItem key={index} post={post} />
+              <React.Fragment key={index}>
+                <PostItem post={post} />
+                <Alert />
+              </React.Fragment>
             ))}
         </>
       )}

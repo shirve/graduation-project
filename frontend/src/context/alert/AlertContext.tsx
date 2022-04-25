@@ -1,4 +1,5 @@
-import { createContext, useReducer } from 'react'
+import { createContext, useReducer, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import alertReducer from './AlertReducer'
 import { Alert } from '../../models/Alert'
 
@@ -10,6 +11,14 @@ interface IAlertContext {
 const AlertContext = createContext({} as IAlertContext)
 
 export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation()
+
+  useEffect(() => {
+    dispatch({
+      type: 'REMOVE_ALERT',
+    })
+  }, [location.pathname])
+
   const initialState: Alert = {
     type: '',
     message: '',
@@ -18,9 +27,6 @@ export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(alertReducer, initialState)
 
   const setAlert = (type: string, message: string, duration?: number) => {
-    dispatch({
-      type: 'REMOVE_ALERT',
-    })
     dispatch({
       type: 'SET_ALERT',
       payload: { type, message },

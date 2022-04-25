@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import authService from './authService'
 import { User, UserLogin, UserRegister } from '../../models/User'
 import { RootState } from '../../app/store'
+import { Alert } from '../../models/Alert'
 
 const user = JSON.parse(localStorage.getItem('user')!)
 
@@ -9,27 +10,21 @@ interface IAuthState {
   user: User | null
   success: boolean
   loading: boolean
-  error:
-    | {
-        type: string
-        message: string
-      }
-    | undefined
-    | null
+  alert: Alert | undefined | null
 }
 
 const initialState: IAuthState = {
   user: user ? user : null,
   success: false,
   loading: false,
-  error: null,
+  alert: null,
 }
 
 // Register user
 export const register = createAsyncThunk<
   User,
   UserRegister,
-  { rejectValue: { type: string; message: string } }
+  { rejectValue: Alert }
 >('auth/register', async (user: UserRegister, thunkAPI) => {
   try {
     return await authService.register(user)
@@ -39,17 +34,16 @@ export const register = createAsyncThunk<
 })
 
 // Login user
-export const login = createAsyncThunk<
-  User,
-  UserLogin,
-  { rejectValue: { type: string; message: string } }
->('auth/login', async (user: UserLogin, thunkAPI) => {
-  try {
-    return await authService.login(user)
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue(error.response.data)
+export const login = createAsyncThunk<User, UserLogin, { rejectValue: Alert }>(
+  'auth/login',
+  async (user: UserLogin, thunkAPI) => {
+    try {
+      return await authService.login(user)
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data)
+    }
   }
-})
+)
 
 // Logout user
 export const logout = createAsyncThunk('auth/logout', async () => {
@@ -60,7 +54,7 @@ export const logout = createAsyncThunk('auth/logout', async () => {
 export const updateUser = createAsyncThunk<
   User,
   User,
-  { state: RootState; rejectValue: { type: string; message: string } }
+  { state: RootState; rejectValue: Alert }
 >('users/update/:id', async (updatedData: User, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user?.token
@@ -80,30 +74,32 @@ export const authSlice = createSlice({
     builder
       .addCase(register.pending, (state) => {
         state.loading = true
+        state.alert = null
       })
       .addCase(register.fulfilled, (state, action) => {
         state.loading = false
         state.success = true
-        state.error = null
+        state.alert = null
         state.user = action.payload
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false
-        state.error = action.payload
+        state.alert = action.payload
         state.user = null
       })
       .addCase(login.pending, (state) => {
         state.loading = true
+        state.alert = null
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false
         state.success = true
-        state.error = null
+        state.alert = null
         state.user = action.payload
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false
-        state.error = action.payload
+        state.alert = action.payload
         state.user = null
       })
       .addCase(logout.fulfilled, (state) => {

@@ -1,26 +1,28 @@
-import { useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { getPosts } from '../../features/posts/postSlice'
 import PostItem from '../../components/common/PostItem'
 import { RootState } from '../../app/store'
 import HeaderContext from '../../context/header/HeaderContext'
+import AlertContext from '../../context/alert/AlertContext'
+import Alert from '../../components/common/Alert'
 import Spinner from '../../components/common/Spinner'
-import { toast } from 'react-toastify'
 
 const DashboardUserPosts = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const { setHeaderText } = useContext(HeaderContext)
+  const { setAlert } = useContext(AlertContext)
 
   const { user } = useSelector((state: RootState) => state.auth)
-  const { posts, loading, error } = useSelector(
+  const { posts, loading, alert } = useSelector(
     (state: RootState) => state.posts
   )
 
   const filteredPostsLength = posts.filter(
-    (post) => post.user?._id === user?._id
+    (post) => post.user._id === user?._id
   ).length
 
   useEffect(() => {
@@ -31,14 +33,14 @@ const DashboardUserPosts = () => {
   }, [])
 
   useEffect(() => {
-    if (error) {
-      toast.error(error.message)
+    if (alert) {
+      setAlert(alert.type, alert.message, 5)
     }
     if (!user) {
       navigate('/login')
     }
     dispatch(getPosts())
-  }, [])
+  }, [user, alert])
 
   if (loading) return <Spinner />
 
@@ -49,9 +51,12 @@ const DashboardUserPosts = () => {
           {posts
             .slice(0)
             .reverse()
-            .filter((post) => post.user?._id === user?._id)
+            .filter((post) => post.user._id === user?._id)
             .map((post, index) => (
-              <PostItem key={index} post={post} />
+              <React.Fragment key={index}>
+                <PostItem post={post} />
+                <Alert />
+              </React.Fragment>
             ))}
         </>
       )}

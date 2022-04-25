@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import { login } from '../features/auth/authSlice'
 import FormField from '../components/common/FormField'
 import { Formik } from 'formik'
@@ -10,23 +9,27 @@ import { RootState } from '../app/store'
 import { useAppDispatch } from '../app/store'
 import { LoginFormFields } from '../data/auth/LoginFormFields'
 import Spinner from '../components/common/Spinner'
+import Alert from '../components/common/Alert'
+import AlertContext from '../context/alert/AlertContext'
 
 function Login() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const { user, success, loading, error } = useSelector(
+  const { setAlert } = useContext(AlertContext)
+
+  const { user, success, loading, alert } = useSelector(
     (state: RootState) => state.auth
   )
 
   useEffect(() => {
-    if (error) {
-      toast.error(error.message)
+    if (alert) {
+      setAlert(alert.type, alert.message)
     }
     if (success || user) {
       navigate('/')
     }
-  }, [user, success, error])
+  }, [user, success, alert])
 
   const SignInSchema = Yup.object().shape({
     email: Yup.string()
@@ -83,6 +86,7 @@ function Login() {
                   )}
               </React.Fragment>
             ))}
+            <Alert />
             <div className='d-grid gap-2'>
               <button
                 type='submit'

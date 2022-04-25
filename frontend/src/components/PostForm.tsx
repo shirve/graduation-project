@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useState, useRef } from 'react'
 import { createPost } from '../features/posts/postSlice'
 import { Formik, FormikProps } from 'formik'
@@ -9,6 +9,7 @@ import { RootState } from '../app/store'
 import Modal from 'react-modal'
 import FormField from './common/FormField'
 import { PostFormFields } from '../data/post/PostFormFields'
+import AlertContext from '../context/alert/AlertContext'
 
 interface IFormModel {
   title: string
@@ -27,8 +28,17 @@ const PostForm = () => {
   const formikRef = useRef<FormikProps<IFormModel>>(null)
 
   const { user } = useSelector((state: RootState) => state.auth)
+  const { alert } = useSelector((state: RootState) => state.posts)
 
   const dispatch = useAppDispatch()
+
+  const { setAlert } = useContext(AlertContext)
+
+  useEffect(() => {
+    if (alert) {
+      setAlert(alert.type, alert.message, 5)
+    }
+  }, [alert])
 
   const showPostForm = () => {
     if (showForm) {
@@ -88,7 +98,7 @@ const PostForm = () => {
           </p>
           <div className='d-flex'>
             <button
-              onClick={user && showPostForm}
+              onClick={showPostForm}
               className='post-form-button btn flex-fill'
             >
               NOWA PROPOZYCJA GRY
@@ -106,7 +116,11 @@ const PostForm = () => {
                   Nowa propozycja gry
                 </div>
                 <div className='col-2 d-flex justify-content-end align-items-center'>
-                  <button className='btn-close' onClick={showPostForm}></button>
+                  <button
+                    type='button'
+                    className='btn-close'
+                    onClick={showPostForm}
+                  ></button>
                 </div>
               </div>
               {PostFormFields.map((field) => (
