@@ -12,7 +12,9 @@ const registerUser = asyncHandler(async (req, res) => {
   const userExists = await User.findOne({ email })
 
   if (userExists) {
-    res.status(400).json({ type: 'error', message: 'User already exists' })
+    res
+      .status(400)
+      .json({ type: 'error', message: 'Podany email jest zajęty!' })
   }
 
   const salt = await bcrypt.genSalt(10)
@@ -36,7 +38,9 @@ const registerUser = asyncHandler(async (req, res) => {
       ROLE_ADMIN: user.ROLE_ADMIN,
     })
   } else {
-    res.status(400).json({ type: 'error', message: 'Invalid user data' })
+    res
+      .status(400)
+      .json({ type: 'error', message: 'Niepoprawne dane użytkownika!' })
   }
 })
 
@@ -58,7 +62,10 @@ const loginUser = asyncHandler(async (req, res) => {
       ROLE_ADMIN: user.ROLE_ADMIN,
     })
   } else {
-    res.status(400).json({ type: 'error', message: 'Invalid user credentials' })
+    res.status(400).json({
+      type: 'error',
+      message: 'Podany adres email lub hasło jest niepoprawne!',
+    })
   }
 })
 
@@ -88,7 +95,9 @@ const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id)
 
   if (!user) {
-    res.status(400).json({ type: 'error', message: 'User not found' })
+    res
+      .status(400)
+      .json({ type: 'error', message: 'Nie znaleziono użytkownika!' })
   }
 
   if (user.ROLE_ADMIN === false) {

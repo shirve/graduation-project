@@ -19,12 +19,17 @@ const protect = asyncHandler(async (req, res, next) => {
       next()
     } catch (error) {
       console.log(error)
-      res.status(401).json({ message: 'User not authorized' })
+      res
+        .status(401)
+        .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
     }
   }
 
   if (!token) {
-    res.status(401).json({ message: 'User not authorized, no token' })
+    res.status(401).json({
+      type: 'error',
+      message: 'Brak autoryzacji, nie znaleziono tokena!',
+    })
   }
 })
 
