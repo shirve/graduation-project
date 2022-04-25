@@ -41,11 +41,15 @@ const PostForm = () => {
   }, [alert])
 
   const showPostForm = () => {
-    if (showForm) {
-      formikRef.current?.resetForm()
-      return setShowForm(false)
+    if (!user) {
+      return setAlert('error', 'Zaloguj się aby dodać nową propozycję gry.', 3)
+    } else {
+      if (showForm) {
+        formikRef.current?.resetForm()
+        return setShowForm(false)
+      }
+      return setShowForm(true)
     }
-    return setShowForm(true)
   }
 
   const PostFormSchema = Yup.object().shape({
