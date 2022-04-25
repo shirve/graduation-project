@@ -1,5 +1,3 @@
-import SelectField from '../../components/common/SelectField'
-
 export const PostFormFields = [
   {
     name: 'title',
@@ -32,7 +30,7 @@ export const PostFormFields = [
   {
     name: 'tags',
     type: 'select',
-    component: SelectField,
+    component: 'select',
     label: 'Gatunek/Gatunki',
     options: [
       { value: 'strzelanki', label: 'Strzelanki' },
@@ -45,6 +43,6 @@ export const PostFormFields = [
       { value: 'wyścigowe', label: 'Wyścigowe' },
       { value: 'sportowe', label: 'Sportowe' },
     ],
-    multipleChoice: true,
+    multiple: true,
   },
 ]

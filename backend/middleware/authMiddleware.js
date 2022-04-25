@@ -18,7 +18,6 @@ const protect = asyncHandler(async (req, res, next) => {
 
       next()
     } catch (error) {
-      console.log(error)
       res
         .status(401)
         .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })

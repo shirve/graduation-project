@@ -8,7 +8,7 @@ interface Option {
 
 interface Props {
   options: Options<Option>
-  isMulti?: boolean
+  multiple?: boolean
   placeholder?: string
 }
 
@@ -16,13 +16,13 @@ const SelectField = ({
   field,
   form,
   options,
-  isMulti = false,
+  multiple = false,
   placeholder = '',
 }: Props & FieldProps) => {
   const onChange = (option: PropsValue<Option | Option[]>) => {
     form.setFieldValue(
       field.name,
-      isMulti
+      multiple
         ? (option as Option[]).map((item: Option) => item.value)
         : Array.of((option as Option).value)
     )
@@ -34,7 +34,7 @@ const SelectField = ({
       value={options.find((option) => option.value === field.value)}
       onChange={onChange}
       options={options}
-      isMulti={isMulti}
+      isMulti={multiple}
       placeholder={placeholder}
     />
   )

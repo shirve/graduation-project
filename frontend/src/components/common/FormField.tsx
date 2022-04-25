@@ -1,6 +1,7 @@
 import { Field } from 'formik'
 import { ChangeEvent, ReactElement, ReactNode } from 'react'
 import { Options } from 'react-select'
+import SelectField from './SelectField'
 
 interface Option {
   value: string
@@ -15,7 +16,7 @@ interface Props {
   label?: string
   className: string
   options?: Options<Option>
-  isMulti?: boolean
+  multiple?: boolean
   onChange: (e: ChangeEvent) => void
   onBlur: (e: FocusEvent) => void
 }
@@ -28,21 +29,21 @@ const FormField = ({
   label,
   className,
   options,
-  isMulti = false,
+  multiple = false,
   onChange,
 }: Props): ReactElement => {
   return (
     <div className='mt-3'>
       <label htmlFor={name}>{label}</label>
       <Field
-        component={component}
+        component={component === 'select' ? SelectField : component}
         type={type}
         name={name}
         value={value}
         className={className}
         onChange={onChange}
         options={options}
-        isMulti={isMulti}
+        multiple={multiple}
       />
     </div>
   )

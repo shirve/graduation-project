@@ -38,6 +38,7 @@ const PostForm = () => {
     if (alert) {
       setAlert(alert.type, alert.message, 5)
     }
+    return () => {}
   }, [alert])
 
   const showPostForm = () => {
@@ -143,7 +144,7 @@ const PostForm = () => {
                       'is-invalid'
                     }`}
                     options={field.options}
-                    isMulti={field.multipleChoice}
+                    multiple={field.multiple}
                   />
                   {errors[field.name as keyof typeof values] &&
                     touched[field.name as keyof typeof values] && (
