@@ -1,10 +1,6 @@
 import { FieldProps } from 'formik'
 import Select, { Options, PropsValue } from 'react-select'
-
-interface Option {
-  value: string
-  label: string
-}
+import { Option } from '../../data/post/PostGenres'
 
 interface Props {
   options: Options<Option>

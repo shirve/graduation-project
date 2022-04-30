@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import PostForm from '../components/PostForm'
 import { getPosts } from '../features/posts/postSlice'
@@ -10,13 +10,15 @@ import { RootState, useAppDispatch } from '../app/store'
 import HeaderContext from '../context/header/HeaderContext'
 import Spinner from '../components/common/Spinner'
 import Alert from '../components/common/Alert'
+import Select from 'react-select'
+import { PostGenres, Option } from '../data/post/PostGenres'
 
 function Posts() {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<number>(10)
+  const [currentGenre, setCurrentGenre] = useState<Option | null>(null)
 
   const dispatch = useAppDispatch()
-  const [searchParams] = useSearchParams()
 
   const { setHeaderText } = useContext(HeaderContext)
 
@@ -32,6 +34,13 @@ function Posts() {
     }
   }, [])
 
+  const handleGenreChange = (genre: string) => {
+    setCurrentGenre({
+      value: genre,
+      label: genre[0].toUpperCase() + genre.slice(1),
+    })
+  }
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
   }
@@ -43,14 +52,13 @@ function Posts() {
       .reverse()
       .filter((post) => post.approved === true)
 
-    if (searchParams.has('tag')) {
+    if (currentGenre !== null) {
       filtered = posts
         .slice(0)
         .reverse()
         .filter(
           (post) =>
-            post.approved === true &&
-            post.tags.includes(searchParams.get('tag')!)
+            post.approved === true && post.genres.includes(currentGenre.value)
         )
     }
 
@@ -75,11 +83,26 @@ function Posts() {
       </p>
       <PostForm />
       <Alert />
-      <h3 className='mt-3 fw-bold'>Najnowsze posty</h3>
+      <div className='row mt-3'>
+        <h3 className='col-md-6 col-sm-12 fw-bold'>Najnowsze posty</h3>
+        <div className='col-md-6 col-sm-12 d-flex justify-content-end'>
+          <Select
+            className='w-100'
+            placeholder='Filtruj według gatunku...'
+            value={currentGenre}
+            options={PostGenres}
+            onChange={(option) => setCurrentGenre(option)}
+          />
+        </div>
+      </div>
       {postsFiltered.length > 0 ? (
         <>
           {postsFiltered.map((post) => (
-            <PostItem key={post._id} post={post} />
+            <PostItem
+              key={post._id}
+              post={post}
+              onGenreChange={handleGenreChange}
+            />
           ))}
           <Pagination
             itemsCount={totalCount}

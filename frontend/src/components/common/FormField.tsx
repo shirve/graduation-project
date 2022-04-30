@@ -2,11 +2,7 @@ import { Field } from 'formik'
 import { ChangeEvent, ReactElement, ReactNode } from 'react'
 import { Options } from 'react-select'
 import SelectField from './SelectField'
-
-interface Option {
-  value: string
-  label: string
-}
+import { Option } from '../../data/post/PostGenres'
 
 interface Props {
   component: ReactNode

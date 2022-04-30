@@ -46,7 +46,7 @@ const postSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    tags: [
+    genres: [
       {
         type: String,
         required: false,

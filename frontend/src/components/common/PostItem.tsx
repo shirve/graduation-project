@@ -9,13 +9,14 @@ import {
 import { Post } from '../../models/Post'
 import { ObjectId } from 'mongoose'
 import { Link } from 'react-router-dom'
-import { PostFormFields } from '../../data/post/PostFormFields'
+import { PostFields } from '../../data/post/PostFields'
 
 interface Props {
   post: Post
+  onGenreChange?: (genre: string) => void
 }
 
-const PostItem = ({ post }: Props): ReactElement => {
+const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
   const [userIsAdmin, setUserIsAdmin] = useState<boolean>(false)
   const [userCanManage, setUserCanManage] = useState<boolean>()
 
@@ -66,18 +67,25 @@ const PostItem = ({ post }: Props): ReactElement => {
             </p>
           </div>
         </div>
-        {PostFormFields.map((field) => (
+        {PostFields.map((field) => (
           <React.Fragment key={field.name}>
             {field.name === 'title' ? (
               <h3 className='fw-bold'>
                 {post[field.name as keyof typeof post]}
               </h3>
-            ) : field.name === 'tags' && post.tags ? (
+            ) : field.name === 'genres' && post.genres ? (
               <ul className='list-group list-group-horizontal'>
-                {post.tags.map((tag) => (
-                  <Link to={`/posts?tag=${tag}`} className='tag' key={tag}>
-                    <li className='list-group-item'>#{tag}</li>
-                  </Link>
+                {post.genres.map((genre) => (
+                  <li
+                    key={genre}
+                    style={{ cursor: 'pointer' }}
+                    className='list-group-item'
+                    onClick={() => {
+                      if (onGenreChange) onGenreChange(genre)
+                    }}
+                  >
+                    #{genre}
+                  </li>
                 ))}
               </ul>
             ) : (

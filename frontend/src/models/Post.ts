@@ -14,7 +14,7 @@ export interface Post {
   levels: string
   graphics: string
   music: string
-  tags: string[]
+  genres: string[]
   approved: boolean
   createdAt: Date
   updatedAt: Date
@@ -29,5 +29,5 @@ export interface PostCreate {
   levels: string
   graphics: string
   music: string
-  tags: string[]
+  genres: string[]
 }

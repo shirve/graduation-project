@@ -1,4 +1,6 @@
-export const PostFormFields = [
+import { PostGenres } from './PostGenres'
+
+export const PostFields = [
   {
     name: 'title',
     type: 'input',
@@ -28,21 +30,11 @@ export const PostFormFields = [
   { name: 'graphics', type: 'input', component: 'textarea', label: 'Grafika' },
   { name: 'music', type: 'input', component: 'textarea', label: 'Muzyka' },
   {
-    name: 'tags',
+    name: 'genres',
     type: 'select',
     component: 'select',
     label: 'Gatunek/Gatunki',
-    options: [
-      { value: 'strzelanki', label: 'Strzelanki' },
-      { value: 'zręcznościowe', label: 'Zręcznościowe' },
-      { value: 'przygodowe', label: 'Przygodowe' },
-      { value: 'łamigłówki', label: 'Łamigłówki' },
-      { value: 'rpg', label: 'RPG' },
-      { value: 'symulacje', label: 'Symulacje' },
-      { value: 'strategiczne', label: 'Strategiczne' },
-      { value: 'wyścigowe', label: 'Wyścigowe' },
-      { value: 'sportowe', label: 'Sportowe' },
-    ],
+    options: PostGenres,
     multiple: true,
   },
 ]

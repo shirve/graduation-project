@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../app/store'
 import Modal from 'react-modal'
 import FormField from './common/FormField'
-import { PostFormFields } from '../data/post/PostFormFields'
+import { PostFields } from '../data/post/PostFields'
 import AlertContext from '../context/alert/AlertContext'
 
 interface IFormModel {
@@ -20,7 +20,7 @@ interface IFormModel {
   levels: string
   graphics: string
   music: string
-  tags: string[]
+  genres: string[]
 }
 
 const PostForm = () => {
@@ -58,7 +58,7 @@ const PostForm = () => {
     levels: Yup.string().required('To pole jest wymagane'),
     graphics: Yup.string().required('To pole jest wymagane'),
     music: Yup.string().required('To pole jest wymagane'),
-    tags: Yup.array().of(Yup.string()),
+    genres: Yup.array().of(Yup.string()),
   })
 
   return (
@@ -72,7 +72,7 @@ const PostForm = () => {
         levels: '',
         graphics: '',
         music: '',
-        tags: [],
+        genres: [],
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(createPost(values))
@@ -121,7 +121,7 @@ const PostForm = () => {
                   ></button>
                 </div>
               </div>
-              {PostFormFields.map((field) => (
+              {PostFields.map((field) => (
                 <React.Fragment key={field.name}>
                   <FormField
                     component={field.component}

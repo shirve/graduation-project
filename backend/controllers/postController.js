@@ -29,7 +29,7 @@ const createPost = asyncHandler(async (req, res) => {
     levels: req.body.levels,
     graphics: req.body.graphics,
     music: req.body.music,
-    tags: req.body.tags,
+    genres: req.body.genres,
     approved: false,
     user: {
       _id: req.user.id,

@@ -23,7 +23,7 @@ router.post(
     body('levels').notEmpty().isString(),
     body('graphics').notEmpty().isString(),
     body('music').notEmpty().isString(),
-    body('tags').isArray(),
+    body('genres').isArray(),
   ]),
   createPost
 )
@@ -40,7 +40,7 @@ router.put(
     body('levels').notEmpty().isString(),
     body('graphics').notEmpty().isString(),
     body('music').notEmpty().isString(),
-    body('tags').isArray(),
+    body('genres').isArray(),
     body('approved').notEmpty().isBoolean(),
   ]),
   updatePost
