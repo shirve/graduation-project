@@ -45,6 +45,10 @@ function Posts() {
     setCurrentPage(page)
   }
 
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size)
+  }
+
   const getPagedData = () => {
     let filtered
     filtered = posts
@@ -79,7 +83,7 @@ function Posts() {
         realizuj najciekawsze pomysły. Aby dodać nową propozycję gry
         <Link to='/register'> Zrejestruj się</Link> lub
         <Link to='/login'> Zaloguj</Link> jeśli posiadasz już konto a następnie
-        przejdź do formularza dodawania nowej gry.
+        przejdź do formularza dodawania nowej propozycji gry.
       </p>
       <PostForm />
       <Alert />
@@ -109,6 +113,7 @@ function Posts() {
             pageSize={pageSize}
             currentPage={currentPage}
             onPageChange={handlePageChange}
+            onPageSizeChange={handlePageSizeChange}
           />
         </>
       ) : (

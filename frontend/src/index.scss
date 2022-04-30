@@ -10,6 +10,7 @@ $color-danger: #dc4c3b;
 $color-danger-hover: #dc4c3b;
 $color-success: #3e9a6f;
 $color-success-hover: #3e9a6f;
+$color-minimal: #cccccc;
 
 body {
   margin: 0;
@@ -49,6 +50,7 @@ a {
     position: relative;
     color: $text-color-primary;
     background-color: $color-primary;
+    border-bottom: 1px $color-minimal solid;
   }
 }
 
@@ -75,7 +77,6 @@ a {
     color: $text-color-primary;
     background-color: $color-primary;
     border-style: none;
-    border-radius: 2rem;
   }
 }
 
@@ -83,8 +84,9 @@ a {
   margin-top: 1rem;
   color: $text-color-secondary;
   background-color: $background-color-secondary;
+  border: 1px $color-minimal solid;
   border-radius: 2rem;
-  padding: 1.5rem;
+  padding: 1rem;
   white-space: pre-line;
 }
 
@@ -100,12 +102,12 @@ a {
     position: absolute;
     width: 800px;
     inset: 2rem;
-    border: 1px $text-color-secondary solid;
+    border: 1px $color-minimal solid;
     background: $background-color-secondary;
     overflow: auto;
     border-radius: 1rem;
     outline: none;
-    padding: 1.5rem;
+    padding: 1rem;
   } 
 }
 
@@ -207,34 +209,68 @@ a {
 }
 
 .pagination {
+  display: flex;
+  justify-content: space-between;
   margin-top: 1rem;
-}
-
-.page {
-  &-item {
-    :hover {
-      color: $text-color-primary;
-      background-color: $color-primary;
-      border: 1px $color-primary solid;
-    }
+  ul {
+    padding: 0;
   }
-  &-item.active {
-    .page-link {
-        background-color: $color-primary;
-        border: 1px $color-primary solid;
+  &-pages {
+    display: flex;
+    justify-content: center;
+    .page {
+      &-item {
+        cursor: pointer;
+        :hover {
+          color: $text-color-primary;
+          background-color: $color-primary;
+          border: 1px $color-primary solid;
+        }
+      }
+      &-item.active {
+        .page-link {
+            background-color: $color-primary;
+            border: 1px $color-primary solid;
+          }
+        }
+        &-link {
+          color: $text-color-secondary;
+          background-color: $background-color-secondary;
+          border: 1px $color-minimal solid;
       }
     }
-    &-link {
-      color: $text-color-secondary;
-      background-color: $background-color-secondary;
-      border: 1px $color-primary solid;
-      
+  }
+  &-sizes {
+    display: flex;
+    justify-content: center;
+    .page-item {
+      :hover {
+        color: $text-color-secondary;
+      }
+      .page-link {
+        color: $text-color-secondary;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        :focus {
+          border: none;
+        }
+      }
+    }
+    .page-item:nth-child(2) .page-link {
+      border-left: 1px $color-minimal solid;
+      border-right: 1px $color-minimal solid;
+    }
   }
 }
 
-.list-group-item {
-  padding: 0 0.5rem 0 0;
-  border: none;
+.list-group {
+  display: flex;
+  flex-wrap: wrap;
+  &-item {
+    padding: 0 0.5rem 0 0;
+    border: none;
+  }
 }
 
 .notfound {
