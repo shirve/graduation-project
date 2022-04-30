@@ -14,21 +14,35 @@ router.get('/', getPosts)
 router.post(
   '/create',
   protect,
-  // validate([
-  //   body('title').notEmpty().isString(),
-  //   body('description').notEmpty().isString(),
-  // ]),
+  validate([
+    body('title').notEmpty().isString(),
+    body('story').notEmpty().isString(),
+    body('gameplay').notEmpty().isString(),
+    body('mechanics').notEmpty().isString(),
+    body('characters').notEmpty().isString(),
+    body('levels').notEmpty().isString(),
+    body('graphics').notEmpty().isString(),
+    body('music').notEmpty().isString(),
+    body('tags').isArray(),
+  ]),
   createPost
 )
 router.delete('/delete/:id', protect, deletePost)
 router.put(
   '/update/:id',
   protect,
-  // validate([
-  //   body('title').notEmpty().isString(),
-  //   body('description').notEmpty().isString(),
-  //   body('approved').notEmpty().isBoolean(),
-  // ]),
+  validate([
+    body('title').notEmpty().isString(),
+    body('story').notEmpty().isString(),
+    body('gameplay').notEmpty().isString(),
+    body('mechanics').notEmpty().isString(),
+    body('characters').notEmpty().isString(),
+    body('levels').notEmpty().isString(),
+    body('graphics').notEmpty().isString(),
+    body('music').notEmpty().isString(),
+    body('tags').isArray(),
+    body('approved').notEmpty().isBoolean(),
+  ]),
   updatePost
 )
 
