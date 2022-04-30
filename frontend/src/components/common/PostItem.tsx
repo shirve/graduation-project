@@ -69,13 +69,13 @@ const PostItem = ({ post }: Props): ReactElement => {
         {PostFormFields.map((field) => (
           <React.Fragment key={field.name}>
             {field.name === 'title' ? (
-              <h2 className='fw-bold'>
+              <h3 className='fw-bold'>
                 {post[field.name as keyof typeof post]}
-              </h2>
+              </h3>
             ) : field.name === 'tags' && post.tags ? (
               <ul className='list-group list-group-horizontal'>
                 {post.tags.map((tag) => (
-                  <Link to={`/posts/tag/${tag}`} className='tag' key={tag}>
+                  <Link to={`/posts?tag=${tag}`} className='tag' key={tag}>
                     <li className='list-group-item'>#{tag}</li>
                   </Link>
                 ))}

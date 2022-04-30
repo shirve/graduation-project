@@ -42,15 +42,11 @@ const PostForm = () => {
   }, [alert])
 
   const showPostForm = () => {
-    if (!user) {
-      return setAlert('error', 'Zaloguj się aby dodać nową propozycję gry.', 3)
-    } else {
-      if (showForm) {
-        formikRef.current?.resetForm()
-        return setShowForm(false)
-      }
-      return setShowForm(true)
+    if (showForm) {
+      formikRef.current?.resetForm()
+      return setShowForm(false)
     }
+    return setShowForm(true)
   }
 
   const PostFormSchema = Yup.object().shape({
@@ -96,19 +92,16 @@ const PostForm = () => {
         handleSubmit,
       }) => (
         <React.Fragment>
-          <p className='m-0'>
-            Przeglądaj pomysły innych studentów z podobnymi zainteresowaniami,
-            nawiązuj nowe kontakty i łącz się w grupy projektowe. Opisz swój
-            pomysł na projekt w formularzu klikając poniższy przycisk.
-          </p>
-          <div className='d-flex'>
-            <button
-              onClick={showPostForm}
-              className='post-form-button btn flex-fill'
-            >
-              NOWA PROPOZYCJA GRY
-            </button>
-          </div>
+          {user && (
+            <div className='d-flex'>
+              <button
+                onClick={showPostForm}
+                className='post-form-button btn flex-fill'
+              >
+                NOWA PROPOZYCJA GRY
+              </button>
+            </div>
+          )}
           <Modal
             appElement={document.getElementById('root') || undefined}
             isOpen={showForm}
