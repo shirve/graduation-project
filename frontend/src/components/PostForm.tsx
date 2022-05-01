@@ -93,14 +93,9 @@ const PostForm = () => {
       }) => (
         <React.Fragment>
           {user && (
-            <div className='d-flex'>
-              <button
-                onClick={showPostForm}
-                className='post-form-button btn flex-fill'
-              >
-                NOWA PROPOZYCJA GRY
-              </button>
-            </div>
+            <button className='post-form-button' onClick={showPostForm}>
+              NOWA PROPOZYCJA GRY
+            </button>
           )}
           <Modal
             appElement={document.getElementById('root') || undefined}
@@ -109,18 +104,14 @@ const PostForm = () => {
             className='modal-content'
           >
             <form className='post-form' onSubmit={handleSubmit}>
-              <div className='row'>
-                <div className='page-header-text-secondary col-10'>
-                  Nowa propozycja gry
-                </div>
-                <div className='col-2 d-flex justify-content-end align-items-center'>
-                  <button
-                    type='button'
-                    className='btn-close'
-                    onClick={showPostForm}
-                  ></button>
-                </div>
-              </div>
+              <header className='post-form-header'>
+                <h3>Nowa propozycja gry</h3>
+                <button
+                  type='button'
+                  className='btn-close'
+                  onClick={showPostForm}
+                ></button>
+              </header>
               {PostFields.map((field) => (
                 <React.Fragment key={field.name}>
                   <FormField
@@ -131,27 +122,30 @@ const PostForm = () => {
                     label={field.label}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className={`form-control input-field ${
+                    className={
                       errors[field.name as keyof typeof values] &&
-                      touched[field.name as keyof typeof values] &&
-                      'is-invalid'
-                    }`}
+                      touched[field.name as keyof typeof values]
+                        ? 'is-invalid'
+                        : ''
+                    }
                     options={field.options}
                     multiple={field.multiple}
                   />
                   {errors[field.name as keyof typeof values] &&
                     touched[field.name as keyof typeof values] && (
-                      <div className='invalid-feedback d-flex justify-content-end'>
+                      <p className='post-form-error'>
                         {errors[field.name as keyof typeof values]}
-                      </div>
+                      </p>
                     )}
                 </React.Fragment>
               ))}
-              <div className='d-flex justify-content-end gap-2 mt-3'>
-                <button type='submit' disabled={isSubmitting} className='btn'>
-                  WYŚLIJ
-                </button>
-              </div>
+              <button
+                type='submit'
+                disabled={isSubmitting}
+                className='post-form-button'
+              >
+                DODAJ NOWĄ PROPOZYCJĘ GRY
+              </button>
             </form>
           </Modal>
         </React.Fragment>

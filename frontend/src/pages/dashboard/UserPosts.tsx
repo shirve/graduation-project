@@ -13,7 +13,7 @@ const DashboardUserPosts = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { setHeaderText } = useContext(HeaderContext)
+  const { setHeader } = useContext(HeaderContext)
   const { setAlert } = useContext(AlertContext)
 
   const { user } = useSelector((state: RootState) => state.auth)
@@ -26,9 +26,9 @@ const DashboardUserPosts = () => {
   ).length
 
   useEffect(() => {
-    setHeaderText('TWOJE PROPOZYCJE GIER')
+    setHeader('TWOJE PROPOZYCJE GIER')
     return () => {
-      setHeaderText('')
+      setHeader('')
     }
   }, [])
 

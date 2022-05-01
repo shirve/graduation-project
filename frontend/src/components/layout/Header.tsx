@@ -2,15 +2,11 @@ import React, { useContext } from 'react'
 import HeaderContext from '../../context/header/HeaderContext'
 
 const Header = () => {
-  const { headerText } = useContext(HeaderContext)
+  const { header } = useContext(HeaderContext)
 
   return (
     <React.Fragment>
-      {headerText !== '' && (
-        <div className='page-header-title page-header-text-primary'>
-          {headerText}
-        </div>
-      )}
+      {header !== '' && <header className='page-header'>{header}</header>}
     </React.Fragment>
   )
 }

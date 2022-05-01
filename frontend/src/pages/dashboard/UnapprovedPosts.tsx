@@ -13,7 +13,7 @@ const DashboardUnapprovedPosts = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { setHeaderText } = useContext(HeaderContext)
+  const { setHeader } = useContext(HeaderContext)
   const { setAlert } = useContext(AlertContext)
 
   const { user } = useSelector((state: RootState) => state.auth)
@@ -26,9 +26,9 @@ const DashboardUnapprovedPosts = () => {
   ).length
 
   useEffect(() => {
-    setHeaderText('NIEZATWIERDZONE POSTY')
+    setHeader('NIEZATWIERDZONE POSTY')
     return () => {
-      setHeaderText('')
+      setHeader('')
     }
   }, [])
 

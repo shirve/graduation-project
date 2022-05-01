@@ -20,18 +20,19 @@ function Posts() {
 
   const dispatch = useAppDispatch()
 
-  const { setHeaderText } = useContext(HeaderContext)
+  const { setHeader } = useContext(HeaderContext)
 
   const { posts, loading } = useSelector((state: RootState) => state.posts)
 
   useEffect(() => {
-    setHeaderText('PROPOZYCJE GIER')
-
-    dispatch(getPosts())
-
+    setHeader('PROPOZYCJE GIER')
     return () => {
-      setHeaderText('')
+      setHeader('')
     }
+  })
+
+  useEffect(() => {
+    dispatch(getPosts())
   }, [])
 
   const handleGenreChange = (genre: string) => {
@@ -76,8 +77,8 @@ function Posts() {
   if (loading) return <Spinner />
 
   return (
-    <div className='container col-xl-8 col-lg-10 mt-3'>
-      <p className='m-0'>
+    <div className='posts-page col-xl-8 col-lg-10'>
+      <p>
         Przeglądaj propozycje gier innych studentów z podobnymi
         zainteresowaniami, nawiązuj nowe kontakty, łącz się w grupy projektowe i
         realizuj najciekawsze pomysły. Aby dodać nową propozycję gry
@@ -87,17 +88,15 @@ function Posts() {
       </p>
       <PostForm />
       <Alert />
-      <div className='row mt-3'>
-        <h3 className='col-md-6 col-sm-12'>Najnowsze posty</h3>
-        <div className='col-md-6 col-sm-12 d-flex justify-content-end'>
-          <Select
-            className='w-100'
-            placeholder='Filtruj według gatunku...'
-            value={currentGenre}
-            options={PostGenres}
-            onChange={(option) => setCurrentGenre(option)}
-          />
-        </div>
+      <div className='posts-page-header'>
+        <h3>Najnowsze posty</h3>
+        <Select
+          className='posts-page-header-filter'
+          placeholder='Filtruj według gatunku...'
+          value={currentGenre}
+          options={PostGenres}
+          onChange={(option) => setCurrentGenre(option)}
+        />
       </div>
       {postsFiltered.length > 0 ? (
         <>

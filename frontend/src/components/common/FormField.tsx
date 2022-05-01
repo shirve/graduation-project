@@ -10,7 +10,7 @@ interface Props {
   name: string
   value: string | string[]
   label?: string
-  className: string
+  className?: string
   options?: Options<Option>
   multiple?: boolean
   onChange: (e: ChangeEvent) => void
@@ -30,13 +30,15 @@ const FormField = ({
 }: Props): ReactElement => {
   return (
     <>
-      <label htmlFor={name}>{label}</label>
+      <label className='input-label' htmlFor={name}>
+        {label}
+      </label>
       <Field
         component={component === 'select' ? SelectField : component}
         type={type}
         name={name}
         value={value}
-        className={className}
+        className={`form-control input-field ${className}`}
         onChange={onChange}
         options={options}
         multiple={multiple}

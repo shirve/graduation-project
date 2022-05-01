@@ -18,16 +18,16 @@ function Register() {
   const dispatch = useAppDispatch()
 
   const { setAlert } = useContext(AlertContext)
-  const { setHeaderText } = useContext(HeaderContext)
+  const { setHeader } = useContext(HeaderContext)
 
   const { user, success, loading, alert } = useSelector(
     (state: RootState) => state.auth
   )
 
   useEffect(() => {
-    setHeaderText('ZAREJESTRUJ SIĘ')
+    setHeader('ZAREJESTRUJ SIĘ')
     return () => {
-      setHeaderText('')
+      setHeader('')
     }
   }, [])
 
@@ -94,15 +94,18 @@ function Register() {
                   label={field.label}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={`form-control input-field ${
+                  className={
                     errors[field.name as keyof typeof values] &&
-                    touched[field.name as keyof typeof values] &&
-                    'is-invalid'
-                  }`}
+                    touched[field.name as keyof typeof values]
+                      ? 'is-invalid'
+                      : ''
+                  }
                 />
                 {errors[field.name as keyof typeof values] &&
                   touched[field.name as keyof typeof values] && (
-                    <p className='auth-form-error'>{errors.email}</p>
+                    <p className='auth-form-error'>
+                      {errors[field.name as keyof typeof values]}
+                    </p>
                   )}
               </React.Fragment>
             ))}

@@ -1,17 +1,17 @@
 import { createContext, Dispatch, SetStateAction, useState } from 'react'
 
 interface IHeaderContext {
-  headerText: string
-  setHeaderText: Dispatch<SetStateAction<string>>
+  header: string
+  setHeader: Dispatch<SetStateAction<string>>
 }
 
 const HeaderContext = createContext({} as IHeaderContext)
 
 export const HeaderProvider = ({ children }: { children: React.ReactNode }) => {
-  const [headerText, setHeaderText] = useState<string>('')
+  const [header, setHeader] = useState<string>('')
 
   return (
-    <HeaderContext.Provider value={{ headerText, setHeaderText }}>
+    <HeaderContext.Provider value={{ header, setHeader }}>
       {children}
     </HeaderContext.Provider>
   )

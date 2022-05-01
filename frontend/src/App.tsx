@@ -32,7 +32,7 @@ function App() {
                 <Route path='posts' element={<UserPosts />} />
                 <Route path='unapproved-posts' element={<UnapprovedPosts />} />
               </Route>
-              <Route path='/user/:id' element={<SearchUser />} />
+              <Route path='/user/:userId' element={<SearchUser />} />
               <Route path='/posts' element={<Posts />} />
               <Route path='/register' element={<Register />} />
               <Route path='/login' element={<Login />} />

@@ -7,17 +7,16 @@ import Spinner from '../components/common/Spinner'
 const SearchUser = () => {
   const [user, setUser] = useState<UserInfo>()
   const [loading, setLoading] = useState(true)
-  const { id } = useParams()
+  const { userId } = useParams()
 
   useEffect(() => {
-    const getUser = async (userId: string) => {
-      const res = await axios.get(`/api/users/user/${userId}`)
+    const getUser = async (id: string) => {
+      const res = await axios.get(`/api/users/user/${id}`)
       setUser(res.data)
       setLoading(false)
     }
-
-    if (id !== undefined) {
-      getUser(id)
+    if (userId !== undefined) {
+      getUser(userId)
     }
   }, [])
 

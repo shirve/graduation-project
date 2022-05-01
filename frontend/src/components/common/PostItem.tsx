@@ -49,74 +49,59 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
   }
 
   return (
-    <>
-      <div className='content-wrapper'>
-        <div className='row'>
-          <div className='col-6'>
-            <p className='mb-0'>
-              <Link to={`/user/${post.user._id}`}>
-                <small className='text-muted'>{post.user.name}</small>
-              </Link>
-            </p>
-          </div>
-          <div className='col-6'>
-            <p className='mb-0 text-end'>
-              <small className='text-muted'>
-                {new Date(post.createdAt).toLocaleString('pl-PL')}
-              </small>
-            </p>
-          </div>
-        </div>
-        {PostFields.map((field) => (
-          <React.Fragment key={field.name}>
-            {field.name === 'title' ? (
-              <h3 className='fw-bold'>
-                {post[field.name as keyof typeof post]}
-              </h3>
-            ) : field.name === 'genres' && post.genres ? (
-              <ul className='list-group list-group-horizontal'>
-                {post.genres.map((genre) => (
-                  <li
-                    key={genre}
-                    style={{ cursor: 'pointer' }}
-                    className='list-group-item'
-                    onClick={() => {
-                      if (onGenreChange) onGenreChange(genre)
-                    }}
-                  >
-                    #{genre}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <>
-                <h4 className='mb-0'>{field.label}</h4>
-                <p>{post[field.name as keyof typeof post]}</p>
-              </>
-            )}
-          </React.Fragment>
-        ))}
-        <div className='text-end'>
-          {post.approved && <button className='btn'>DOŁĄCZ</button>}
-          {(userCanManage || userIsAdmin) && (
-            <button
-              onClick={() => deletePostHandler(post._id)}
-              className='btn btn-delete ms-2'
-            >
-              USUŃ
-            </button>
-          )}
-          {!post.approved && userIsAdmin && (
-            <button
-              onClick={() => updatePostHandler(post)}
-              className='btn btn-approve ms-2'
-            >
-              ZATWIERDŹ
-            </button>
-          )}
-        </div>
+    <div className='post-item'>
+      <div className='post-item-info'>
+        <small>
+          <Link to={`/user/${post.user._id}`}>{post.user.name}</Link>
+        </small>
+        <small>{new Date(post.createdAt).toLocaleString('pl-PL')}</small>
       </div>
-    </>
+      <div className='post-item-tags'>
+        {post.genres &&
+          post.genres.map((genre) => (
+            <small
+              key={genre}
+              onClick={() => {
+                if (onGenreChange) onGenreChange(genre)
+              }}
+            >
+              #{genre}
+            </small>
+          ))}
+      </div>
+      <div className='post-item-content'>
+        <h3>{post.title}</h3>
+        {PostFields.map(
+          (field) =>
+            field.name !== 'title' &&
+            field.name !== 'genres' && (
+              <React.Fragment key={field.name}>
+                <h4>{field.label}</h4>
+                <p>{post[field.name as keyof typeof post]}</p>
+              </React.Fragment>
+            )
+        )}
+      </div>
+      <div className='post-item-buttons'>
+        {post.approved && <button className='btn'>DOŁĄCZ</button>}
+        {(userCanManage || userIsAdmin) && (
+          <button
+            onClick={() => deletePostHandler(post._id)}
+            className='btn btn-delete'
+          >
+            USUŃ
+          </button>
+        )}
+        {!post.approved && userIsAdmin && (
+          <button
+            onClick={() => updatePostHandler(post)}
+            className='btn btn-approve'
+          >
+            ZATWIERDŹ
+          </button>
+        )}
+      </div>
+    </div>
   )
 }
 
