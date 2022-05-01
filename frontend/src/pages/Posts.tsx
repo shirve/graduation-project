@@ -88,7 +88,7 @@ function Posts() {
       <PostForm />
       <Alert />
       <div className='row mt-3'>
-        <h3 className='col-md-6 col-sm-12 fw-bold'>Najnowsze posty</h3>
+        <h3 className='col-md-6 col-sm-12'>Najnowsze posty</h3>
         <div className='col-md-6 col-sm-12 d-flex justify-content-end'>
           <Select
             className='w-100'

@@ -64,7 +64,7 @@ const loginUser = asyncHandler(async (req, res) => {
   } else {
     res.status(400).json({
       type: 'error',
-      message: 'Podany adres email lub hasło jest niepoprawne!',
+      message: 'Nieprawidłowy adres email lub hasło!',
     })
   }
 })

@@ -29,7 +29,7 @@ const FormField = ({
   onChange,
 }: Props): ReactElement => {
   return (
-    <div className='mt-3'>
+    <>
       <label htmlFor={name}>{label}</label>
       <Field
         component={component === 'select' ? SelectField : component}
@@ -41,7 +41,7 @@ const FormField = ({
         options={options}
         multiple={multiple}
       />
-    </div>
+    </>
   )
 }
 

@@ -11,16 +11,25 @@ import { RegisterFormFields } from '../data/auth/RegisterFormFields'
 import Spinner from '../components/common/Spinner'
 import Alert from '../components/common/Alert'
 import AlertContext from '../context/alert/AlertContext'
+import HeaderContext from '../context/header/HeaderContext'
 
 function Register() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
   const { setAlert } = useContext(AlertContext)
+  const { setHeaderText } = useContext(HeaderContext)
 
   const { user, success, loading, alert } = useSelector(
     (state: RootState) => state.auth
   )
+
+  useEffect(() => {
+    setHeaderText('ZAREJESTRUJ SIĘ')
+    return () => {
+      setHeaderText('')
+    }
+  }, [])
 
   useEffect(() => {
     if (alert) {
@@ -73,9 +82,8 @@ function Register() {
         handleBlur,
         handleSubmit,
       }) => (
-        <div className='container mt-3 col-xl-4 col-lg-6 col-md-8'>
-          <div className='header-title'>Zarejestruj się</div>
-          <form onSubmit={handleSubmit}>
+        <div className='auth'>
+          <form className='auth-form' onSubmit={handleSubmit}>
             {RegisterFormFields.map((field) => (
               <React.Fragment key={field.name}>
                 <FormField
@@ -94,28 +102,22 @@ function Register() {
                 />
                 {errors[field.name as keyof typeof values] &&
                   touched[field.name as keyof typeof values] && (
-                    <div className='invalid-feedback d-flex justify-content-end'>
-                      {errors.email}
-                    </div>
+                    <p className='auth-form-error'>{errors.email}</p>
                   )}
               </React.Fragment>
             ))}
             <Alert />
-            <div className='text-center pt-3'>
-              Rejestrując się, zgadzasz się na{' '}
-              <Link to='/tos'>Warunki korzystania</Link> {' oraz '}
-              <Link to='/privacy'>Politykę prywatności</Link>
-            </div>
-            <div className='d-grid gap-2'>
-              <button
-                type='submit'
-                disabled={isSubmitting}
-                className='btn btn-lg mt-3'
-              >
-                Zarejestruj
-              </button>
-            </div>
+            <button
+              type='submit'
+              disabled={isSubmitting}
+              className='auth-form-button'
+            >
+              Zarejestruj
+            </button>
           </form>
+          <p>
+            Posiadasz już konto? <Link to='/login'>Zaloguj się</Link>
+          </p>
         </div>
       )}
     </Formik>
