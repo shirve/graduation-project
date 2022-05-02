@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { getPosts } from '../../features/posts/postSlice'
 import PostItem from '../../components/common/PostItem'
@@ -45,22 +45,26 @@ const DashboardUserPosts = () => {
   if (loading) return <Spinner />
 
   return (
-    <>
-      {filteredPostsLength > 0 && (
-        <>
-          {posts
-            .slice(0)
-            .reverse()
-            .filter((post) => post.user._id === user?._id)
-            .map((post, index) => (
-              <React.Fragment key={index}>
-                <PostItem post={post} />
-                <Alert />
-              </React.Fragment>
-            ))}
-        </>
+    <React.Fragment>
+      {filteredPostsLength > 0 ? (
+        posts
+          .slice(0)
+          .reverse()
+          .filter((post) => post.user._id === user?._id)
+          .map((post, index) => (
+            <React.Fragment key={index}>
+              <PostItem post={post} />
+              <Alert />
+            </React.Fragment>
+          ))
+      ) : (
+        <p className='text-center'>
+          Nie masz jeszcze żadnych propozycji gier.
+          <br />
+          Aby dodać nową propozycję gry przejdź <Link to='/posts'>tutaj</Link>.
+        </p>
       )}
-    </>
+    </React.Fragment>
   )
 }
 

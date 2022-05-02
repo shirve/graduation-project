@@ -25,7 +25,7 @@ function App() {
         <AlertProvider>
           <Navbar />
           <Header />
-          <main className='container'>
+          <main className='page-wrapper col-xl-8 col-lg-8 col-md-10 col-sm-10 col-xs-12'>
             <Routes>
               <Route path='/dashboard/*' element={<Dashboard />}>
                 <Route path='profile' element={<UserProfile />} />

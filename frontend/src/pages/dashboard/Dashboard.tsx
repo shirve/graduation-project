@@ -18,14 +18,12 @@ const Dashboard = () => {
   }, [])
 
   return (
-    <div className='dashboard-page col-xl-8 col-lg-10'>
-      <Routes>
-        <Route path='/' element={<Navigate to='/dashboard/account' />} />
-        <Route path='profile' element={<UserProfile />} />
-        <Route path='posts' element={<UserPosts />} />
-        <Route path='unapproved-posts' element={<UnapprovedPosts />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path='/' element={<Navigate to='/dashboard/account' />} />
+      <Route path='profile' element={<UserProfile />} />
+      <Route path='posts' element={<UserPosts />} />
+      <Route path='unapproved-posts' element={<UnapprovedPosts />} />
+    </Routes>
   )
 }
 

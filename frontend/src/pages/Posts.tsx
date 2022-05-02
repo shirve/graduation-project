@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import PostForm from '../components/PostForm'
@@ -77,22 +77,22 @@ function Posts() {
   if (loading) return <Spinner />
 
   return (
-    <div className='posts-page col-xl-8 col-lg-10'>
-      <p>
+    <React.Fragment>
+      <div className='posts-page-description'>
         Przeglądaj propozycje gier innych studentów z podobnymi
         zainteresowaniami, nawiązuj nowe kontakty, łącz się w grupy projektowe i
         realizuj najciekawsze pomysły. Aby dodać nową propozycję gry
         <Link to='/register'> Zrejestruj się</Link> lub
         <Link to='/login'> Zaloguj</Link> jeśli posiadasz już konto a następnie
-        przejdź do formularza dodawania nowej propozycji gry.
-      </p>
+        przejdź do formularza dodawania nowej propozycji gry poniżej.
+      </div>
       <PostForm />
       <Alert />
       <div className='posts-page-header'>
         <h3>Najnowsze posty</h3>
         <Select
-          className='posts-page-header-filter'
-          placeholder='Filtruj według gatunku...'
+          className='posts-page-filter'
+          placeholder='Filtruj według gatunku'
           value={currentGenre}
           options={PostGenres}
           onChange={(option) => setCurrentGenre(option)}
@@ -118,7 +118,7 @@ function Posts() {
       ) : (
         <p>Nie znaleziono postów</p>
       )}
-    </div>
+    </React.Fragment>
   )
 }
 

@@ -8,6 +8,7 @@ import HeaderContext from '../../context/header/HeaderContext'
 import AlertContext from '../../context/alert/AlertContext'
 import Alert from '../../components/common/Alert'
 import Spinner from '../../components/common/Spinner'
+import { FaInfoCircle } from 'react-icons/fa'
 
 const DashboardUnapprovedPosts = () => {
   const navigate = useNavigate()
@@ -45,22 +46,22 @@ const DashboardUnapprovedPosts = () => {
   if (loading) return <Spinner />
 
   return (
-    <>
-      {filteredPostsLength > 0 && (
-        <>
-          {posts
-            .slice(0)
-            .reverse()
-            .filter((post) => post.approved === false)
-            .map((post, index) => (
-              <React.Fragment key={index}>
-                <PostItem post={post} />
-                <Alert />
-              </React.Fragment>
-            ))}
-        </>
+    <React.Fragment>
+      {filteredPostsLength > 0 ? (
+        posts
+          .slice(0)
+          .reverse()
+          .filter((post) => post.approved === false)
+          .map((post, index) => (
+            <React.Fragment key={index}>
+              <PostItem post={post} />
+              <Alert />
+            </React.Fragment>
+          ))
+      ) : (
+        <p className='text-center'>Brak nowych niezatwierdzonych postów</p>
       )}
-    </>
+    </React.Fragment>
   )
 }
 

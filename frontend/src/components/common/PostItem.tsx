@@ -9,7 +9,7 @@ import {
 import { Post } from '../../models/Post'
 import { ObjectId } from 'mongoose'
 import { Link } from 'react-router-dom'
-import { PostFields } from '../../data/post/PostFields'
+import Modal from 'react-modal'
 
 interface Props {
   post: Post
@@ -19,6 +19,7 @@ interface Props {
 const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
   const [userIsAdmin, setUserIsAdmin] = useState<boolean>(false)
   const [userCanManage, setUserCanManage] = useState<boolean>()
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   const { user } = useSelector((state: RootState) => state.auth)
 
@@ -49,59 +50,75 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
   }
 
   return (
-    <div className='post-item'>
-      <div className='post-item-info'>
-        <small>
-          <Link to={`/user/${post.user._id}`}>{post.user.name}</Link>
-        </small>
-        <small>{new Date(post.createdAt).toLocaleString('pl-PL')}</small>
+    <React.Fragment>
+      <div className='post-wrapper'>
+        <div className='post-info'>
+          <small>
+            <Link to={`/user/${post.user._id}`}>{post.user.name}</Link>
+          </small>
+          <small>{new Date(post.createdAt).toLocaleString('pl-PL')}</small>
+        </div>
+        <div className='post-tags'>
+          {post.genres &&
+            post.genres.map((genre) => (
+              <small
+                key={genre}
+                onClick={() => {
+                  if (onGenreChange) onGenreChange(genre)
+                }}
+              >
+                #{genre}
+              </small>
+            ))}
+        </div>
+        <div className='post-content'>
+          <h3>{post.title}</h3>
+          <h4>Fabuła</h4>
+          <p>{post.story}</p>
+          <h4>Rozgrywka</h4>
+          <p>{post.gameplay}</p>
+          <h4>Mechanika</h4>
+          <p>{post.mechanics}</p>
+          <h4>Bohaterowie</h4>
+          <p>{post.characters}</p>
+          <h4>Poziomy</h4>
+          <p>{post.levels}</p>
+          <h4>Grafika</h4>
+          <p>{post.graphics}</p>
+          <h4>Muzyka</h4>
+          <p>{post.music}</p>
+        </div>
+        <div className='post-manage'>
+          {post.approved && <button className='btn'>DOŁĄCZ</button>}
+          {(userCanManage || userIsAdmin) && (
+            <button onClick={() => setShowDeleteModal(true)} className='btn'>
+              USUŃ
+            </button>
+          )}
+          {!post.approved && userIsAdmin && (
+            <button onClick={() => updatePostHandler(post)} className='btn'>
+              ZATWIERDŹ
+            </button>
+          )}
+        </div>
       </div>
-      <div className='post-item-tags'>
-        {post.genres &&
-          post.genres.map((genre) => (
-            <small
-              key={genre}
-              onClick={() => {
-                if (onGenreChange) onGenreChange(genre)
-              }}
-            >
-              #{genre}
-            </small>
-          ))}
-      </div>
-      <div className='post-item-content'>
-        <h3>{post.title}</h3>
-        {PostFields.map(
-          (field) =>
-            field.name !== 'title' &&
-            field.name !== 'genres' && (
-              <React.Fragment key={field.name}>
-                <h4>{field.label}</h4>
-                <p>{post[field.name as keyof typeof post]}</p>
-              </React.Fragment>
-            )
-        )}
-      </div>
-      <div className='post-item-buttons'>
-        {post.approved && <button className='btn'>DOŁĄCZ</button>}
-        {(userCanManage || userIsAdmin) && (
-          <button
-            onClick={() => deletePostHandler(post._id)}
-            className='btn btn-delete'
-          >
+      <Modal
+        appElement={document.getElementById('root') || undefined}
+        isOpen={showDeleteModal}
+        overlayClassName='manage-modal-overlay'
+        className='manage-modal-content'
+      >
+        <p>Na pewno chcesz usunąć ten post?</p>
+        <div className='manage-modal-buttons'>
+          <button onClick={() => setShowDeleteModal(false)} className='btn'>
+            ANULUJ
+          </button>
+          <button onClick={() => deletePostHandler(post._id)} className='btn'>
             USUŃ
           </button>
-        )}
-        {!post.approved && userIsAdmin && (
-          <button
-            onClick={() => updatePostHandler(post)}
-            className='btn btn-approve'
-          >
-            ZATWIERDŹ
-          </button>
-        )}
-      </div>
-    </div>
+        </div>
+      </Modal>
+    </React.Fragment>
   )
 }
 
