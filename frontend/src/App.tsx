@@ -17,6 +17,7 @@ import NotFound from './pages/NotFound'
 import Header from './components/layout/Header'
 import { HeaderProvider } from './context/header/HeaderContext'
 import { AlertProvider } from './context/alert/AlertContext'
+import Footer from './components/layout/Footer'
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
               <Route path='*' element={<Navigate to='/not-found' />} />
             </Routes>
           </main>
+          <Footer />
         </AlertProvider>
       </HeaderProvider>
     </Router>
