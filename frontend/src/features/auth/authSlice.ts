@@ -21,36 +21,35 @@ const initialState: IAuthState = {
 }
 
 // Register user
-export const register = createAsyncThunk<
+// POST /api/users/register
+export const registerUser = createAsyncThunk<
   User,
   UserRegister,
   { rejectValue: Alert }
 >('auth/register', async (user: UserRegister, thunkAPI) => {
   try {
-    return await authService.register(user)
+    return await authService.registerUser(user)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
 })
 
 // Login user
-export const login = createAsyncThunk<User, UserLogin, { rejectValue: Alert }>(
-  'auth/login',
-  async (user: UserLogin, thunkAPI) => {
-    try {
-      return await authService.login(user)
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data)
-    }
+// POST /api/users/login
+export const loginUser = createAsyncThunk<
+  User,
+  UserLogin,
+  { rejectValue: Alert }
+>('auth/login', async (user: UserLogin, thunkAPI) => {
+  try {
+    return await authService.loginUser(user)
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data)
   }
-)
-
-// Logout user
-export const logout = createAsyncThunk('auth/logout', async () => {
-  await authService.logout()
 })
 
 // Update user
+// PUT /api/users/:id
 export const updateUser = createAsyncThunk<
   User,
   User,
@@ -64,6 +63,11 @@ export const updateUser = createAsyncThunk<
   }
 })
 
+// Logout user
+export const logoutUser = createAsyncThunk('auth/logout', async () => {
+  await authService.logoutUser()
+})
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -72,37 +76,37 @@ export const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state) => {
+      .addCase(registerUser.pending, (state) => {
         state.loading = true
         state.alert = null
       })
-      .addCase(register.fulfilled, (state, action) => {
+      .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false
         state.success = true
         state.alert = null
         state.user = action.payload
       })
-      .addCase(register.rejected, (state, action) => {
+      .addCase(registerUser.rejected, (state, action) => {
         state.loading = false
         state.alert = action.payload
         state.user = null
       })
-      .addCase(login.pending, (state) => {
+      .addCase(loginUser.pending, (state) => {
         state.loading = true
         state.alert = null
       })
-      .addCase(login.fulfilled, (state, action) => {
+      .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false
         state.success = true
         state.alert = null
         state.user = action.payload
       })
-      .addCase(login.rejected, (state, action) => {
+      .addCase(loginUser.rejected, (state, action) => {
         state.loading = false
         state.alert = action.payload
         state.user = null
       })
-      .addCase(logout.fulfilled, (state) => {
+      .addCase(logoutUser.fulfilled, (state) => {
         state.user = null
       })
   },

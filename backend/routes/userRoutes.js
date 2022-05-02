@@ -4,7 +4,6 @@ const router = express.Router()
 const {
   registerUser,
   loginUser,
-  getMe,
   updateUser,
   getUser,
 } = require('../controllers/userController')
@@ -12,6 +11,8 @@ const { protect } = require('../middleware/authMiddleware')
 const { body } = require('express-validator')
 const { validate } = require('../middleware/validateMiddleware')
 
+// Register user
+// POST /api/users/register
 router.post(
   '/register',
   validate([
@@ -22,6 +23,9 @@ router.post(
   ]),
   registerUser
 )
+
+// Login user
+// POST /api/users/login
 router.post(
   '/login',
   validate([
@@ -30,8 +34,13 @@ router.post(
   ]),
   loginUser
 )
-router.get('/me', protect, getMe)
+
+// Update user
+// PUT /api/users/:id
 router.put('/update/:id', protect, updateUser)
+
+// Get user
+// GET /api/users/user/:id
 router.get('/user/:id', getUser)
 
 module.exports = router

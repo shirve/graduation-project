@@ -1,18 +1,16 @@
 const asyncHandler = require('express-async-handler')
 const Post = require('../models/postModel')
 
-//@desc Get posts
-//@route GET /api/posts
-//@access Private
+// Get posts
+// GET /api/posts
 const getPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find()
 
   res.status(200).json(posts)
 })
 
-//@desc add post
-//@route POST /api/posts/create
-//@access Private
+// Add post
+// POST /api/posts/create
 const createPost = asyncHandler(async (req, res) => {
   if (!req.user) {
     res
@@ -39,38 +37,8 @@ const createPost = asyncHandler(async (req, res) => {
   res.status(200).json(post)
 })
 
-//@desc Update posts
-//@route PUT /api/posts/update/:id
-//@access Private
-const updatePost = asyncHandler(async (req, res) => {
-  const post = await Post.findById(req.params.id)
-
-  if (!post) {
-    res.status(400).json({ type: 'error', message: 'Post nie istnieje!' })
-  }
-
-  if (!req.user) {
-    res
-      .status(401)
-      .json({ type: 'error', message: 'Użytkownik nie zalogowany!' })
-  }
-
-  if (req.user.ROLE_ADMIN === false) {
-    res
-      .status(401)
-      .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
-  }
-
-  const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  })
-
-  res.status(200).json(updatedPost)
-})
-
-//@desc Delete posts
-//@route DELETE /api/posts/delete/:id
-//@access Private
+// Delete post
+// DELETE /api/posts/delete/:id
 const deletePost = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id)
 
@@ -97,9 +65,70 @@ const deletePost = asyncHandler(async (req, res) => {
   res.status(200).json({ id: req.params.id })
 })
 
+// Update post
+// PUT /api/posts/update/:id
+const updatePost = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id)
+
+  if (!post) {
+    res.status(400).json({ type: 'error', message: 'Post nie istnieje!' })
+  }
+
+  if (!req.user) {
+    res
+      .status(401)
+      .json({ type: 'error', message: 'Użytkownik nie zalogowany!' })
+  }
+
+  if (req.user.ROLE_ADMIN === false) {
+    res
+      .status(401)
+      .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
+  }
+
+  const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  })
+
+  res.status(200).json(updatedPost)
+})
+
+// Approve post
+// PATCH /api/posts/approve/:id
+const approvePost = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id)
+
+  if (!post) {
+    res.status(400).json({ type: 'error', message: 'Post nie istnieje!' })
+  }
+
+  if (!req.user) {
+    res
+      .status(401)
+      .json({ type: 'error', message: 'Użytkownik nie zalogowany!' })
+  }
+
+  if (req.user.ROLE_ADMIN === false) {
+    res
+      .status(401)
+      .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
+  }
+
+  const approvedPost = await Post.findByIdAndUpdate(
+    req.params.id,
+    { approved: true },
+    {
+      new: true,
+    }
+  )
+
+  res.status(200).json(approvedPost)
+})
+
 module.exports = {
   getPosts,
   createPost,
   updatePost,
   deletePost,
+  approvePost,
 }

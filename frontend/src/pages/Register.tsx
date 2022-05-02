@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
-import { register } from '../features/auth/authSlice'
+import { registerUser } from '../features/auth/authSlice'
 import FormField from '../components/common/FormField'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -70,7 +70,7 @@ function Register() {
         password: '',
         password2: '',
       }}
-      onSubmit={(values) => dispatch(register(values))}
+      onSubmit={(values) => dispatch(registerUser(values))}
       validationSchema={SignUpSchema}
     >
       {({

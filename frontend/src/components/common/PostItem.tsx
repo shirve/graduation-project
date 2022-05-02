@@ -4,6 +4,7 @@ import { RootState } from '../../app/store'
 import {
   deletePost,
   updatePost,
+  approvePost,
   getPosts,
 } from '../../features/posts/postSlice'
 import { Post } from '../../models/Post'
@@ -19,7 +20,7 @@ interface Props {
 const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
   const [userIsAdmin, setUserIsAdmin] = useState<boolean>(false)
   const [userCanManage, setUserCanManage] = useState<boolean>()
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showModal, setShowModal] = useState(false)
 
   const { user } = useSelector((state: RootState) => state.auth)
 
@@ -33,20 +34,24 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
     return () => {}
   }, [])
 
-  const deletePostHandler = (post: ObjectId) => {
-    async function asyncDeletePostHandler(post: ObjectId) {
-      await dispatch(deletePost(post))
+  const handlePostDelete = (postId: ObjectId) => {
+    async function asyncHandlePostDelete(postId: ObjectId) {
+      await dispatch(deletePost(postId))
       await dispatch(getPosts())
     }
-    asyncDeletePostHandler(post)
+    asyncHandlePostDelete(postId)
   }
 
-  const updatePostHandler = (post: Post) => {
-    async function asyncUpdatePostHandler(post: Post) {
-      await dispatch(updatePost({ ...post, approved: true }))
+  const handlePostApprove = (postId: ObjectId) => {
+    async function asyncHandlePostApprove(postId: ObjectId) {
+      await dispatch(approvePost(postId))
       await dispatch(getPosts())
     }
-    asyncUpdatePostHandler(post)
+    asyncHandlePostApprove(postId)
+  }
+
+  const handleShowModal = () => {
+    setShowModal((prevState) => !prevState)
   }
 
   return (
@@ -91,12 +96,12 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
         <div className='post-manage'>
           {post.approved && <button className='btn'>DOŁĄCZ</button>}
           {(userCanManage || userIsAdmin) && (
-            <button onClick={() => setShowDeleteModal(true)} className='btn'>
+            <button onClick={handleShowModal} className='btn'>
               USUŃ
             </button>
           )}
           {!post.approved && userIsAdmin && (
-            <button onClick={() => updatePostHandler(post)} className='btn'>
+            <button onClick={() => handlePostApprove(post._id)} className='btn'>
               ZATWIERDŹ
             </button>
           )}
@@ -104,16 +109,16 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
       </div>
       <Modal
         appElement={document.getElementById('root') || undefined}
-        isOpen={showDeleteModal}
+        isOpen={showModal}
         overlayClassName='manage-modal-overlay'
         className='manage-modal-content'
       >
         <p>Na pewno chcesz usunąć ten post?</p>
         <div className='manage-modal-buttons'>
-          <button onClick={() => setShowDeleteModal(false)} className='btn'>
+          <button onClick={handleShowModal} className='btn'>
             ANULUJ
           </button>
-          <button onClick={() => deletePostHandler(post._id)} className='btn'>
+          <button onClick={() => handlePostDelete(post._id)} className='btn'>
             USUŃ
           </button>
         </div>

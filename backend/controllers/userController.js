@@ -3,9 +3,8 @@ const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 
-//@desc Register new user
-//@route POST /api/users/register
-//@access Public
+// Register user
+// POST /api/users/register
 const registerUser = asyncHandler(async (req, res) => {
   const { firstName, lastName, email, password } = req.body
 
@@ -44,9 +43,8 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 })
 
-//@desc Authenticate a user
-//@route POST /api/users/login
-//@access Public
+// Login user
+// POST /api/users/login
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body
 
@@ -69,28 +67,8 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 })
 
-//@desc Get user data
-//@route GET /api/users/me
-//@access Private
-const getMe = asyncHandler(async (req, res) => {
-  res.status(200).json(req.user)
-})
-
-//@desc Get user by id
-//@route GET /api/users/user/:id
-//@access Private
-const getUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id)
-  res.status(200).json({
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-  })
-})
-
-//@desc Update user data
-//@route PUT /api/users/:id
-//@access Private
+// Update user
+// PUT /api/users/:id
 const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id)
 
@@ -111,7 +89,18 @@ const updateUser = asyncHandler(async (req, res) => {
   res.status(200).json(updatedUser)
 })
 
-//Generate JWT
+// Get user
+// GET /api/users/user/:id
+const getUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id)
+  res.status(200).json({
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+  })
+})
+
+// Generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '30d',
@@ -121,7 +110,6 @@ const generateToken = (id) => {
 module.exports = {
   registerUser,
   loginUser,
-  getMe,
   updateUser,
   getUser,
 }

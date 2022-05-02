@@ -5,7 +5,8 @@ import { ObjectId } from 'mongoose'
 const API_URL = '/api/users/'
 
 // Register user
-const register = async (userData: UserRegister) => {
+// POST /api/users/register
+const registerUser = async (userData: UserRegister) => {
   const response = await axios.post(API_URL + 'register', userData)
 
   if (response.data) {
@@ -16,7 +17,8 @@ const register = async (userData: UserRegister) => {
 }
 
 // Login user
-const login = async (userData: UserLogin) => {
+// POST /api/users/login
+const loginUser = async (userData: UserLogin) => {
   const response = await axios.post(API_URL + 'login', userData)
 
   if (response.data) {
@@ -26,11 +28,8 @@ const login = async (userData: UserLogin) => {
   return response.data
 }
 
-// Logout user
-const logout = () => {
-  localStorage.removeItem('user')
-}
-
+// Update user
+// PUT /api/users/:id
 const updateUser = async (
   userId: ObjectId,
   updatedData: User,
@@ -51,11 +50,16 @@ const updateUser = async (
   return response.data
 }
 
+// Logout user
+const logoutUser = () => {
+  localStorage.removeItem('user')
+}
+
 const authService = {
-  register,
-  login,
-  logout,
+  registerUser,
+  loginUser,
   updateUser,
+  logoutUser,
 }
 
 export default authService

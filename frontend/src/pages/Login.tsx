@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { login } from '../features/auth/authSlice'
+import { loginUser } from '../features/auth/authSlice'
 import FormField from '../components/common/FormField'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -56,7 +56,7 @@ function Login() {
         email: '',
         password: '',
       }}
-      onSubmit={(values) => dispatch(login(values))}
+      onSubmit={(values) => dispatch(loginUser(values))}
       validationSchema={SignInSchema}
     >
       {({

@@ -19,7 +19,21 @@ const initialState: IPostsState = {
   alert: null,
 }
 
+// Get posts
+// GET /api/posts
+export const getPosts = createAsyncThunk<Post[], void, { rejectValue: Alert }>(
+  'posts/getPosts',
+  async (_, thunkAPI) => {
+    try {
+      return await postService.getPosts()
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data)
+    }
+  }
+)
+
 // Create new post
+// POST /api/posts/create
 export const createPost = createAsyncThunk<
   Post,
   PostCreate,
@@ -33,19 +47,8 @@ export const createPost = createAsyncThunk<
   }
 })
 
-// Get all posts
-export const getPosts = createAsyncThunk<Post[], void, { rejectValue: Alert }>(
-  'posts/getPosts',
-  async (_, thunkAPI) => {
-    try {
-      return await postService.getPosts()
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data)
-    }
-  }
-)
-
 // Delete post
+// DELETE /api/posts/delete/:id
 export const deletePost = createAsyncThunk<
   ObjectId,
   ObjectId,
@@ -60,6 +63,7 @@ export const deletePost = createAsyncThunk<
 })
 
 // Update post
+// PUT /api/posts/update/:id
 export const updatePost = createAsyncThunk<
   Post,
   Post,
@@ -68,6 +72,21 @@ export const updatePost = createAsyncThunk<
   try {
     const token = thunkAPI.getState().auth.user?.token
     return await postService.updatePost(updatedData._id, updatedData, token)
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data)
+  }
+})
+
+// Approve post
+// PATCH /api/posts/approve/:id
+export const approvePost = createAsyncThunk<
+  Post,
+  ObjectId,
+  { state: RootState; rejectValue: Alert }
+>('posts/approve/:id', async (postId: ObjectId, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user?.token
+    return await postService.approvePost(postId, token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -140,6 +159,22 @@ export const postSlice = createSlice({
         state.posts = state.posts.filter((post) => post._id !== action.payload)
       })
       .addCase(deletePost.rejected, (state, action) => {
+        state.loading = false
+        state.alert = action.payload
+      })
+      .addCase(approvePost.pending, (state) => {
+        state.loading = true
+        state.alert = null
+      })
+      .addCase(approvePost.fulfilled, (state, action) => {
+        state.loading = false
+        state.success = true
+        state.alert = null
+        state.posts = state.posts.map((post) =>
+          action.payload._id === post._id ? action.payload : post
+        )
+      })
+      .addCase(approvePost.rejected, (state, action) => {
         state.loading = false
         state.alert = action.payload
       })

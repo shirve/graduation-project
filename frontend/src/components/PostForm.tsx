@@ -24,7 +24,7 @@ interface IFormModel {
 }
 
 const PostForm = () => {
-  const [showForm, setShowForm] = useState<boolean>(false)
+  const [showModal, setShowModal] = useState(false)
   const formikRef = useRef<FormikProps<IFormModel>>(null)
 
   const { user } = useSelector((state: RootState) => state.auth)
@@ -41,12 +41,12 @@ const PostForm = () => {
     return () => {}
   }, [alert])
 
-  const showPostForm = () => {
-    if (showForm) {
+  const handleShowModal = () => {
+    if (showModal) {
       formikRef.current?.resetForm()
-      return setShowForm(false)
+      return setShowModal(false)
     }
-    return setShowForm(true)
+    return setShowModal(true)
   }
 
   const PostFormSchema = Yup.object().shape({
@@ -77,7 +77,7 @@ const PostForm = () => {
       onSubmit={(values, { resetForm }) => {
         dispatch(createPost(values))
         resetForm()
-        setShowForm(false)
+        setShowModal(false)
       }}
       validationSchema={PostFormSchema}
       innerRef={formikRef}
@@ -93,13 +93,13 @@ const PostForm = () => {
       }) => (
         <React.Fragment>
           {user && (
-            <button className='post-form-button' onClick={showPostForm}>
+            <button className='post-form-button' onClick={handleShowModal}>
               NOWA PROPOZYCJA GRY
             </button>
           )}
           <Modal
             appElement={document.getElementById('root') || undefined}
-            isOpen={showForm}
+            isOpen={showModal}
             overlayClassName='modal-overlay'
             className='modal-content'
           >
@@ -109,7 +109,7 @@ const PostForm = () => {
                 <button
                   type='button'
                   className='btn-close'
-                  onClick={showPostForm}
+                  onClick={handleShowModal}
                 ></button>
               </header>
               {PostFields.map((field) => (
