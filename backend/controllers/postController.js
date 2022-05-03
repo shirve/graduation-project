@@ -118,15 +118,39 @@ const approvePost = asyncHandler(async (req, res) => {
       .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
   }
 
-  const approvedPost = await Post.findByIdAndUpdate(
-    req.params.id,
-    { status: { approved: true, rejected: false, message: null } },
-    {
-      new: true,
-    }
-  )
+  const approvedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  })
 
   res.status(200).json(approvedPost)
+})
+
+// Reject post
+// PATCH /api/posts/reject/:id
+const rejectPost = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id)
+
+  if (!post) {
+    res.status(400).json({ type: 'error', message: 'Post nie istnieje!' })
+  }
+
+  if (!req.user) {
+    res
+      .status(401)
+      .json({ type: 'error', message: 'Użytkownik nie zalogowany!' })
+  }
+
+  if (req.user.ROLE_ADMIN === false) {
+    res
+      .status(401)
+      .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
+  }
+
+  const rejectedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  })
+
+  res.status(200).json(rejectedPost)
 })
 
 module.exports = {
@@ -135,4 +159,5 @@ module.exports = {
   updatePost,
   deletePost,
   approvePost,
+  rejectPost,
 }

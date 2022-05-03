@@ -6,6 +6,7 @@ const {
   updatePost,
   deletePost,
   approvePost,
+  rejectPost,
 } = require('../controllers/postController')
 const { protect } = require('../middleware/authMiddleware')
 const { body } = require('express-validator')
@@ -60,5 +61,9 @@ router.put(
 // Approve post
 // PATCH /api/posts/approve/:id
 router.patch('/approve/:id', protect, approvePost)
+
+// Reject post
+// PATCH /api/posts/reject/:id
+router.patch('/reject/:id', protect, rejectPost)
 
 module.exports = router

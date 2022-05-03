@@ -4,6 +4,7 @@ import { ObjectId } from 'mongoose'
 import { Post, PostCreate } from '../../models/Post'
 import { RootState } from '../../app/store'
 import { Alert } from '../../models/Alert'
+import { Message } from 'yup/lib/types'
 
 interface IPostsState {
   posts: Post[]
@@ -92,6 +93,25 @@ export const approvePost = createAsyncThunk<
   }
 })
 
+// Reject post
+// PATCH /api/posts/reject/:id
+export const rejectPost = createAsyncThunk<
+  Post,
+  { postId: ObjectId; message: string },
+  { state: RootState; rejectValue: Alert }
+>('posts/reject/:id', async (postData, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user?.token
+    return await postService.rejectPost(
+      postData.postId,
+      postData.message,
+      token
+    )
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data)
+  }
+})
+
 export const postSlice = createSlice({
   name: 'post',
   initialState,
@@ -175,6 +195,22 @@ export const postSlice = createSlice({
         )
       })
       .addCase(approvePost.rejected, (state, action) => {
+        state.loading = false
+        state.alert = action.payload
+      })
+      .addCase(rejectPost.pending, (state) => {
+        state.loading = true
+        state.alert = null
+      })
+      .addCase(rejectPost.fulfilled, (state, action) => {
+        state.loading = false
+        state.success = true
+        state.alert = null
+        state.posts = state.posts.map((post) =>
+          action.payload._id === post._id ? action.payload : post
+        )
+      })
+      .addCase(rejectPost.rejected, (state, action) => {
         state.loading = false
         state.alert = action.payload
       })

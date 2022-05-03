@@ -79,12 +79,35 @@ const approvePost = async (postId: ObjectId, token: string | undefined) => {
   return response.data
 }
 
+// Reject post
+// PATCH /api/posts/reject/:id
+const rejectPost = async (
+  postId: ObjectId,
+  message: string,
+  token: string | undefined
+) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+
+  const response = await axios.patch(
+    API_URL + `reject/${postId}`,
+    { status: { approved: false, rejected: true, message } },
+    config
+  )
+
+  return response.data
+}
+
 const postService = {
   createPost,
   getPosts,
   deletePost,
   updatePost,
   approvePost,
+  rejectPost,
 }
 
 export default postService
