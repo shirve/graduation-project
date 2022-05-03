@@ -6,6 +6,7 @@ import {
   updatePost,
   approvePost,
   getPosts,
+  rejectPost,
 } from '../../features/posts/postSlice'
 import { Post } from '../../models/Post'
 import { ObjectId } from 'mongoose'
@@ -20,7 +21,9 @@ interface Props {
 const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
   const [userIsAdmin, setUserIsAdmin] = useState<boolean>(false)
   const [userCanManage, setUserCanManage] = useState<boolean>()
-  const [showModal, setShowModal] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showRejectModal, setShowRejectModal] = useState(false)
+  const [rejectMessage, setRejectMessage] = useState('')
 
   const { user } = useSelector((state: RootState) => state.auth)
 
@@ -50,8 +53,20 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
     asyncHandlePostApprove(postId)
   }
 
-  const handleShowModal = () => {
-    setShowModal((prevState) => !prevState)
+  const handlePostReject = (postId: ObjectId, message: string) => {
+    async function asyncHandlePostReject(postId: ObjectId, message: string) {
+      await dispatch(rejectPost({ postId, message }))
+      await dispatch(getPosts())
+    }
+    asyncHandlePostReject(postId, message)
+  }
+
+  const handleShowDeleteModal = () => {
+    setShowDeleteModal((prevState) => !prevState)
+  }
+
+  const handleShowRejectModal = () => {
+    setShowRejectModal((prevState) => !prevState)
   }
 
   return (
@@ -94,32 +109,65 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
           <p>{post.music}</p>
         </div>
         <div className='post-manage'>
-          {post.status.approved && <button className='btn'>DOŁĄCZ</button>}
+          {post.status.approved && <button className='btn'>Dołącz</button>}
           {(userCanManage || userIsAdmin) && (
-            <button onClick={handleShowModal} className='btn'>
-              USUŃ
+            <button onClick={handleShowDeleteModal} className='btn'>
+              Usuń
             </button>
           )}
           {!post.status.approved && userIsAdmin && (
-            <button onClick={() => handlePostApprove(post._id)} className='btn'>
-              ZATWIERDŹ
-            </button>
+            <>
+              <button onClick={handleShowRejectModal} className='btn'>
+                Odrzuć
+              </button>
+              <button
+                onClick={() => handlePostApprove(post._id)}
+                className='btn'
+              >
+                Zatwierdź
+              </button>
+            </>
           )}
         </div>
       </div>
       <Modal
         appElement={document.getElementById('root') || undefined}
-        isOpen={showModal}
-        overlayClassName='manage-modal-overlay'
-        className='manage-modal-content'
+        isOpen={showDeleteModal}
+        overlayClassName='modal-overlay'
+        className='modal-content post-delete-modal'
       >
         <p>Na pewno chcesz usunąć ten post?</p>
-        <div className='manage-modal-buttons'>
-          <button onClick={handleShowModal} className='btn'>
-            ANULUJ
+        <div className='modal-buttons'>
+          <button onClick={handleShowDeleteModal} className='btn'>
+            Anuluj
           </button>
           <button onClick={() => handlePostDelete(post._id)} className='btn'>
-            USUŃ
+            Usuń
+          </button>
+        </div>
+      </Modal>
+      <Modal
+        appElement={document.getElementById('root') || undefined}
+        isOpen={showRejectModal}
+        overlayClassName='modal-overlay'
+        className='modal-content post-reject-modal'
+      >
+        <label htmlFor='rejectMessage'>Wiadomość</label>
+        <textarea
+          id='rejectMessage'
+          className='form-control'
+          value={rejectMessage}
+          onChange={(e) => setRejectMessage(e.target.value)}
+        />
+        <div className='modal-buttons'>
+          <button onClick={handleShowRejectModal} className='btn'>
+            Anuluj
+          </button>
+          <button
+            onClick={() => handlePostReject(post._id, rejectMessage)}
+            className='btn'
+          >
+            Odrzuć
           </button>
         </div>
       </Modal>

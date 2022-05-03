@@ -169,7 +169,8 @@ a {
   &-content {
     margin: auto;
     position: absolute;
-    width: 800px;
+    width: fit-content;
+    height: fit-content;
     inset: 2rem;
     border: 1px $color-minimal solid;
     background: $color-white;
@@ -177,36 +178,29 @@ a {
     border-radius: 0.5rem;
     outline: none;
     padding: 1rem;
-  } 
-}
-
-.manage-modal{
-  &-overlay {
-    display: flex;
-    position: fixed;
-    inset: 0px;
-    background-color: rgba(0, 0, 0, 0.6);
-    animation: modal-blur-in 0.5s forwards;
+    .post-form {
+      width: 800px;
+      height: 600px;
+    }
   }
-  &-content {
-    margin: auto;
-    position: absolute;
-    width: 300px;
-    height: 110px;
-    inset: 2rem;
-    border: 1px $color-minimal solid;
-    background: $color-white;
-    overflow: auto;
-    border-radius: 0.5rem;
-    outline: none;
-    padding: 1rem;
-    text-align: center;
-  } 
+  &-content.post-reject-modal {
+    textarea {
+      width: 800px;
+      height: 200px;
+    }
+  }
+  &-content.post-delete-modal {
+    p {
+      margin: 0;
+    }
+  }
   &-buttons {
+    margin-top: 1rem;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    gap: 1rem;
     .btn {
-      width: 120px;
+      width: 100px;
     }
   }
 }
@@ -225,6 +219,17 @@ a {
 @media (max-width: 900px) {
   .modal-content {
     width: 80%;
+    .post-form {
+      width: 100%;
+    }
+  }
+  .modal-content.post-reject-modal {
+    textarea {
+      width: 100%;
+    }
+  }
+  .modal-content.post-delete-modal {
+      width: fit-content;
   }
 }
 
