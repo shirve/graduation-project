@@ -10,8 +10,8 @@ const SearchUser = () => {
   const { userId } = useParams()
 
   useEffect(() => {
-    const getUser = async (id: string) => {
-      const res = await axios.get(`/api/users/user/${id}`)
+    const getUser = async (userId: string) => {
+      const res = await axios.get(`/api/users/user/${userId}`)
       setUser(res.data)
       setLoading(false)
     }

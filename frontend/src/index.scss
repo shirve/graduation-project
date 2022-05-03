@@ -7,7 +7,6 @@ $color-primary-hover: #17376E;
 $color-primary-darker: #0D2857;
 $color-white: #ffffff;
 $color-minimal: #cccccc;
-$color-muted: #6c757d;
 
 body {
   margin: 0;
@@ -113,27 +112,27 @@ a {
   &-wrapper {
   margin-top: 1rem;
   color: $text-color-dark;
-  background-color: $color-white;
-  border: 1px $color-minimal solid;
-  border-radius: 2rem;
-  padding: 1.25rem;
+  border-top: 1px $color-minimal solid;
+  padding-top: 1rem;
   white-space: pre-line;
   }
   &-info {
     display: flex;
     justify-content: space-between;
-    color: $color-muted;
+    p {
+      margin: 0;
+    }
     a {
-      color: $color-muted;
+      color: $text-color-dark;
     }
   }
   &-tags {
-    color: $color-muted;
     cursor: pointer;
-    margin-right: 0.5rem;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-wrap: wrap;
-    small {
+    li {
       margin-right: 0.5rem;
     }
   }
@@ -175,7 +174,7 @@ a {
     border: 1px $color-minimal solid;
     background: $color-white;
     overflow: auto;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     outline: none;
     padding: 1rem;
   } 
@@ -198,7 +197,7 @@ a {
     border: 1px $color-minimal solid;
     background: $color-white;
     overflow: auto;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     outline: none;
     padding: 1rem;
     text-align: center;

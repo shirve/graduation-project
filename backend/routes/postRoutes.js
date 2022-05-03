@@ -53,7 +53,6 @@ router.put(
     body('graphics').notEmpty().isString(),
     body('music').notEmpty().isString(),
     body('genres').isArray(),
-    body('approved').notEmpty().isBoolean(),
   ]),
   updatePost
 )

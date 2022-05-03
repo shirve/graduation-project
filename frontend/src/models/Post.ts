@@ -15,7 +15,11 @@ export interface Post {
   graphics: string
   music: string
   genres: string[]
-  approved: boolean
+  status: {
+    approved: boolean
+    rejected: boolean
+    message: string | null
+  }
   createdAt: Date
   updatedAt: Date
 }

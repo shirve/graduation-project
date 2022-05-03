@@ -23,7 +23,7 @@ const DashboardUnapprovedPosts = () => {
   )
 
   const filteredPostsLength = posts.filter(
-    (post) => post.approved === false
+    (post) => post.status.approved === false
   ).length
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const DashboardUnapprovedPosts = () => {
         posts
           .slice(0)
           .reverse()
-          .filter((post) => post.approved === false)
+          .filter((post) => post.status.approved === false)
           .map((post, index) => (
             <React.Fragment key={index}>
               <PostItem post={post} />

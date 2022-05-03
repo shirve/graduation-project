@@ -28,7 +28,11 @@ const createPost = asyncHandler(async (req, res) => {
     graphics: req.body.graphics,
     music: req.body.music,
     genres: req.body.genres,
-    approved: false,
+    status: {
+      approved: false,
+      rejected: false,
+      message: null,
+    },
     user: {
       _id: req.user.id,
       name: req.user.firstName + ' ' + req.user.lastName,
@@ -116,7 +120,7 @@ const approvePost = asyncHandler(async (req, res) => {
 
   const approvedPost = await Post.findByIdAndUpdate(
     req.params.id,
-    { approved: true },
+    { status: { approved: true, rejected: false, message: null } },
     {
       new: true,
     }

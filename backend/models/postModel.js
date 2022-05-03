@@ -52,9 +52,19 @@ const postSchema = mongoose.Schema(
         required: false,
       },
     ],
-    approved: {
-      type: Boolean,
-      default: false,
+    status: {
+      approved: {
+        type: Boolean,
+        default: false,
+      },
+      rejected: {
+        type: Boolean,
+        default: false,
+      },
+      message: {
+        type: String,
+        required: false,
+      },
     },
   },
   {

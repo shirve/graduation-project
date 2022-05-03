@@ -72,7 +72,7 @@ const approvePost = async (postId: ObjectId, token: string | undefined) => {
 
   const response = await axios.patch(
     API_URL + `approve/${postId}`,
-    { approve: true },
+    { status: { approved: true, rejected: false, message: null } },
     config
   )
 

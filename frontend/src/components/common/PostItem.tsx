@@ -58,24 +58,24 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
     <React.Fragment>
       <div className='post-wrapper'>
         <div className='post-info'>
-          <small>
+          <p>
             <Link to={`/user/${post.user._id}`}>{post.user.name}</Link>
-          </small>
-          <small>{new Date(post.createdAt).toLocaleString('pl-PL')}</small>
+          </p>
+          <p>{new Date(post.createdAt).toLocaleString('pl-PL')}</p>
         </div>
-        <div className='post-tags'>
+        <ul className='post-tags'>
           {post.genres &&
             post.genres.map((genre) => (
-              <small
+              <li
                 key={genre}
                 onClick={() => {
                   if (onGenreChange) onGenreChange(genre)
                 }}
               >
                 #{genre}
-              </small>
+              </li>
             ))}
-        </div>
+        </ul>
         <div className='post-content'>
           <h3>{post.title}</h3>
           <h4>Fabuła</h4>
@@ -94,13 +94,13 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
           <p>{post.music}</p>
         </div>
         <div className='post-manage'>
-          {post.approved && <button className='btn'>DOŁĄCZ</button>}
+          {post.status.approved && <button className='btn'>DOŁĄCZ</button>}
           {(userCanManage || userIsAdmin) && (
             <button onClick={handleShowModal} className='btn'>
               USUŃ
             </button>
           )}
-          {!post.approved && userIsAdmin && (
+          {!post.status.approved && userIsAdmin && (
             <button onClick={() => handlePostApprove(post._id)} className='btn'>
               ZATWIERDŹ
             </button>

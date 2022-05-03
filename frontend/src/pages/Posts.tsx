@@ -55,7 +55,7 @@ function Posts() {
     filtered = posts
       .slice(0)
       .reverse()
-      .filter((post) => post.approved === true)
+      .filter((post) => post.status.approved === true)
 
     if (currentGenre !== null) {
       filtered = posts
@@ -63,7 +63,8 @@ function Posts() {
         .reverse()
         .filter(
           (post) =>
-            post.approved === true && post.genres.includes(currentGenre.value)
+            post.status.approved === true &&
+            post.genres.includes(currentGenre.value)
         )
     }
 
