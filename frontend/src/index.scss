@@ -33,7 +33,7 @@ a {
 
 .page-header {
   text-align: center;
-  font-size: 3rem;
+  font-size: 2.4rem;
   padding: 1rem;
   color: $text-color-light;
   background-color: $color-primary;
@@ -42,7 +42,7 @@ a {
 
 @media (max-width: 475px) {
   .page-header {
-    font-size: 2.2rem;
+    font-size: 1.6rem;
   }
   .posts-page {
     &-header {
@@ -76,6 +76,51 @@ a {
   } 
 }
 
+.dashboard-posts {
+  &-navigation {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px $color-minimal solid;
+    li {
+      border-bottom: 2px transparent solid;
+      white-space: nowrap;
+      cursor: pointer;
+      padding: 0 1rem 1rem 1rem;
+    }
+    .active {
+      border-bottom: 2px $color-primary solid;
+    }
+    .badge {
+      display: inline-block;
+      margin-left: 0.375rem;
+      padding: 0.35em 0.65em;
+      font-size: 0.75em;
+      font-weight: 700;
+      line-height: 1;
+      color: $text-color-light;
+      background-color: $color-primary;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      border-radius: 0.25rem;
+    }
+  }
+  &-info {
+    text-align: center;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 675px) {
+  .dashboard-posts-navigation {
+    justify-content: flex-start;
+    overflow: scroll;
+  }
+}
 
 .post-form {
   color: $text-color-dark;
@@ -112,8 +157,10 @@ a {
   &-wrapper {
   margin-top: 1rem;
   color: $text-color-dark;
-  border-top: 1px $color-minimal solid;
-  padding-top: 1rem;
+  background-color: $color-white;
+  border: 1px $color-minimal solid;
+  border-radius: 0.5rem;
+  padding: 1rem;
   white-space: pre-line;
   }
   &-info {
@@ -127,12 +174,12 @@ a {
     }
   }
   &-tags {
-    cursor: pointer;
     margin: 0;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
     li {
+      cursor: pointer;
       margin-right: 0.5rem;
     }
   }
@@ -156,6 +203,11 @@ a {
       margin-left: 0.5rem;
     }
   }
+  &-status {
+    border-top: 1px $color-minimal solid;
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
 }
 
 .modal{
@@ -170,26 +222,25 @@ a {
     margin: auto;
     position: absolute;
     width: fit-content;
-    height: fit-content;
     inset: 2rem;
     border: 1px $color-minimal solid;
     background: $color-white;
     overflow: auto;
     border-radius: 0.5rem;
-    outline: none;
     padding: 1rem;
     .post-form {
       width: 800px;
-      height: 600px;
     }
   }
   &-content.post-reject-modal {
+    height: fit-content;
     textarea {
       width: 800px;
       height: 200px;
     }
   }
   &-content.post-delete-modal {
+    height: fit-content;
     p {
       margin: 0;
     }
