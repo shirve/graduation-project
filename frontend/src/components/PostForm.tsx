@@ -117,7 +117,7 @@ const PostForm = ({ post, showForm }: Props) => {
             disabled={isSubmitting}
             className='post-form-button'
           >
-            DODAJ NOWĄ PROPOZYCJĘ GRY
+            {post ? 'EDYTUJ PROPOZYCJĘ GRY' : 'DODAJ NOWĄ PROPOZYCJĘ GRY'}
           </button>
         </form>
       )}

@@ -1,6 +1,6 @@
 import { FieldProps } from 'formik'
 import Select, { Options, PropsValue } from 'react-select'
-import { Option } from '../../data/post/PostGenres'
+import { Option, PostGenres } from '../../data/post/PostGenres'
 
 interface Props {
   options: Options<Option>
@@ -24,10 +24,14 @@ const SelectField = ({
     )
   }
 
+  const values = field.value.map((value: string) =>
+    PostGenres.find((postGenre) => value === postGenre.value && postGenre)
+  )
+
   return (
     <Select
       name={field.name}
-      value={options.find((option) => option.value === field.value)}
+      value={values}
       onChange={onChange}
       options={options}
       isMulti={multiple}
