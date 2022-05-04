@@ -12,34 +12,54 @@ import Spinner from '../components/common/Spinner'
 import Alert from '../components/common/Alert'
 import Select from 'react-select'
 import { PostGenres, Option } from '../data/post/PostGenres'
+import Modal from 'react-modal'
+import AlertContext from '../context/alert/AlertContext'
 
 function Posts() {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<number>(10)
   const [currentGenre, setCurrentGenre] = useState<Option | null>(null)
+  const [showPostFormModal, setShowPostFormModal] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
 
   const { setHeader } = useContext(HeaderContext)
+  const { setAlert, removeAlert } = useContext(AlertContext)
 
-  const { posts, loading } = useSelector((state: RootState) => state.posts)
+  const { user } = useSelector((state: RootState) => state.auth)
+  const { posts, loading, alert } = useSelector(
+    (state: RootState) => state.posts
+  )
 
   useEffect(() => {
     setHeader('PROPOZYCJE GIER')
     return () => {
       setHeader('')
     }
-  })
+  }, [])
 
   useEffect(() => {
     dispatch(getPosts())
   }, [])
+
+  useEffect(() => {
+    if (alert) {
+      setAlert(alert.type, alert.message, 5)
+    } else {
+      removeAlert()
+    }
+    return () => {}
+  }, [alert])
 
   const handleGenreChange = (genre: string) => {
     setCurrentGenre({
       value: genre,
       label: genre[0].toUpperCase() + genre.slice(1),
     })
+  }
+
+  const handleShowPostFormModal = () => {
+    setShowPostFormModal((prevState) => !prevState)
   }
 
   const handlePageChange = (page: number) => {
@@ -87,7 +107,32 @@ function Posts() {
         <Link to='/login'> Zaloguj</Link> jeśli posiadasz już konto a następnie
         przejdź do formularza dodawania nowej propozycji gry poniżej.
       </div>
-      <PostForm />
+      {user && (
+        <>
+          <button
+            className='post-form-button'
+            onClick={handleShowPostFormModal}
+          >
+            NOWA PROPOZYCJA GRY
+          </button>
+          <Modal
+            appElement={document.getElementById('root') || undefined}
+            isOpen={showPostFormModal}
+            overlayClassName='modal-overlay'
+            className='modal-content post-form-modal'
+          >
+            <header className='modal-header'>
+              <h3>Nowa propozycja gry</h3>
+              <button
+                type='button'
+                className='btn-close'
+                onClick={handleShowPostFormModal}
+              />
+            </header>
+            <PostForm showForm={handleShowPostFormModal} />
+          </Modal>
+        </>
+      )}
       <Alert />
       <div className='posts-page-header'>
         <h3>Najnowsze posty</h3>

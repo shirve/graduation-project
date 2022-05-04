@@ -8,14 +8,13 @@ import HeaderContext from '../../context/header/HeaderContext'
 import AlertContext from '../../context/alert/AlertContext'
 import Alert from '../../components/common/Alert'
 import Spinner from '../../components/common/Spinner'
-import { FaInfoCircle } from 'react-icons/fa'
 
 const DashboardUnapprovedPosts = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const { setHeader } = useContext(HeaderContext)
-  const { setAlert } = useContext(AlertContext)
+  const { setAlert, removeAlert } = useContext(AlertContext)
 
   const { user } = useSelector((state: RootState) => state.auth)
   const { posts, loading, alert } = useSelector(
@@ -36,6 +35,8 @@ const DashboardUnapprovedPosts = () => {
   useEffect(() => {
     if (alert) {
       setAlert(alert.type, alert.message, 5)
+    } else {
+      removeAlert()
     }
     if (!user || !user.ROLE_ADMIN) {
       navigate('/')

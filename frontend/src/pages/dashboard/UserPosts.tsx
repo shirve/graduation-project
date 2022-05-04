@@ -17,7 +17,7 @@ const DashboardUserPosts = () => {
   const dispatch = useDispatch()
 
   const { setHeader } = useContext(HeaderContext)
-  const { setAlert } = useContext(AlertContext)
+  const { setAlert, removeAlert } = useContext(AlertContext)
 
   const { user } = useSelector((state: RootState) => state.auth)
   const { posts, loading, alert } = useSelector(
@@ -76,6 +76,8 @@ const DashboardUserPosts = () => {
   useEffect(() => {
     if (alert) {
       setAlert(alert.type, alert.message, 5)
+    } else {
+      removeAlert()
     }
     if (!user) {
       navigate('/login')

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useContext } from 'react'
 import AlertContext from '../../context/alert/AlertContext'
 import {
   FaExclamationTriangle,
@@ -7,11 +7,7 @@ import {
 } from 'react-icons/fa'
 
 const Alert = () => {
-  const { alert, removeAlert } = useContext(AlertContext)
-
-  useEffect(() => {
-    return () => removeAlert()
-  }, [])
+  const { alert } = useContext(AlertContext)
 
   return (
     <React.Fragment>

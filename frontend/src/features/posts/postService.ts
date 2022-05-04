@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Post, PostCreate } from '../../models/Post'
+import { PostData } from '../../models/Post'
 import { ObjectId } from 'mongoose'
 
 const API_URL = '/api/posts/'
@@ -13,7 +13,7 @@ const getPosts = async () => {
 
 // Create new post
 // POST /api/posts/create
-const createPost = async (postData: PostCreate, token: string | undefined) => {
+const createPost = async (postData: PostData, token: string | undefined) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -43,7 +43,7 @@ const deletePost = async (postId: ObjectId, token: string | undefined) => {
 // PUT /api/posts/update/:id
 const updatePost = async (
   postId: ObjectId,
-  updatedData: Post,
+  updatedData: PostData,
   token: string | undefined
 ) => {
   const config = {
@@ -54,7 +54,10 @@ const updatePost = async (
 
   const response = await axios.put(
     API_URL + `update/${postId}`,
-    updatedData,
+    {
+      ...updatedData,
+      status: { approved: false, rejected: false, message: null },
+    },
     config
   )
 

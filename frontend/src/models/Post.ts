@@ -24,7 +24,7 @@ export interface Post {
   updatedAt: Date
 }
 
-export interface PostCreate {
+export interface PostData {
   title: string
   story: string
   gameplay: string

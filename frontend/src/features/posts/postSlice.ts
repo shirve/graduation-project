@@ -1,10 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import postService from './postService'
 import { ObjectId } from 'mongoose'
-import { Post, PostCreate } from '../../models/Post'
+import { Post, PostData } from '../../models/Post'
 import { RootState } from '../../app/store'
 import { Alert } from '../../models/Alert'
-import { Message } from 'yup/lib/types'
 
 interface IPostsState {
   posts: Post[]
@@ -37,7 +36,7 @@ export const getPosts = createAsyncThunk<Post[], void, { rejectValue: Alert }>(
 // POST /api/posts/create
 export const createPost = createAsyncThunk<
   Post,
-  PostCreate,
+  PostData,
   { state: RootState; rejectValue: Alert }
 >('posts/create', async (postData, thunkAPI) => {
   try {
@@ -67,12 +66,12 @@ export const deletePost = createAsyncThunk<
 // PUT /api/posts/update/:id
 export const updatePost = createAsyncThunk<
   Post,
-  Post,
+  { _id: ObjectId; values: PostData },
   { state: RootState; rejectValue: Alert }
->('posts/update/:id', async (updatedData: Post, thunkAPI) => {
+>('posts/update/:id', async (postData, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user?.token
-    return await postService.updatePost(updatedData._id, updatedData, token)
+    return await postService.updatePost(postData._id, postData.values, token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }

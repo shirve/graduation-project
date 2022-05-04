@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import {
   deletePost,
-  updatePost,
   approvePost,
   getPosts,
   rejectPost,
@@ -12,6 +11,7 @@ import { Post } from '../../models/Post'
 import { ObjectId } from 'mongoose'
 import { Link } from 'react-router-dom'
 import Modal from 'react-modal'
+import PostForm from '../PostForm'
 
 interface Props {
   post: Post
@@ -20,10 +20,11 @@ interface Props {
 
 const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
   const [userIsAdmin, setUserIsAdmin] = useState<boolean>(false)
-  const [userCanManage, setUserCanManage] = useState<boolean>()
+  const [userCanManage, setUserCanManage] = useState<boolean>(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showRejectModal, setShowRejectModal] = useState(false)
   const [rejectMessage, setRejectMessage] = useState('')
+  const [showEditModal, setShowEditModal] = useState(false)
 
   const { user } = useSelector((state: RootState) => state.auth)
 
@@ -69,6 +70,10 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
     setShowRejectModal((prevState) => !prevState)
   }
 
+  const handleShowEditModal = () => {
+    setShowEditModal((prevState) => !prevState)
+  }
+
   return (
     <React.Fragment>
       <div className='post-wrapper'>
@@ -76,7 +81,11 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
           <p>
             <Link to={`/user/${post.user._id}`}>{post.user.name}</Link>
           </p>
-          <p>{new Date(post.createdAt).toLocaleString('pl-PL')}</p>
+          <p>
+            {post.updatedAt > post.createdAt
+              ? new Date(post.updatedAt).toLocaleString('pl-PL')
+              : new Date(post.createdAt).toLocaleString('pl-PL')}
+          </p>
         </div>
         <ul className='post-tags'>
           {post.genres &&
@@ -111,9 +120,14 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
         <div className='post-manage'>
           {post.status.approved && <button className='btn'>Dołącz</button>}
           {(userCanManage || userIsAdmin) && (
-            <button onClick={handleShowDeleteModal} className='btn'>
-              Usuń
-            </button>
+            <>
+              <button onClick={handleShowEditModal} className='btn'>
+                Edytuj
+              </button>
+              <button onClick={handleShowDeleteModal} className='btn'>
+                Usuń
+              </button>
+            </>
           )}
           {!post.status.approved && userIsAdmin && (
             <>
@@ -129,7 +143,11 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
             </>
           )}
         </div>
+        {post.status.rejected && (
+          <div className='post-status'>{post.status.message}</div>
+        )}
       </div>
+
       <Modal
         appElement={document.getElementById('root') || undefined}
         isOpen={showDeleteModal}
@@ -146,23 +164,27 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
           </button>
         </div>
       </Modal>
+
       <Modal
         appElement={document.getElementById('root') || undefined}
         isOpen={showRejectModal}
         overlayClassName='modal-overlay'
         className='modal-content post-reject-modal'
       >
-        <label htmlFor='rejectMessage'>Wiadomość</label>
+        <header className='modal-header'>
+          <h5>Wiadomość</h5>
+          <button
+            type='button'
+            className='btn-close'
+            onClick={handleShowRejectModal}
+          />
+        </header>
         <textarea
-          id='rejectMessage'
           className='form-control'
           value={rejectMessage}
           onChange={(e) => setRejectMessage(e.target.value)}
         />
         <div className='modal-buttons'>
-          <button onClick={handleShowRejectModal} className='btn'>
-            Anuluj
-          </button>
           <button
             onClick={() => handlePostReject(post._id, rejectMessage)}
             className='btn'
@@ -170,6 +192,23 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
             Odrzuć
           </button>
         </div>
+      </Modal>
+
+      <Modal
+        appElement={document.getElementById('root') || undefined}
+        isOpen={showEditModal}
+        overlayClassName='modal-overlay'
+        className='modal-content post-form-modal'
+      >
+        <header className='modal-header'>
+          <h3>Edytuj propozycje gry</h3>
+          <button
+            type='button'
+            className='btn-close'
+            onClick={handleShowEditModal}
+          />
+        </header>
+        <PostForm post={post} showForm={handleShowEditModal} />
       </Modal>
     </React.Fragment>
   )

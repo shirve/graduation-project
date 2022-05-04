@@ -124,15 +124,6 @@ a {
 
 .post-form {
   color: $text-color-dark;
-  &-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-    h3 {
-      margin: 0;
-    }
-  }
   &-error {
     margin: 0;
     display: flex;
@@ -218,6 +209,14 @@ a {
     background-color: rgba(0, 0, 0, 0.6);
     animation: modal-blur-in 0.5s forwards;
   }
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding: 0;
+    border: none;
+  }
   &-content {
     margin: auto;
     position: absolute;
@@ -228,8 +227,18 @@ a {
     overflow: auto;
     border-radius: 0.5rem;
     padding: 1rem;
+  }
+  &-content.post-form-modal {
     .post-form {
       width: 800px;
+    }
+    .modal-header {
+      h3 {
+        margin: 0;
+      }
+      .btn-close {
+        font-size: 1.4rem;
+      }
     }
   }
   &-content.post-reject-modal {
@@ -237,6 +246,14 @@ a {
     textarea {
       width: 800px;
       height: 200px;
+    }
+    .modal-header {
+      h5 {
+        margin: 0;
+      }
+      .btn-close {
+        font-size: 1.2rem;
+      }
     }
   }
   &-content.post-delete-modal {
@@ -248,10 +265,10 @@ a {
   &-buttons {
     margin-top: 1rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: 1rem;
     .btn {
-      width: 100px;
+      width: 120px;
     }
   }
 }
@@ -270,6 +287,8 @@ a {
 @media (max-width: 900px) {
   .modal-content {
     width: 80%;
+  }
+  .modal-content.post-form-modal {
     .post-form {
       width: 100%;
     }
@@ -345,9 +364,6 @@ a {
   .disabled {
     margin-top: -1rem;
     opacity: 0.7;
-  }
-  &-close {
-    font-size: 1.4rem;
   }
 }
 
