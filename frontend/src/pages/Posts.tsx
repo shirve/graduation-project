@@ -54,7 +54,9 @@ function Posts() {
   const handleGenreChange = (genre: string) => {
     setCurrentGenre({
       value: genre,
-      label: genre[0].toUpperCase() + genre.slice(1),
+      label:
+        PostGenres.find((postGenre) => genre === postGenre.value)?.label ??
+        genre,
     })
   }
 
