@@ -31,13 +31,13 @@ const PostForm = ({ post, showForm }: Props) => {
   const dispatch = useAppDispatch()
 
   const handleSubmit = (
-    values: PostData,
+    data: PostData,
     resetForm: (
       nextState?: Partial<FormikState<IFormModel>> | undefined
     ) => void
   ) => {
-    if (post) dispatch(updatePost({ _id: post._id, values }))
-    if (!post) dispatch(createPost(values))
+    if (post) dispatch(updatePost({ postId: post._id, data }))
+    if (!post) dispatch(createPost(data))
     resetForm()
     showForm()
   }
@@ -55,15 +55,15 @@ const PostForm = ({ post, showForm }: Props) => {
   })
 
   const initialValues = {
-    title: post ? post.title : '',
-    story: post ? post.story : '',
-    gameplay: post ? post.gameplay : '',
-    mechanics: post ? post.mechanics : '',
-    characters: post ? post.characters : '',
-    levels: post ? post.levels : '',
-    graphics: post ? post.graphics : '',
-    music: post ? post.music : '',
-    genres: post ? post.genres : [],
+    title: post ? post.data.title : '',
+    story: post ? post.data.story : '',
+    gameplay: post ? post.data.gameplay : '',
+    mechanics: post ? post.data.mechanics : '',
+    characters: post ? post.data.characters : '',
+    levels: post ? post.data.levels : '',
+    graphics: post ? post.data.graphics : '',
+    music: post ? post.data.music : '',
+    genres: post ? post.data.genres : [],
   }
 
   return (
@@ -119,6 +119,12 @@ const PostForm = ({ post, showForm }: Props) => {
           >
             {post ? 'EDYTUJ PROPOZYCJĘ GRY' : 'DODAJ NOWĄ PROPOZYCJĘ GRY'}
           </button>
+          {post && (
+            <small>
+              *Po edycji post zostanie ponownie przesłany do zatwierdzenia przez
+              administratora
+            </small>
+          )}
         </form>
       )}
     </Formik>

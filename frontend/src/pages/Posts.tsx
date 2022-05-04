@@ -86,7 +86,7 @@ function Posts() {
         .filter(
           (post) =>
             post.status.approved === true &&
-            post.genres.includes(currentGenre.value)
+            post.data.genres.includes(currentGenre.value)
         )
     }
 

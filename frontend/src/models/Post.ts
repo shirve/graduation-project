@@ -6,15 +6,7 @@ export interface Post {
     _id: ObjectId
     name: string
   }
-  title: string
-  story: string
-  gameplay: string
-  mechanics: string
-  characters: string
-  levels: string
-  graphics: string
-  music: string
-  genres: string[]
+  data: PostData
   status: {
     approved: boolean
     rejected: boolean

@@ -14,44 +14,46 @@ const postSchema = mongoose.Schema(
         ref: 'User',
       },
     },
-    title: {
-      type: String,
-      required: true,
-    },
-    story: {
-      type: String,
-      required: true,
-    },
-    gameplay: {
-      type: String,
-      required: true,
-    },
-    mechanics: {
-      type: String,
-      required: true,
-    },
-    characters: {
-      type: String,
-      required: true,
-    },
-    levels: {
-      type: String,
-      required: true,
-    },
-    graphics: {
-      type: String,
-      required: true,
-    },
-    music: {
-      type: String,
-      required: true,
-    },
-    genres: [
-      {
+    data: {
+      title: {
         type: String,
-        required: false,
+        required: true,
       },
-    ],
+      story: {
+        type: String,
+        required: true,
+      },
+      gameplay: {
+        type: String,
+        required: true,
+      },
+      mechanics: {
+        type: String,
+        required: true,
+      },
+      characters: {
+        type: String,
+        required: true,
+      },
+      levels: {
+        type: String,
+        required: true,
+      },
+      graphics: {
+        type: String,
+        required: true,
+      },
+      music: {
+        type: String,
+        required: true,
+      },
+      genres: [
+        {
+          type: String,
+          required: false,
+        },
+      ],
+    },
     status: {
       approved: {
         type: Boolean,

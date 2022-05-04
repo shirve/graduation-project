@@ -20,7 +20,11 @@ const createPost = async (postData: PostData, token: string | undefined) => {
     },
   }
 
-  const response = await axios.post(API_URL + 'create', postData, config)
+  const response = await axios.post(
+    API_URL + 'create',
+    { data: { ...postData } },
+    config
+  )
 
   return response.data
 }
@@ -55,7 +59,7 @@ const updatePost = async (
   const response = await axios.put(
     API_URL + `update/${postId}`,
     {
-      ...updatedData,
+      data: { ...updatedData },
       status: { approved: false, rejected: false, message: null },
     },
     config

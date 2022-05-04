@@ -19,15 +19,7 @@ const createPost = asyncHandler(async (req, res) => {
   }
 
   const post = await Post.create({
-    title: req.body.title,
-    story: req.body.story,
-    gameplay: req.body.gameplay,
-    mechanics: req.body.mechanics,
-    characters: req.body.characters,
-    levels: req.body.levels,
-    graphics: req.body.graphics,
-    music: req.body.music,
-    genres: req.body.genres,
+    data: req.body.data,
     status: {
       approved: false,
       rejected: false,

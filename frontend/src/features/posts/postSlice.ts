@@ -66,12 +66,12 @@ export const deletePost = createAsyncThunk<
 // PUT /api/posts/update/:id
 export const updatePost = createAsyncThunk<
   Post,
-  { _id: ObjectId; values: PostData },
+  { postId: ObjectId; data: PostData },
   { state: RootState; rejectValue: Alert }
 >('posts/update/:id', async (postData, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user?.token
-    return await postService.updatePost(postData._id, postData.values, token)
+    return await postService.updatePost(postData.postId, postData.data, token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }

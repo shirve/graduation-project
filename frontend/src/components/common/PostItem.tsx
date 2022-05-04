@@ -88,8 +88,8 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
           </p>
         </div>
         <ul className='post-tags'>
-          {post.genres &&
-            post.genres.map((genre) => (
+          {post.data.genres &&
+            post.data.genres.map((genre) => (
               <li
                 key={genre}
                 onClick={() => {
@@ -101,21 +101,21 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
             ))}
         </ul>
         <div className='post-content'>
-          <h3>{post.title}</h3>
+          <h3>{post.data.title}</h3>
           <h4>Fabuła</h4>
-          <p>{post.story}</p>
+          <p>{post.data.story}</p>
           <h4>Rozgrywka</h4>
-          <p>{post.gameplay}</p>
+          <p>{post.data.gameplay}</p>
           <h4>Mechanika</h4>
-          <p>{post.mechanics}</p>
+          <p>{post.data.mechanics}</p>
           <h4>Bohaterowie</h4>
-          <p>{post.characters}</p>
+          <p>{post.data.characters}</p>
           <h4>Poziomy</h4>
-          <p>{post.levels}</p>
+          <p>{post.data.levels}</p>
           <h4>Grafika</h4>
-          <p>{post.graphics}</p>
+          <p>{post.data.graphics}</p>
           <h4>Muzyka</h4>
-          <p>{post.music}</p>
+          <p>{post.data.music}</p>
         </div>
         <div className='post-manage'>
           {post.status.approved && <button className='btn'>Dołącz</button>}
