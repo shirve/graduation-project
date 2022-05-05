@@ -64,47 +64,42 @@ function Navbar() {
                   <FaChevronDown />
                 </div>
                 {showDropdownList && (
-                  <div className=''>
-                    <ul className='nav-dropdown'>
-                      <li>
-                        <NavLink className='nav-link' to='/dashboard/profile'>
-                          TWÓJ PROFIL
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink className='nav-link' to='/dashboard/posts'>
-                          TWOJE PROPOZYCJE GIER
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink
-                          className='nav-link'
-                          to='/dashboard/repository'
-                        >
-                          TWOJE PROJEKTY
-                        </NavLink>
-                      </li>
-                      {user.ROLE_ADMIN && (
-                        <>
-                          <hr className='m-0' />
-                          <li>
-                            <NavLink
-                              className='nav-link'
-                              to='/dashboard/unapproved-posts'
-                            >
-                              NIEZATWIERDZONE POSTY
-                            </NavLink>
-                          </li>
-                        </>
-                      )}
-                      <hr className='m-0' />
-                      <li>
-                        <div className='nav-link' onClick={handleLogout}>
-                          WYLOGUJ
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
+                  <ul className='nav-dropdown'>
+                    <li>
+                      <NavLink className='nav-link' to='/dashboard/profile'>
+                        TWÓJ PROFIL
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className='nav-link' to='/dashboard/posts'>
+                        TWOJE PROPOZYCJE GIER
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className='nav-link' to='/dashboard/repository'>
+                        TWOJE PROJEKTY
+                      </NavLink>
+                    </li>
+                    {user.ROLE_ADMIN && (
+                      <>
+                        <hr className='m-0' />
+                        <li>
+                          <NavLink
+                            className='nav-link'
+                            to='/dashboard/unapproved-posts'
+                          >
+                            NIEZATWIERDZONE POSTY
+                          </NavLink>
+                        </li>
+                      </>
+                    )}
+                    <hr className='m-0' />
+                    <li>
+                      <div className='nav-link' onClick={handleLogout}>
+                        WYLOGUJ
+                      </div>
+                    </li>
+                  </ul>
                 )}
               </li>
             ) : (

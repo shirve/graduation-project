@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { getPosts } from '../../features/posts/postSlice'
+import { alertReset, getPosts } from '../../features/posts/postSlice'
 import PostItem from '../../components/common/PostItem'
 import { RootState } from '../../app/store'
 import HeaderContext from '../../context/header/HeaderContext'
@@ -21,9 +21,9 @@ const DashboardUnapprovedPosts = () => {
     (state: RootState) => state.posts
   )
 
-  const filteredPostsLength = posts.filter(
+  const filteredPosts = posts.filter(
     (post) => post.status.approved === false && post.status.rejected === false
-  ).length
+  )
 
   useEffect(() => {
     setHeader('NIEZATWIERDZONE POSTY')
@@ -33,29 +33,34 @@ const DashboardUnapprovedPosts = () => {
   }, [])
 
   useEffect(() => {
+    if (!user || !user.ROLE_ADMIN) {
+      navigate('/')
+    }
+    dispatch(getPosts())
+  }, [user])
+
+  useEffect(() => {
     if (alert) {
       setAlert(alert.type, alert.message, 5)
     } else {
       removeAlert()
     }
-    if (!user || !user.ROLE_ADMIN) {
-      navigate('/')
+    return () => {
+      if (alert) dispatch(alertReset())
     }
-    dispatch(getPosts())
-  }, [user, alert])
+  }, [alert])
 
   if (loading) return <Spinner />
 
   return (
     <React.Fragment>
-      {filteredPostsLength > 0 ? (
-        posts
-          .slice(0)
-          .reverse()
-          .filter(
-            (post) =>
-              post.status.approved === false && post.status.rejected === false
-          )
+      {filteredPosts.length > 0 ? (
+        filteredPosts
+          .sort((a, b) => {
+            return (
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            )
+          })
           .map((post, index) => (
             <React.Fragment key={index}>
               <PostItem post={post} />

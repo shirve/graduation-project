@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { loginUser } from '../features/auth/authSlice'
+import { alertReset, loginUser } from '../features/auth/authSlice'
 import FormField from '../components/common/FormField'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -17,7 +17,7 @@ function Login() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const { setAlert } = useContext(AlertContext)
+  const { setAlert, removeAlert } = useContext(AlertContext)
   const { setHeader } = useContext(HeaderContext)
 
   const { user, success, loading, alert } = useSelector(
@@ -32,13 +32,21 @@ function Login() {
   }, [])
 
   useEffect(() => {
-    if (alert) {
-      setAlert(alert.type, alert.message)
-    }
     if (success || user) {
       navigate('/')
     }
-  }, [user, success, alert])
+  }, [user, success])
+
+  useEffect(() => {
+    if (alert) {
+      setAlert(alert.type, alert.message)
+    } else {
+      removeAlert()
+    }
+    return () => {
+      if (alert) dispatch(alertReset())
+    }
+  }, [alert])
 
   const SignInSchema = Yup.object().shape({
     email: Yup.string()

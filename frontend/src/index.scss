@@ -189,10 +189,9 @@ a {
   &-manage {
     display: flex;
     justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     margin-top: 1rem;
-    button {
-      margin-left: 0.5rem;
-    }
   }
   &-status {
     border-top: 1px $color-minimal solid;

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { getPosts } from '../../features/posts/postSlice'
+import { alertReset, getPosts } from '../../features/posts/postSlice'
 import PostItem from '../../components/common/PostItem'
 import { RootState } from '../../app/store'
 import HeaderContext from '../../context/header/HeaderContext'
@@ -74,16 +74,22 @@ const DashboardUserPosts = () => {
   }, [])
 
   useEffect(() => {
+    if (!user) {
+      navigate('/login')
+    }
+    dispatch(getPosts())
+  }, [user])
+
+  useEffect(() => {
     if (alert) {
       setAlert(alert.type, alert.message, 5)
     } else {
       removeAlert()
     }
-    if (!user) {
-      navigate('/login')
+    return () => {
+      if (alert) dispatch(alertReset())
     }
-    dispatch(getPosts())
-  }, [user, alert])
+  }, [alert])
 
   if (loading) return <Spinner />
 
@@ -114,8 +120,11 @@ const DashboardUserPosts = () => {
       </ul>
       {filteredPosts.length > 0 ? (
         filteredPosts
-          .slice(0)
-          .reverse()
+          .sort((a, b) => {
+            return (
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            )
+          })
           .map((post, index) => (
             <React.Fragment key={index}>
               <PostItem post={post} />

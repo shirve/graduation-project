@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import PostForm from '../components/PostForm'
-import { getPosts } from '../features/posts/postSlice'
+import { alertReset, getPosts } from '../features/posts/postSlice'
 import PostItem from '../components/common/PostItem'
 import Pagination from '../components/common/Pagination'
 import { paginate } from '../utils/paginate'
@@ -48,7 +48,9 @@ function Posts() {
     } else {
       removeAlert()
     }
-    return () => {}
+    return () => {
+      if (alert) dispatch(alertReset())
+    }
   }, [alert])
 
   const handleGenreChange = (genre: string) => {
@@ -74,20 +76,14 @@ function Posts() {
 
   const getPagedData = () => {
     let filtered
-    filtered = posts
-      .slice(0)
-      .reverse()
-      .filter((post) => post.status.approved === true)
+    filtered = posts.filter((post) => post.status.approved === true)
 
     if (currentGenre !== null) {
-      filtered = posts
-        .slice(0)
-        .reverse()
-        .filter(
-          (post) =>
-            post.status.approved === true &&
-            post.data.genres.includes(currentGenre.value)
-        )
+      filtered = posts.filter(
+        (post) =>
+          post.status.approved === true &&
+          post.data.genres.includes(currentGenre.value)
+      )
     }
 
     const postsFiltered = paginate(filtered, currentPage, pageSize)
@@ -148,13 +144,20 @@ function Posts() {
       </div>
       {postsFiltered.length > 0 ? (
         <>
-          {postsFiltered.map((post) => (
-            <PostItem
-              key={post._id}
-              post={post}
-              onGenreChange={handleGenreChange}
-            />
-          ))}
+          {postsFiltered
+            .sort((a, b) => {
+              return (
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+              )
+            })
+            .map((post) => (
+              <PostItem
+                key={post._id}
+                post={post}
+                onGenreChange={handleGenreChange}
+              />
+            ))}
           <Pagination
             itemsCount={totalCount}
             pageSize={pageSize}
