@@ -4,7 +4,6 @@ import { RootState } from '../../app/store'
 import {
   deletePost,
   approvePost,
-  getPosts,
   rejectPost,
 } from '../../features/posts/postSlice'
 import { Post } from '../../models/Post'
@@ -41,7 +40,6 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
   const handlePostDelete = (postId: ObjectId) => {
     async function asyncHandlePostDelete(postId: ObjectId) {
       await dispatch(deletePost(postId))
-      await dispatch(getPosts())
     }
     asyncHandlePostDelete(postId)
   }
@@ -49,7 +47,6 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
   const handlePostApprove = (postId: ObjectId) => {
     async function asyncHandlePostApprove(postId: ObjectId) {
       await dispatch(approvePost(postId))
-      await dispatch(getPosts())
     }
     asyncHandlePostApprove(postId)
   }
@@ -57,7 +54,6 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
   const handlePostReject = (postId: ObjectId, message: string) => {
     async function asyncHandlePostReject(postId: ObjectId, message: string) {
       await dispatch(rejectPost({ postId, message }))
-      await dispatch(getPosts())
     }
     asyncHandlePostReject(postId, message)
   }

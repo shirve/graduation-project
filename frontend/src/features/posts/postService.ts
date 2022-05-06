@@ -4,10 +4,42 @@ import { ObjectId } from 'mongoose'
 
 const API_URL = '/api/posts/'
 
-// Get posts
+// Get user posts
 // GET /api/posts
-const getPosts = async () => {
-  const response = await axios.get(API_URL)
+const getUserPosts = async (token: string | undefined) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+
+  const response = await axios.get(API_URL, config)
+  return response.data
+}
+
+// Get approved posts
+// GET /api/posts/approved
+const getApprovedPosts = async (token: string | undefined) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+
+  const response = await axios.get(API_URL + 'approved', config)
+  return response.data
+}
+
+// Get unapproved posts
+// GET /api/posts/unapproved
+const getUnapprovedPosts = async (token: string | undefined) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+
+  const response = await axios.get(API_URL + 'unapproved', config)
   return response.data
 }
 
@@ -30,7 +62,7 @@ const createPost = async (postData: PostData, token: string | undefined) => {
 }
 
 // Delete post
-// DELETE /api/posts/delete/:id
+// DELETE /api/posts/:id/delete
 const deletePost = async (postId: ObjectId, token: string | undefined) => {
   const config = {
     headers: {
@@ -38,13 +70,13 @@ const deletePost = async (postId: ObjectId, token: string | undefined) => {
     },
   }
 
-  const response = await axios.delete(API_URL + `delete/${postId}`, config)
+  const response = await axios.delete(API_URL + `${postId}/delete`, config)
 
   return response.data
 }
 
 // Update post
-// PUT /api/posts/update/:id
+// PUT /api/posts/:id/update
 const updatePost = async (
   postId: ObjectId,
   updatedData: PostData,
@@ -57,7 +89,7 @@ const updatePost = async (
   }
 
   const response = await axios.put(
-    API_URL + `update/${postId}`,
+    API_URL + `${postId}/update`,
     {
       data: { ...updatedData },
       status: { approved: false, rejected: false, message: null },
@@ -69,7 +101,7 @@ const updatePost = async (
 }
 
 // Approve post
-// PATCH /api/posts/approve/:id
+// PATCH /api/posts/:id/approve
 const approvePost = async (postId: ObjectId, token: string | undefined) => {
   const config = {
     headers: {
@@ -78,7 +110,7 @@ const approvePost = async (postId: ObjectId, token: string | undefined) => {
   }
 
   const response = await axios.patch(
-    API_URL + `approve/${postId}`,
+    API_URL + `${postId}/approve`,
     { status: { approved: true, rejected: false, message: null } },
     config
   )
@@ -87,7 +119,7 @@ const approvePost = async (postId: ObjectId, token: string | undefined) => {
 }
 
 // Reject post
-// PATCH /api/posts/reject/:id
+// PATCH /api/posts/:id/reject
 const rejectPost = async (
   postId: ObjectId,
   message: string,
@@ -100,7 +132,7 @@ const rejectPost = async (
   }
 
   const response = await axios.patch(
-    API_URL + `reject/${postId}`,
+    API_URL + `${postId}/reject`,
     { status: { approved: false, rejected: true, message } },
     config
   )
@@ -109,8 +141,10 @@ const rejectPost = async (
 }
 
 const postService = {
+  getUserPosts,
+  getApprovedPosts,
+  getUnapprovedPosts,
   createPost,
-  getPosts,
   deletePost,
   updatePost,
   approvePost,

@@ -68,7 +68,7 @@ const loginUser = asyncHandler(async (req, res) => {
 })
 
 // Update user
-// PUT /api/users/:id
+// PUT /api/users/:id/update
 const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id)
 
@@ -90,7 +90,7 @@ const updateUser = asyncHandler(async (req, res) => {
 })
 
 // Get user
-// GET /api/users/user/:id
+// GET /api/users/:id
 const getUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id)
   res.status(200).json({

@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const {
-  getPosts,
+  getUserPosts,
+  getApprovedPosts,
+  getUnapprovedPosts,
   createPost,
   updatePost,
   deletePost,
@@ -12,9 +14,17 @@ const { protect } = require('../middleware/authMiddleware')
 const { body } = require('express-validator')
 const { validate } = require('../middleware/validateMiddleware')
 
-// Get posts
+// Get user posts
 // GET /api/posts
-router.get('/', getPosts)
+router.get('/', protect, getUserPosts)
+
+// Get approved posts
+// GET /api/posts/approved
+router.get('/approved', getApprovedPosts)
+
+// Get unapproved posts
+// GET /api/posts/unapproved
+router.get('/unapproved', protect, getUnapprovedPosts)
 
 // Add post
 // POST /api/posts/create
@@ -36,13 +46,13 @@ router.post(
 )
 
 // Delete post
-// DELETE /api/posts/delete/:id
-router.delete('/delete/:id', protect, deletePost)
+// DELETE /api/posts/:id/delete
+router.delete('/:id/delete', protect, deletePost)
 
 // Update post
-// PUT /api/posts/update/:id
+// PUT /api/posts/:id/update
 router.put(
-  '/update/:id',
+  '/:id/update',
   protect,
   validate([
     body('data.title').notEmpty().isString(),
@@ -59,11 +69,11 @@ router.put(
 )
 
 // Approve post
-// PATCH /api/posts/approve/:id
-router.patch('/approve/:id', protect, approvePost)
+// PATCH /api/posts/:id/approve
+router.patch('/:id/approve', protect, approvePost)
 
 // Reject post
-// PATCH /api/posts/reject/:id
-router.patch('/reject/:id', protect, rejectPost)
+// PATCH /api/posts/:id/reject
+router.patch('/:id/reject', protect, rejectPost)
 
 module.exports = router

@@ -19,18 +19,50 @@ const initialState: IPostsState = {
   alert: null,
 }
 
-// Get posts
+// Get user posts
 // GET /api/posts
-export const getPosts = createAsyncThunk<Post[], void, { rejectValue: Alert }>(
-  'posts/getPosts',
-  async (_, thunkAPI) => {
-    try {
-      return await postService.getPosts()
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data)
-    }
+export const getUserPosts = createAsyncThunk<
+  Post[],
+  void,
+  { state: RootState; rejectValue: Alert }
+>('posts', async (_, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user?.token
+    return await postService.getUserPosts(token)
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data)
   }
-)
+})
+
+// Get approved posts
+// GET /api/posts/approved
+export const getApprovedPosts = createAsyncThunk<
+  Post[],
+  void,
+  { state: RootState; rejectValue: Alert }
+>('posts/approved', async (_, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user?.token
+    return await postService.getApprovedPosts(token)
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data)
+  }
+})
+
+// Get unapproved posts
+// GET /api/posts/unapproved
+export const getUnapprovedPosts = createAsyncThunk<
+  Post[],
+  void,
+  { state: RootState; rejectValue: Alert }
+>('posts/unapproved', async (_, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user?.token
+    return await postService.getUnapprovedPosts(token)
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data)
+  }
+})
 
 // Create new post
 // POST /api/posts/create
@@ -48,12 +80,12 @@ export const createPost = createAsyncThunk<
 })
 
 // Delete post
-// DELETE /api/posts/delete/:id
+// DELETE /api/posts/:id/delete
 export const deletePost = createAsyncThunk<
-  ObjectId,
+  { _id: ObjectId },
   ObjectId,
   { state: RootState; rejectValue: Alert }
->('posts/delete/:id', async (postId: ObjectId, thunkAPI) => {
+>('posts/:id/delete', async (postId: ObjectId, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user?.token
     return await postService.deletePost(postId, token)
@@ -63,12 +95,12 @@ export const deletePost = createAsyncThunk<
 })
 
 // Update post
-// PUT /api/posts/update/:id
+// PUT /api/posts/:id/update
 export const updatePost = createAsyncThunk<
   Post,
   { postId: ObjectId; data: PostData },
   { state: RootState; rejectValue: Alert }
->('posts/update/:id', async (postData, thunkAPI) => {
+>('posts/:id/update', async (postData, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user?.token
     return await postService.updatePost(postData.postId, postData.data, token)
@@ -78,12 +110,12 @@ export const updatePost = createAsyncThunk<
 })
 
 // Approve post
-// PATCH /api/posts/approve/:id
+// PATCH /api/posts/:id/approve
 export const approvePost = createAsyncThunk<
   Post,
   ObjectId,
   { state: RootState; rejectValue: Alert }
->('posts/approve/:id', async (postId: ObjectId, thunkAPI) => {
+>('posts/:id/approve', async (postId: ObjectId, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user?.token
     return await postService.approvePost(postId, token)
@@ -93,12 +125,12 @@ export const approvePost = createAsyncThunk<
 })
 
 // Reject post
-// PATCH /api/posts/reject/:id
+// PATCH /api/posts/:id/reject
 export const rejectPost = createAsyncThunk<
   Post,
   { postId: ObjectId; message: string },
   { state: RootState; rejectValue: Alert }
->('posts/reject/:id', async (postData, thunkAPI) => {
+>('posts/:id/reject', async (postData, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user?.token
     return await postService.rejectPost(
@@ -122,6 +154,48 @@ export const postSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getUserPosts.pending, (state) => {
+        state.loading = true
+        state.alert = null
+      })
+      .addCase(getUserPosts.fulfilled, (state, action) => {
+        state.loading = false
+        state.success = true
+        state.alert = null
+        state.posts = action.payload
+      })
+      .addCase(getUserPosts.rejected, (state, action) => {
+        state.loading = false
+        state.alert = action.payload
+      })
+      .addCase(getApprovedPosts.pending, (state) => {
+        state.loading = true
+        state.alert = null
+      })
+      .addCase(getApprovedPosts.fulfilled, (state, action) => {
+        state.loading = false
+        state.success = true
+        state.alert = null
+        state.posts = action.payload
+      })
+      .addCase(getApprovedPosts.rejected, (state, action) => {
+        state.loading = false
+        state.alert = action.payload
+      })
+      .addCase(getUnapprovedPosts.pending, (state) => {
+        state.loading = true
+        state.alert = null
+      })
+      .addCase(getUnapprovedPosts.fulfilled, (state, action) => {
+        state.loading = false
+        state.success = true
+        state.alert = null
+        state.posts = action.payload
+      })
+      .addCase(getUnapprovedPosts.rejected, (state, action) => {
+        state.loading = false
+        state.alert = action.payload
+      })
       .addCase(createPost.pending, (state) => {
         state.loading = true
         state.alert = null
@@ -137,20 +211,6 @@ export const postSlice = createSlice({
         state.posts.push(action.payload)
       })
       .addCase(createPost.rejected, (state, action) => {
-        state.loading = false
-        state.alert = action.payload
-      })
-      .addCase(getPosts.pending, (state) => {
-        state.loading = true
-        state.alert = null
-      })
-      .addCase(getPosts.fulfilled, (state, action) => {
-        state.loading = false
-        state.success = true
-        state.alert = null
-        state.posts = action.payload
-      })
-      .addCase(getPosts.rejected, (state, action) => {
         state.loading = false
         state.alert = action.payload
       })
@@ -178,7 +238,9 @@ export const postSlice = createSlice({
         state.loading = false
         state.success = true
         state.alert = null
-        state.posts = state.posts.filter((post) => post._id !== action.payload)
+        state.posts = state.posts.filter(
+          (post) => post._id !== action.payload._id
+        )
       })
       .addCase(deletePost.rejected, (state, action) => {
         state.loading = false
@@ -192,8 +254,8 @@ export const postSlice = createSlice({
         state.loading = false
         state.success = true
         state.alert = null
-        state.posts = state.posts.map((post) =>
-          action.payload._id === post._id ? action.payload : post
+        state.posts = state.posts.filter(
+          (post) => post._id !== action.payload._id
         )
       })
       .addCase(approvePost.rejected, (state, action) => {
@@ -208,8 +270,8 @@ export const postSlice = createSlice({
         state.loading = false
         state.success = true
         state.alert = null
-        state.posts = state.posts.map((post) =>
-          action.payload._id === post._id ? action.payload : post
+        state.posts = state.posts.filter(
+          (post) => post._id !== action.payload._id
         )
       })
       .addCase(rejectPost.rejected, (state, action) => {

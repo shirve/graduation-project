@@ -29,7 +29,7 @@ const loginUser = async (userData: UserLogin) => {
 }
 
 // Update user
-// PUT /api/users/:id
+// PUT /api/users/:id/update
 const updateUser = async (
   userId: ObjectId,
   updatedData: User,
@@ -42,7 +42,7 @@ const updateUser = async (
   }
 
   const response = await axios.put(
-    API_URL + `update/${userId}`,
+    API_URL + `${userId}/update`,
     updatedData,
     config
   )

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { alertReset, getPosts } from '../../features/posts/postSlice'
+import { alertReset, getUnapprovedPosts } from '../../features/posts/postSlice'
 import PostItem from '../../components/common/PostItem'
 import { RootState } from '../../app/store'
 import HeaderContext from '../../context/header/HeaderContext'
@@ -21,10 +21,6 @@ const DashboardUnapprovedPosts = () => {
     (state: RootState) => state.posts
   )
 
-  const filteredPosts = posts.filter(
-    (post) => post.status.approved === false && post.status.rejected === false
-  )
-
   useEffect(() => {
     setHeader('NIEZATWIERDZONE POSTY')
     return () => {
@@ -36,7 +32,7 @@ const DashboardUnapprovedPosts = () => {
     if (!user || !user.ROLE_ADMIN) {
       navigate('/')
     }
-    dispatch(getPosts())
+    dispatch(getUnapprovedPosts())
   }, [user])
 
   useEffect(() => {
@@ -54,19 +50,13 @@ const DashboardUnapprovedPosts = () => {
 
   return (
     <React.Fragment>
-      {filteredPosts.length > 0 ? (
-        filteredPosts
-          .sort((a, b) => {
-            return (
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-            )
-          })
-          .map((post, index) => (
-            <React.Fragment key={index}>
-              <PostItem post={post} />
-              <Alert />
-            </React.Fragment>
-          ))
+      {posts.length > 0 ? (
+        posts.map((post, index) => (
+          <React.Fragment key={index}>
+            <PostItem post={post} />
+            <Alert />
+          </React.Fragment>
+        ))
       ) : (
         <p className='text-center'>Brak nowych niezatwierdzonych postów</p>
       )}

@@ -1,11 +1,48 @@
 const asyncHandler = require('express-async-handler')
 const Post = require('../models/postModel')
 
-// Get posts
-// GET /api/posts
-const getPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find()
+// Get user posts
+// GET /api/posts/
+const getUserPosts = asyncHandler(async (req, res) => {
+  const query = { 'user._id': { $eq: req.user._id } }
+  const options = {
+    sort: { createdAt: -1 },
+  }
 
+  const posts = await Post.find(query, null, options)
+  res.status(200).json(posts)
+})
+
+// Get approved posts
+// GET /api/posts/approved
+const getApprovedPosts = asyncHandler(async (req, res) => {
+  const query = { 'status.approved': { $eq: true } }
+  const options = {
+    sort: { createdAt: -1 },
+  }
+
+  const posts = await Post.find(query, null, options)
+  res.status(200).json(posts)
+})
+
+// Get unapproved posts
+// GET /api/posts/unapproved
+const getUnapprovedPosts = asyncHandler(async (req, res) => {
+  const query = {
+    'status.approved': { $eq: false },
+    'status.rejected': { $eq: false },
+  }
+  const options = {
+    sort: { createdAt: -1 },
+  }
+
+  if (req.user.ROLE_ADMIN === false) {
+    res
+      .status(401)
+      .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
+  }
+
+  const posts = await Post.find(query, null, options)
   res.status(200).json(posts)
 })
 
@@ -34,7 +71,7 @@ const createPost = asyncHandler(async (req, res) => {
 })
 
 // Delete post
-// DELETE /api/posts/delete/:id
+// DELETE /api/posts/:id/delete
 const deletePost = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id)
 
@@ -58,11 +95,11 @@ const deletePost = asyncHandler(async (req, res) => {
 
   await post.remove()
 
-  res.status(200).json({ id: req.params.id })
+  res.status(200).json({ _id: req.params.id })
 })
 
 // Update post
-// PUT /api/posts/update/:id
+// PUT /api/posts/:id/update
 const updatePost = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id)
 
@@ -90,7 +127,7 @@ const updatePost = asyncHandler(async (req, res) => {
 })
 
 // Approve post
-// PATCH /api/posts/approve/:id
+// PATCH /api/posts/:id/approve
 const approvePost = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id)
 
@@ -118,7 +155,7 @@ const approvePost = asyncHandler(async (req, res) => {
 })
 
 // Reject post
-// PATCH /api/posts/reject/:id
+// PATCH /api/posts/:id/reject
 const rejectPost = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id)
 
@@ -146,7 +183,9 @@ const rejectPost = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
-  getPosts,
+  getUserPosts,
+  getApprovedPosts,
+  getUnapprovedPosts,
   createPost,
   updatePost,
   deletePost,

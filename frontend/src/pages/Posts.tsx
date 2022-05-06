@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import PostForm from '../components/PostForm'
-import { alertReset, getPosts } from '../features/posts/postSlice'
+import { alertReset, getApprovedPosts } from '../features/posts/postSlice'
 import PostItem from '../components/common/PostItem'
 import Pagination from '../components/common/Pagination'
 import { paginate } from '../utils/paginate'
@@ -39,7 +39,7 @@ function Posts() {
   }, [])
 
   useEffect(() => {
-    dispatch(getPosts())
+    dispatch(getApprovedPosts())
   }, [])
 
   useEffect(() => {
@@ -75,23 +75,20 @@ function Posts() {
   }
 
   const getPagedData = () => {
-    let filtered
-    filtered = posts.filter((post) => post.status.approved === true)
+    let filtered = posts
 
     if (currentGenre !== null) {
-      filtered = posts.filter(
-        (post) =>
-          post.status.approved === true &&
-          post.data.genres.includes(currentGenre.value)
+      filtered = posts.filter((post) =>
+        post.data.genres.includes(currentGenre.value)
       )
     }
 
-    const postsFiltered = paginate(filtered, currentPage, pageSize)
+    const filteredPosts = paginate(filtered, currentPage, pageSize)
 
-    return { totalCount: filtered.length, postsFiltered }
+    return { totalCount: posts.length, filteredPosts }
   }
 
-  const { totalCount, postsFiltered } = getPagedData()
+  const { totalCount, filteredPosts } = getPagedData()
 
   if (loading) return <Spinner />
 
@@ -142,22 +139,15 @@ function Posts() {
           onChange={(option) => setCurrentGenre(option)}
         />
       </div>
-      {postsFiltered.length > 0 ? (
+      {filteredPosts.length > 0 ? (
         <>
-          {postsFiltered
-            .sort((a, b) => {
-              return (
-                new Date(b.createdAt).getTime() -
-                new Date(a.createdAt).getTime()
-              )
-            })
-            .map((post) => (
-              <PostItem
-                key={post._id}
-                post={post}
-                onGenreChange={handleGenreChange}
-              />
-            ))}
+          {filteredPosts.map((post) => (
+            <PostItem
+              key={post._id}
+              post={post}
+              onGenreChange={handleGenreChange}
+            />
+          ))}
           <Pagination
             itemsCount={totalCount}
             pageSize={pageSize}

@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-
 const {
   registerUser,
   loginUser,
@@ -36,11 +35,11 @@ router.post(
 )
 
 // Update user
-// PUT /api/users/:id
-router.put('/update/:id', protect, updateUser)
+// PUT /api/users/:id/update
+router.put('/:id/update', protect, updateUser)
 
 // Get user
-// GET /api/users/user/:id
-router.get('/user/:id', getUser)
+// GET /api/users/:id
+router.get('/:id', getUser)
 
 module.exports = router

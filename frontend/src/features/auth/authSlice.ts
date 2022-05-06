@@ -26,7 +26,7 @@ export const registerUser = createAsyncThunk<
   User,
   UserRegister,
   { rejectValue: Alert }
->('auth/register', async (user: UserRegister, thunkAPI) => {
+>('users/register', async (user: UserRegister, thunkAPI) => {
   try {
     return await authService.registerUser(user)
   } catch (error: any) {
@@ -40,7 +40,7 @@ export const loginUser = createAsyncThunk<
   User,
   UserLogin,
   { rejectValue: Alert }
->('auth/login', async (user: UserLogin, thunkAPI) => {
+>('users/login', async (user: UserLogin, thunkAPI) => {
   try {
     return await authService.loginUser(user)
   } catch (error: any) {
@@ -54,7 +54,7 @@ export const updateUser = createAsyncThunk<
   User,
   User,
   { state: RootState; rejectValue: Alert }
->('users/update/:id', async (updatedData: User, thunkAPI) => {
+>('users/:id/update', async (updatedData: User, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user?.token
     return await authService.updateUser(updatedData._id!, updatedData, token)

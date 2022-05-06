@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { alertReset, getPosts } from '../../features/posts/postSlice'
+import { alertReset, getUserPosts } from '../../features/posts/postSlice'
 import PostItem from '../../components/common/PostItem'
 import { RootState } from '../../app/store'
 import HeaderContext from '../../context/header/HeaderContext'
@@ -27,33 +27,28 @@ const DashboardUserPosts = () => {
   const [filterType, setFilterType] = useState<FilterType>('approved')
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([])
 
-  const filteredApprovedPosts = posts.filter(
-    (post) => post.user._id === user?._id && post.status.approved
-  )
+  const filteredApprovedPosts = posts.filter((post) => post.status.approved)
 
   const filteredUnapprovedPosts = posts.filter(
-    (post) =>
-      post.user._id === user?._id &&
-      !post.status.approved &&
-      !post.status.rejected
+    (post) => !post.status.approved && !post.status.rejected
   )
 
-  const filteredRejectedPosts = posts.filter(
-    (post) => post.user._id === user?._id && post.status.rejected
-  )
+  const filteredRejectedPosts = posts.filter((post) => post.status.rejected)
 
   const handleFilterChange = (type: FilterType) => {
-    if (type === 'approved') {
-      setFilteredPosts(filteredApprovedPosts)
-      setFilterType('approved')
-    }
-    if (type === 'unapproved') {
-      setFilteredPosts(filteredUnapprovedPosts)
-      setFilterType('unapproved')
-    }
-    if (type === 'rejected') {
-      setFilteredPosts(filteredRejectedPosts)
-      setFilterType('rejected')
+    switch (type) {
+      case 'approved':
+        setFilteredPosts(filteredApprovedPosts)
+        setFilterType('approved')
+        break
+      case 'unapproved':
+        setFilteredPosts(filteredUnapprovedPosts)
+        setFilterType('unapproved')
+        break
+      case 'rejected':
+        setFilteredPosts(filteredRejectedPosts)
+        setFilterType('rejected')
+        break
     }
   }
 
@@ -77,7 +72,7 @@ const DashboardUserPosts = () => {
     if (!user) {
       navigate('/login')
     }
-    dispatch(getPosts())
+    dispatch(getUserPosts())
   }, [user])
 
   useEffect(() => {
@@ -119,18 +114,12 @@ const DashboardUserPosts = () => {
         </li>
       </ul>
       {filteredPosts.length > 0 ? (
-        filteredPosts
-          .sort((a, b) => {
-            return (
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-            )
-          })
-          .map((post, index) => (
-            <React.Fragment key={index}>
-              <PostItem post={post} />
-              <Alert />
-            </React.Fragment>
-          ))
+        filteredPosts.map((post, index) => (
+          <React.Fragment key={index}>
+            <PostItem post={post} />
+            <Alert />
+          </React.Fragment>
+        ))
       ) : (
         <div className='dashboard-posts-info'>
           {filterType === 'approved' && (
