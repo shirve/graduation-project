@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useEffect } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import {
@@ -18,44 +18,25 @@ interface Props {
 }
 
 const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
-  const [userIsAdmin, setUserIsAdmin] = useState<boolean>(false)
-  const [userCanManage, setUserCanManage] = useState<boolean>(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
   const [showRejectModal, setShowRejectModal] = useState(false)
   const [rejectMessage, setRejectMessage] = useState('')
-  const [showEditModal, setShowEditModal] = useState(false)
 
   const { user } = useSelector((state: RootState) => state.auth)
 
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    if (user) {
-      setUserIsAdmin(user.ROLE_ADMIN)
-      setUserCanManage(post.user._id === user._id)
-    }
-    return () => {}
-  }, [])
-
   const handlePostDelete = (postId: ObjectId) => {
-    async function asyncHandlePostDelete(postId: ObjectId) {
-      await dispatch(deletePost(postId))
-    }
-    asyncHandlePostDelete(postId)
+    dispatch(deletePost(postId))
   }
 
   const handlePostApprove = (postId: ObjectId) => {
-    async function asyncHandlePostApprove(postId: ObjectId) {
-      await dispatch(approvePost(postId))
-    }
-    asyncHandlePostApprove(postId)
+    dispatch(approvePost(postId))
   }
 
   const handlePostReject = (postId: ObjectId, message: string) => {
-    async function asyncHandlePostReject(postId: ObjectId, message: string) {
-      await dispatch(rejectPost({ postId, message }))
-    }
-    asyncHandlePostReject(postId, message)
+    dispatch(rejectPost({ postId, message }))
   }
 
   const handleShowDeleteModal = () => {
@@ -114,8 +95,7 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
           <p>{post.data.music}</p>
         </div>
         <div className='post-manage'>
-          {post.status.approved && <button className='btn'>Dołącz</button>}
-          {(userCanManage || userIsAdmin) && (
+          {(user?.ROLE_ADMIN === true || user?._id === post.user._id) && (
             <>
               <button onClick={handleShowEditModal} className='btn'>
                 Edytuj
@@ -125,19 +105,21 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
               </button>
             </>
           )}
-          {!post.status.approved && userIsAdmin && (
-            <>
-              <button onClick={handleShowRejectModal} className='btn'>
-                Odrzuć
-              </button>
-              <button
-                onClick={() => handlePostApprove(post._id)}
-                className='btn'
-              >
-                Zatwierdź
-              </button>
-            </>
-          )}
+          {user?.ROLE_ADMIN === true &&
+            post.status.approved === false &&
+            post.status.rejected === false && (
+              <>
+                <button onClick={handleShowRejectModal} className='btn'>
+                  Odrzuć
+                </button>
+                <button
+                  onClick={() => handlePostApprove(post._id)}
+                  className='btn'
+                >
+                  Zatwierdź
+                </button>
+              </>
+            )}
         </div>
         {post.status.rejected && (
           <div className='post-status'>{post.status.message}</div>

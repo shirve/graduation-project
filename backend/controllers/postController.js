@@ -79,11 +79,6 @@ const deletePost = asyncHandler(async (req, res) => {
     res.status(400).json({ type: 'error', message: 'Post nie istnieje!' })
   }
 
-  if (!req.user) {
-    res
-      .status(401)
-      .json({ type: 'error', message: 'Użytkownik nie zalogowany!' })
-  }
   if (
     post.user._id.toString() !== req.user._id.toString() &&
     req.user.ROLE_ADMIN === false
@@ -107,13 +102,10 @@ const updatePost = asyncHandler(async (req, res) => {
     res.status(400).json({ type: 'error', message: 'Post nie istnieje!' })
   }
 
-  if (!req.user) {
-    res
-      .status(401)
-      .json({ type: 'error', message: 'Użytkownik nie zalogowany!' })
-  }
-
-  if (req.user.ROLE_ADMIN === false) {
+  if (
+    post.user._id.toString() !== req.user._id.toString() &&
+    req.user.ROLE_ADMIN === false
+  ) {
     res
       .status(401)
       .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
@@ -133,12 +125,6 @@ const approvePost = asyncHandler(async (req, res) => {
 
   if (!post) {
     res.status(400).json({ type: 'error', message: 'Post nie istnieje!' })
-  }
-
-  if (!req.user) {
-    res
-      .status(401)
-      .json({ type: 'error', message: 'Użytkownik nie zalogowany!' })
   }
 
   if (req.user.ROLE_ADMIN === false) {
@@ -161,12 +147,6 @@ const rejectPost = asyncHandler(async (req, res) => {
 
   if (!post) {
     res.status(400).json({ type: 'error', message: 'Post nie istnieje!' })
-  }
-
-  if (!req.user) {
-    res
-      .status(401)
-      .json({ type: 'error', message: 'Użytkownik nie zalogowany!' })
   }
 
   if (req.user.ROLE_ADMIN === false) {

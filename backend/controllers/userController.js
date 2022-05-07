@@ -78,11 +78,9 @@ const updateUser = asyncHandler(async (req, res) => {
       .json({ type: 'error', message: 'Nie znaleziono użytkownika!' })
   }
 
-  if (user.ROLE_ADMIN === false) {
-    req.body.ROLE_ADMIN = false
-  }
+  const data = { ...req.body, ROLE_ADMIN: false }
 
-  const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+  const updatedUser = await User.findByIdAndUpdate(req.params.id, data, {
     new: true,
   })
 

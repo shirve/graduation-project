@@ -208,7 +208,6 @@ export const postSlice = createSlice({
           message:
             'Post dodany pomyślnie. Przekazano do zatwierdzenia przez administratora.',
         }
-        state.posts.push(action.payload)
       })
       .addCase(createPost.rejected, (state, action) => {
         state.loading = false
