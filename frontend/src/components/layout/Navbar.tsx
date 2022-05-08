@@ -53,7 +53,7 @@ function Navbar() {
               </NavLink>
             </li>
             <li className='nav-item'>
-              <NavLink className='nav-link' to='/repository'>
+              <NavLink className='nav-link' to='/projects'>
                 PROJEKTY
               </NavLink>
             </li>
@@ -66,17 +66,23 @@ function Navbar() {
                 {showDropdownList && (
                   <ul className='nav-dropdown'>
                     <li>
-                      <NavLink className='nav-link' to='/dashboard/profile'>
+                      <NavLink
+                        className='nav-link'
+                        to='/dashboard/your-profile'
+                      >
                         TWÓJ PROFIL
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink className='nav-link' to='/dashboard/posts'>
+                      <NavLink className='nav-link' to='/dashboard/your-posts'>
                         TWOJE PROPOZYCJE GIER
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink className='nav-link' to='/dashboard/repository'>
+                      <NavLink
+                        className='nav-link'
+                        to='/dashboard/your-projects'
+                      >
                         TWOJE PROJEKTY
                       </NavLink>
                     </li>
