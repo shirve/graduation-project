@@ -56,7 +56,7 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
       <div className='post-wrapper'>
         <div className='post-info'>
           <p>
-            <Link to={`/user/${post.user._id}`}>{post.user.name}</Link>
+            <Link to={`/users/${post.user._id}`}>{post.user.name}</Link>
           </p>
           <p>
             {post.updatedAt > post.createdAt

@@ -36,7 +36,7 @@ function App() {
                 <Route path='your-projects' element={<UserProjects />} />
                 <Route path='unapproved-posts' element={<UnapprovedPosts />} />
               </Route>
-              <Route path='/user/:userId' element={<SearchUser />} />
+              <Route path='/users/:userId' element={<SearchUser />} />
               <Route path='/posts' element={<Posts />} />
               <Route path='/projects' element={<Projects />} />
               <Route path='/register' element={<Register />} />

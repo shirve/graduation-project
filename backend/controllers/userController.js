@@ -90,7 +90,24 @@ const updateUser = asyncHandler(async (req, res) => {
 // Get user
 // GET /api/users/:id
 const getUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id)
+  let user
+
+  try {
+    user = await User.findById(req.params.id)
+  } catch (err) {
+    res
+      .status(400)
+      .json({ type: 'error', message: 'Nie znaleziono użytkownika!' })
+    return
+  }
+
+  if (user === null) {
+    res
+      .status(400)
+      .json({ type: 'error', message: 'Nie znaleziono użytkownika!' })
+    return
+  }
+
   res.status(200).json({
     firstName: user.firstName,
     lastName: user.lastName,
