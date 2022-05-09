@@ -5,7 +5,6 @@ import PostForm from '../components/PostForm'
 import { alertReset, getApprovedPosts } from '../features/posts/postSlice'
 import PostItem from '../components/common/PostItem'
 import Pagination from '../components/common/Pagination'
-import { paginate } from '../utils/paginate'
 import { RootState, useAppDispatch } from '../app/store'
 import HeaderContext from '../context/header/HeaderContext'
 import Spinner from '../components/common/Spinner'
@@ -16,7 +15,7 @@ import Modal from 'react-modal'
 import AlertContext from '../context/alert/AlertContext'
 
 function Posts() {
-  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [currentPage, setCurrentPage] = useState<number>(0)
   const [pageSize, setPageSize] = useState<number>(10)
   const [currentGenre, setCurrentGenre] = useState<Option | null>(null)
   const [showPostFormModal, setShowPostFormModal] = useState<boolean>(false)
@@ -27,9 +26,11 @@ function Posts() {
   const { setAlert, removeAlert } = useContext(AlertContext)
 
   const { user } = useSelector((state: RootState) => state.auth)
-  const { posts, loading, alert } = useSelector(
+  const { posts, pagination, loading, alert } = useSelector(
     (state: RootState) => state.posts
   )
+
+  const { totalPosts, totalPages, prevPage, nextPage } = pagination
 
   useEffect(() => {
     setHeader('PROPOZYCJE GIER')
@@ -38,9 +39,23 @@ function Posts() {
     }
   }, [])
 
+  // Fetch posts on component mount or when page, page size, filtered genre or total posts amount changes
   useEffect(() => {
-    dispatch(getApprovedPosts())
-  }, [])
+    fetchPaginatedPosts(currentPage, pageSize, currentGenre?.value)
+  }, [currentPage, pageSize, currentGenre, totalPosts])
+
+  // If there is no posts on the current page, there is a previous page but no next page -> set page number to previous one
+  // Note: That means you are at the last page and deleted all posts from that page
+  useEffect(() => {
+    if (posts.length < 1 && prevPage && !nextPage) {
+      setCurrentPage(prevPage - 1)
+    }
+  }, [totalPosts])
+
+  // If filtered genre or page size changes -> set current page to 0
+  useEffect(() => {
+    setCurrentPage(0)
+  }, [currentGenre, pageSize])
 
   useEffect(() => {
     if (alert) {
@@ -52,6 +67,20 @@ function Posts() {
       if (alert) dispatch(alertReset())
     }
   }, [alert])
+
+  const fetchPaginatedPosts = (
+    page?: number,
+    size?: number,
+    genre?: string
+  ) => {
+    dispatch(
+      getApprovedPosts({
+        page,
+        size,
+        genre,
+      })
+    )
+  }
 
   const handleGenreChange = (genre: string) => {
     setCurrentGenre({
@@ -68,27 +97,8 @@ function Posts() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
+    window.scrollTo(0, 0)
   }
-
-  const handlePageSizeChange = (size: number) => {
-    setPageSize(size)
-  }
-
-  const getPagedData = () => {
-    let filtered = posts
-
-    if (currentGenre !== null) {
-      filtered = posts.filter((post) =>
-        post.data.genres.includes(currentGenre.value)
-      )
-    }
-
-    const filteredPosts = paginate(filtered, currentPage, pageSize)
-
-    return { totalCount: posts.length, filteredPosts }
-  }
-
-  const { totalCount, filteredPosts } = getPagedData()
 
   if (loading) return <Spinner />
 
@@ -139,21 +149,19 @@ function Posts() {
           onChange={(option) => setCurrentGenre(option)}
         />
       </div>
-      {filteredPosts.length > 0 ? (
+      {posts.length > 0 ? (
         <>
-          {filteredPosts.map((post) => (
+          {posts.map((post, index) => (
             <PostItem
-              key={post._id}
+              key={index}
               post={post}
               onGenreChange={handleGenreChange}
             />
           ))}
           <Pagination
-            itemsCount={totalCount}
-            pageSize={pageSize}
+            totalPages={totalPages ?? 1}
             currentPage={currentPage}
             onPageChange={handlePageChange}
-            onPageSizeChange={handlePageSizeChange}
           />
         </>
       ) : (
