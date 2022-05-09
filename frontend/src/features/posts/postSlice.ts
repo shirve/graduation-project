@@ -1,12 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import postService from './postService'
 import { ObjectId } from 'mongoose'
-import { Post, PostData } from '../../models/Post'
+import {
+  PaginatedPosts,
+  PaginationData,
+  Post,
+  PostData,
+} from '../../models/Post'
 import { RootState } from '../../app/store'
 import { Alert } from '../../models/Alert'
 
 interface IPostsState {
   posts: Post[]
+  pagination: PaginationData
   success: boolean
   loading: boolean
   alert: Alert | undefined | null
@@ -14,6 +20,12 @@ interface IPostsState {
 
 const initialState: IPostsState = {
   posts: [],
+  pagination: {
+    totalPosts: null,
+    totalPages: null,
+    prevPage: null,
+    nextPage: null,
+  },
   success: false,
   loading: false,
   alert: null,
@@ -35,15 +47,18 @@ export const getUserPosts = createAsyncThunk<
 })
 
 // Get approved posts
-// GET /api/posts/approved
+// GET /api/posts/approved?page=number&size=number&genre=string
 export const getApprovedPosts = createAsyncThunk<
-  Post[],
-  void,
+  PaginatedPosts,
+  { page?: number; size?: number; genre?: string },
   { state: RootState; rejectValue: Alert }
->('posts/approved', async (_, thunkAPI) => {
+>('posts/approved', async (pagination, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user?.token
-    return await postService.getApprovedPosts(token)
+    return await postService.getApprovedPosts(
+      pagination.page,
+      pagination.size,
+      pagination.genre
+    )
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -163,6 +178,7 @@ export const postSlice = createSlice({
         state.success = true
         state.alert = null
         state.posts = action.payload
+        state.pagination = initialState.pagination
       })
       .addCase(getUserPosts.rejected, (state, action) => {
         state.loading = false
@@ -176,7 +192,8 @@ export const postSlice = createSlice({
         state.loading = false
         state.success = true
         state.alert = null
-        state.posts = action.payload
+        state.posts = action.payload.posts
+        state.pagination = action.payload.pagination
       })
       .addCase(getApprovedPosts.rejected, (state, action) => {
         state.loading = false
@@ -191,6 +208,7 @@ export const postSlice = createSlice({
         state.success = true
         state.alert = null
         state.posts = action.payload
+        state.pagination = initialState.pagination
       })
       .addCase(getUnapprovedPosts.rejected, (state, action) => {
         state.loading = false
@@ -240,6 +258,9 @@ export const postSlice = createSlice({
         state.posts = state.posts.filter(
           (post) => post._id !== action.payload._id
         )
+        state.pagination.totalPosts = state.pagination.totalPosts
+          ? state.pagination.totalPosts - 1
+          : state.pagination.totalPosts
       })
       .addCase(deletePost.rejected, (state, action) => {
         state.loading = false

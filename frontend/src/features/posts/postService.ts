@@ -18,11 +18,17 @@ const getUserPosts = async (token: string | undefined) => {
 }
 
 // Get approved posts
-// GET /api/posts/approved
-const getApprovedPosts = async (token: string | undefined) => {
+// GET /api/posts/approved?page=number&size=number&genre=string
+const getApprovedPosts = async (
+  page?: number,
+  size?: number,
+  genre?: string
+) => {
   const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
+    params: {
+      page: page ? page : null,
+      size: size ? size : null,
+      genre: genre ? genre : null,
     },
   }
 

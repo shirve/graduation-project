@@ -27,3 +27,14 @@ export interface PostData {
   music: string
   genres: string[]
 }
+export interface PaginatedPosts {
+  posts: Post[]
+  pagination: PaginationData
+}
+
+export interface PaginationData {
+  totalPosts: number | null
+  totalPages: number | null
+  prevPage: number | null
+  nextPage: number | null
+}
