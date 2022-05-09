@@ -14,15 +14,31 @@ const getUserPosts = asyncHandler(async (req, res) => {
 })
 
 // Get approved posts
-// GET /api/posts/approved
+// GET /api/posts/approved?page=number&size=number&genre=string
 const getApprovedPosts = asyncHandler(async (req, res) => {
+  const { page, size, genre } = req.query
+
+  const limit = size ? size : 10
+  const offset = page ? page * limit : 0
+
   const query = { 'status.approved': { $eq: true } }
-  const options = {
-    sort: { createdAt: -1 },
+  const sort = { createdAt: 'desc' }
+
+  if (genre) {
+    query['data.genres'] = { $in: [genre] }
   }
 
-  const posts = await Post.find(query, null, options)
-  res.status(200).json(posts)
+  Post.paginate(query, { sort, limit, offset }).then((data) => {
+    res.status(200).json({
+      posts: data.docs,
+      pagination: {
+        totalPosts: data.totalDocs,
+        totalPages: data.totalPages,
+        prevPage: data.prevPage,
+        nextPage: data.nextPage,
+      },
+    })
+  })
 })
 
 // Get unapproved posts
