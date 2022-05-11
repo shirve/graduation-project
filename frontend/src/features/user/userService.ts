@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { User, UserLogin, UserRegister } from '../../models/User'
-import { ObjectId } from 'mongoose'
 
 const API_URL = '/api/users/'
 
@@ -30,11 +29,7 @@ const loginUser = async (userData: UserLogin) => {
 
 // Update user
 // PUT /api/users/:id/update
-const updateUser = async (
-  userId: ObjectId,
-  updatedData: User,
-  token: string | undefined
-) => {
+const updateUser = async (userData: User, token: string | undefined) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -42,8 +37,8 @@ const updateUser = async (
   }
 
   const response = await axios.put(
-    API_URL + `${userId}/update`,
-    updatedData,
+    API_URL + `${userData._id}/update`,
+    userData,
     config
   )
 
@@ -55,11 +50,11 @@ const logoutUser = () => {
   localStorage.removeItem('user')
 }
 
-const authService = {
+const userService = {
   registerUser,
   loginUser,
   updateUser,
   logoutUser,
 }
 
-export default authService
+export default userService

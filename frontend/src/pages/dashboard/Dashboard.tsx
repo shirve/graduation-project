@@ -10,7 +10,7 @@ import UserProjects from './UserProjects'
 const Dashboard = () => {
   const navigate = useNavigate()
 
-  const { user } = useSelector((state: RootState) => state.auth)
+  const { user } = useSelector((state: RootState) => state.currentUser)
 
   useEffect(() => {
     if (!user) {

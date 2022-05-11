@@ -3,12 +3,12 @@ import { FaChevronDown } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { RootState } from '../../app/store'
-import { logoutUser, reset } from '../../features/auth/authSlice'
+import { logoutUser, reset } from '../../features/user/userSlice'
 
 function Navbar() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { user } = useSelector((state: RootState) => state.auth)
+  const { user } = useSelector((state: RootState) => state.currentUser)
   const [showDropdownList, setShowDropdownList] = useState(false)
 
   useEffect(() => {

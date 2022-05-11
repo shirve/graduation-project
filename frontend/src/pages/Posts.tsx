@@ -25,9 +25,9 @@ function Posts() {
   const { setHeader } = useContext(HeaderContext)
   const { setAlert, removeAlert } = useContext(AlertContext)
 
-  const { user } = useSelector((state: RootState) => state.auth)
+  const { user } = useSelector((state: RootState) => state.currentUser)
   const { posts, pagination, loading, alert } = useSelector(
-    (state: RootState) => state.posts
+    (state: RootState) => state.fetchedPosts
   )
 
   const { totalPosts, totalPages, prevPage, nextPage } = pagination
@@ -39,10 +39,10 @@ function Posts() {
     }
   }, [])
 
-  // Fetch posts on component mount or when page, page size, filtered genre or total posts amount changes
+  // Fetch posts on component mount or when page, page size or filtered genre changes
   useEffect(() => {
     fetchPaginatedPosts(currentPage, pageSize, currentGenre?.value)
-  }, [currentPage, pageSize, currentGenre, totalPosts])
+  }, [currentPage, pageSize, currentGenre])
 
   // If there is no posts on the current page, there is a previous page but no next page -> set page number to previous one
   // Note: That means you are at the last page and deleted all posts from that page
@@ -100,7 +100,7 @@ function Posts() {
     window.scrollTo(0, 0)
   }
 
-  if (loading) return <Spinner />
+  if (loading === 'pending') return <Spinner />
 
   return (
     <React.Fragment>

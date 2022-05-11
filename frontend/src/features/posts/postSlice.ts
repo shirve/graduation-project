@@ -13,8 +13,7 @@ import { Alert } from '../../models/Alert'
 interface IPostsState {
   posts: Post[]
   pagination: PaginationData
-  success: boolean
-  loading: boolean
+  loading: 'idle' | 'pending' | 'fulfilled' | 'failed'
   alert: Alert | undefined | null
 }
 
@@ -26,8 +25,7 @@ const initialState: IPostsState = {
     prevPage: null,
     nextPage: null,
   },
-  success: false,
-  loading: false,
+  loading: 'idle',
   alert: null,
 }
 
@@ -37,9 +35,9 @@ export const getUserPosts = createAsyncThunk<
   Post[],
   void,
   { state: RootState; rejectValue: Alert }
->('posts', async (_, thunkAPI) => {
+>('posts/userPosts', async (_, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user?.token
+    const token = thunkAPI.getState().currentUser.user?.token
     return await postService.getUserPosts(token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
@@ -72,7 +70,7 @@ export const getUnapprovedPosts = createAsyncThunk<
   { state: RootState; rejectValue: Alert }
 >('posts/unapproved', async (_, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user?.token
+    const token = thunkAPI.getState().currentUser.user?.token
     return await postService.getUnapprovedPosts(token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
@@ -87,7 +85,7 @@ export const createPost = createAsyncThunk<
   { state: RootState; rejectValue: Alert }
 >('posts/create', async (postData, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user?.token
+    const token = thunkAPI.getState().currentUser.user?.token
     return await postService.createPost(postData, token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
@@ -100,9 +98,9 @@ export const deletePost = createAsyncThunk<
   { _id: ObjectId },
   ObjectId,
   { state: RootState; rejectValue: Alert }
->('posts/:id/delete', async (postId: ObjectId, thunkAPI) => {
+>('posts/delete', async (postId, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user?.token
+    const token = thunkAPI.getState().currentUser.user?.token
     return await postService.deletePost(postId, token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
@@ -115,9 +113,9 @@ export const updatePost = createAsyncThunk<
   Post,
   { postId: ObjectId; data: PostData },
   { state: RootState; rejectValue: Alert }
->('posts/:id/update', async (postData, thunkAPI) => {
+>('posts/update', async (postData, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user?.token
+    const token = thunkAPI.getState().currentUser.user?.token
     return await postService.updatePost(postData.postId, postData.data, token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
@@ -130,9 +128,9 @@ export const approvePost = createAsyncThunk<
   Post,
   ObjectId,
   { state: RootState; rejectValue: Alert }
->('posts/:id/approve', async (postId: ObjectId, thunkAPI) => {
+>('posts/approve', async (postId, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user?.token
+    const token = thunkAPI.getState().currentUser.user?.token
     return await postService.approvePost(postId, token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
@@ -145,9 +143,9 @@ export const rejectPost = createAsyncThunk<
   Post,
   { postId: ObjectId; message: string },
   { state: RootState; rejectValue: Alert }
->('posts/:id/reject', async (postData, thunkAPI) => {
+>('posts/reject', async (postData, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user?.token
+    const token = thunkAPI.getState().currentUser.user?.token
     return await postService.rejectPost(
       postData.postId,
       postData.message,
@@ -159,7 +157,7 @@ export const rejectPost = createAsyncThunk<
 })
 
 export const postSlice = createSlice({
-  name: 'post',
+  name: 'posts',
   initialState,
   reducers: {
     reset: () => initialState,
@@ -170,57 +168,53 @@ export const postSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getUserPosts.pending, (state) => {
-        state.loading = true
+        state.loading = 'pending'
         state.alert = null
       })
       .addCase(getUserPosts.fulfilled, (state, action) => {
-        state.loading = false
-        state.success = true
+        state.loading = 'fulfilled'
         state.alert = null
         state.posts = action.payload
         state.pagination = initialState.pagination
       })
       .addCase(getUserPosts.rejected, (state, action) => {
-        state.loading = false
+        state.loading = 'failed'
         state.alert = action.payload
       })
       .addCase(getApprovedPosts.pending, (state) => {
-        state.loading = true
+        state.loading = 'pending'
         state.alert = null
       })
       .addCase(getApprovedPosts.fulfilled, (state, action) => {
-        state.loading = false
-        state.success = true
+        state.loading = 'fulfilled'
         state.alert = null
         state.posts = action.payload.posts
         state.pagination = action.payload.pagination
       })
       .addCase(getApprovedPosts.rejected, (state, action) => {
-        state.loading = false
+        state.loading = 'failed'
         state.alert = action.payload
       })
       .addCase(getUnapprovedPosts.pending, (state) => {
-        state.loading = true
+        state.loading = 'pending'
         state.alert = null
       })
       .addCase(getUnapprovedPosts.fulfilled, (state, action) => {
-        state.loading = false
-        state.success = true
+        state.loading = 'fulfilled'
         state.alert = null
         state.posts = action.payload
         state.pagination = initialState.pagination
       })
       .addCase(getUnapprovedPosts.rejected, (state, action) => {
-        state.loading = false
+        state.loading = 'failed'
         state.alert = action.payload
       })
       .addCase(createPost.pending, (state) => {
-        state.loading = true
+        state.loading = 'pending'
         state.alert = null
       })
       .addCase(createPost.fulfilled, (state, action) => {
-        state.loading = false
-        state.success = true
+        state.loading = 'fulfilled'
         state.alert = {
           type: 'info',
           message:
@@ -228,32 +222,30 @@ export const postSlice = createSlice({
         }
       })
       .addCase(createPost.rejected, (state, action) => {
-        state.loading = false
+        state.loading = 'failed'
         state.alert = action.payload
       })
       .addCase(updatePost.pending, (state) => {
-        state.loading = true
+        state.loading = 'pending'
         state.alert = null
       })
       .addCase(updatePost.fulfilled, (state, action) => {
-        state.loading = false
-        state.success = true
+        state.loading = 'fulfilled'
         state.alert = null
         state.posts = state.posts.map((post) =>
           action.payload._id === post._id ? action.payload : post
         )
       })
       .addCase(updatePost.rejected, (state, action) => {
-        state.loading = false
+        state.loading = 'failed'
         state.alert = action.payload
       })
       .addCase(deletePost.pending, (state) => {
-        state.loading = true
+        state.loading = 'pending'
         state.alert = null
       })
       .addCase(deletePost.fulfilled, (state, action) => {
-        state.loading = false
-        state.success = true
+        state.loading = 'fulfilled'
         state.alert = null
         state.posts = state.posts.filter(
           (post) => post._id !== action.payload._id
@@ -263,39 +255,37 @@ export const postSlice = createSlice({
           : state.pagination.totalPosts
       })
       .addCase(deletePost.rejected, (state, action) => {
-        state.loading = false
+        state.loading = 'failed'
         state.alert = action.payload
       })
       .addCase(approvePost.pending, (state) => {
-        state.loading = true
+        state.loading = 'pending'
         state.alert = null
       })
       .addCase(approvePost.fulfilled, (state, action) => {
-        state.loading = false
-        state.success = true
+        state.loading = 'fulfilled'
         state.alert = null
         state.posts = state.posts.filter(
           (post) => post._id !== action.payload._id
         )
       })
       .addCase(approvePost.rejected, (state, action) => {
-        state.loading = false
+        state.loading = 'failed'
         state.alert = action.payload
       })
       .addCase(rejectPost.pending, (state) => {
-        state.loading = true
+        state.loading = 'pending'
         state.alert = null
       })
       .addCase(rejectPost.fulfilled, (state, action) => {
-        state.loading = false
-        state.success = true
+        state.loading = 'fulfilled'
         state.alert = null
         state.posts = state.posts.filter(
           (post) => post._id !== action.payload._id
         )
       })
       .addCase(rejectPost.rejected, (state, action) => {
-        state.loading = false
+        state.loading = 'failed'
         state.alert = action.payload
       })
   },

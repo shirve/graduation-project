@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { alertReset, loginUser } from '../features/auth/authSlice'
+import { alertReset, loginUser } from '../features/user/userSlice'
 import FormField from '../components/common/FormField'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -20,8 +20,8 @@ function Login() {
   const { setAlert, removeAlert } = useContext(AlertContext)
   const { setHeader } = useContext(HeaderContext)
 
-  const { user, success, loading, alert } = useSelector(
-    (state: RootState) => state.auth
+  const { user, loading, alert } = useSelector(
+    (state: RootState) => state.currentUser
   )
 
   useEffect(() => {
@@ -32,10 +32,10 @@ function Login() {
   }, [])
 
   useEffect(() => {
-    if (success || user) {
+    if (loading === 'fulfilled' || user) {
       navigate('/')
     }
-  }, [user, success])
+  }, [user, loading])
 
   useEffect(() => {
     if (alert) {
@@ -56,7 +56,7 @@ function Login() {
     password: Yup.string().required('To pole jest wymagane'),
   })
 
-  if (loading) return <Spinner />
+  if (loading === 'pending') return <Spinner />
 
   return (
     <Formik

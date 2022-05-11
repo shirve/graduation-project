@@ -23,7 +23,7 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
   const [showRejectModal, setShowRejectModal] = useState(false)
   const [rejectMessage, setRejectMessage] = useState('')
 
-  const { user } = useSelector((state: RootState) => state.auth)
+  const { user } = useSelector((state: RootState) => state.currentUser)
 
   const dispatch = useDispatch()
 

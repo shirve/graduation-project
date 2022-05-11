@@ -19,9 +19,9 @@ const DashboardUserPosts = () => {
   const { setHeader } = useContext(HeaderContext)
   const { setAlert, removeAlert } = useContext(AlertContext)
 
-  const { user } = useSelector((state: RootState) => state.auth)
+  const { user } = useSelector((state: RootState) => state.currentUser)
   const { posts, loading, alert } = useSelector(
-    (state: RootState) => state.posts
+    (state: RootState) => state.fetchedPosts
   )
 
   const [filterType, setFilterType] = useState<FilterType>('approved')
@@ -86,7 +86,7 @@ const DashboardUserPosts = () => {
     }
   }, [alert])
 
-  if (loading) return <Spinner />
+  if (loading === 'pending') return <Spinner />
 
   return (
     <React.Fragment>

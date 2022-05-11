@@ -1,22 +1,24 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import authService from './authService'
+import authService from './userService'
 import { User, UserLogin, UserRegister } from '../../models/User'
 import { RootState } from '../../app/store'
 import { Alert } from '../../models/Alert'
 
-const user = JSON.parse(localStorage.getItem('user')!)
+let user: User | null = null
+const userFromLocalStorage = localStorage.getItem('user')
+if (userFromLocalStorage !== null) {
+  user = JSON.parse(userFromLocalStorage)
+}
 
 interface IAuthState {
   user: User | null
-  success: boolean
-  loading: boolean
+  loading: 'idle' | 'pending' | 'fulfilled' | 'failed'
   alert: Alert | undefined | null
 }
 
 const initialState: IAuthState = {
-  user: user ? user : null,
-  success: false,
-  loading: false,
+  user: user,
+  loading: 'idle',
   alert: null,
 }
 
@@ -26,9 +28,9 @@ export const registerUser = createAsyncThunk<
   User,
   UserRegister,
   { rejectValue: Alert }
->('users/register', async (user: UserRegister, thunkAPI) => {
+>('users/register', async (userData, thunkAPI) => {
   try {
-    return await authService.registerUser(user)
+    return await authService.registerUser(userData)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -40,36 +42,36 @@ export const loginUser = createAsyncThunk<
   User,
   UserLogin,
   { rejectValue: Alert }
->('users/login', async (user: UserLogin, thunkAPI) => {
+>('users/login', async (userData, thunkAPI) => {
   try {
-    return await authService.loginUser(user)
+    return await authService.loginUser(userData)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
 })
 
 // Update user
-// PUT /api/users/:id
+// PUT /api/users/:id/update
 export const updateUser = createAsyncThunk<
   User,
   User,
   { state: RootState; rejectValue: Alert }
->('users/:id/update', async (updatedData: User, thunkAPI) => {
+>('users/update', async (userData, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user?.token
-    return await authService.updateUser(updatedData._id!, updatedData, token)
+    const token = thunkAPI.getState().currentUser.user?.token
+    return await authService.updateUser(userData, token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
 })
 
 // Logout user
-export const logoutUser = createAsyncThunk('auth/logout', async () => {
+export const logoutUser = createAsyncThunk('users/logout', async () => {
   await authService.logoutUser()
 })
 
-export const authSlice = createSlice({
-  name: 'auth',
+export const userSlice = createSlice({
+  name: 'users',
   initialState,
   reducers: {
     reset: () => initialState,
@@ -80,32 +82,30 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
-        state.loading = true
+        state.loading = 'pending'
         state.alert = null
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.loading = false
-        state.success = true
+        state.loading = 'fulfilled'
         state.alert = null
         state.user = action.payload
       })
       .addCase(registerUser.rejected, (state, action) => {
-        state.loading = false
+        state.loading = 'failed'
         state.alert = action.payload
         state.user = null
       })
       .addCase(loginUser.pending, (state) => {
-        state.loading = true
+        state.loading = 'pending'
         state.alert = null
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.loading = false
-        state.success = true
+        state.loading = 'fulfilled'
         state.alert = null
         state.user = action.payload
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false
+        state.loading = 'failed'
         state.alert = action.payload
         state.user = null
       })
@@ -115,5 +115,5 @@ export const authSlice = createSlice({
   },
 })
 
-export const { reset, alertReset } = authSlice.actions
-export default authSlice.reducer
+export const { reset, alertReset } = userSlice.actions
+export default userSlice.reducer

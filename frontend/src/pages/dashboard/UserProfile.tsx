@@ -9,7 +9,7 @@ const UserProfile = () => {
 
   const { setHeader } = useContext(HeaderContext)
 
-  const { user } = useSelector((state: RootState) => state.auth)
+  const { user } = useSelector((state: RootState) => state.currentUser)
 
   useEffect(() => {
     setHeader('TWÓJ PROFIL')
