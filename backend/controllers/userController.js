@@ -14,6 +14,7 @@ const registerUser = asyncHandler(async (req, res) => {
     res
       .status(400)
       .json({ type: 'error', message: 'Podany email jest zajęty!' })
+    return
   }
 
   const salt = await bcrypt.genSalt(10)
@@ -76,6 +77,7 @@ const updateUser = asyncHandler(async (req, res) => {
     res
       .status(400)
       .json({ type: 'error', message: 'Nie znaleziono użytkownika!' })
+    return
   }
 
   const data = { ...req.body, ROLE_ADMIN: false }
@@ -118,7 +120,7 @@ const getUser = asyncHandler(async (req, res) => {
 // Generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '30d',
+    expiresIn: '7d',
   })
 }
 

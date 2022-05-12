@@ -56,6 +56,7 @@ const getUnapprovedPosts = asyncHandler(async (req, res) => {
     res
       .status(401)
       .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
+    return
   }
 
   const posts = await Post.find(query, null, options)
@@ -69,6 +70,7 @@ const createPost = asyncHandler(async (req, res) => {
     res
       .status(401)
       .json({ type: 'error', message: 'Użytkownik nie zalogowany!' })
+    return
   }
 
   const post = await Post.create({
@@ -93,6 +95,7 @@ const deletePost = asyncHandler(async (req, res) => {
 
   if (!post) {
     res.status(400).json({ type: 'error', message: 'Post nie istnieje!' })
+    return
   }
 
   if (
@@ -102,6 +105,7 @@ const deletePost = asyncHandler(async (req, res) => {
     res
       .status(401)
       .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
+    return
   }
 
   await post.remove()
@@ -116,6 +120,7 @@ const updatePost = asyncHandler(async (req, res) => {
 
   if (!post) {
     res.status(400).json({ type: 'error', message: 'Post nie istnieje!' })
+    return
   }
 
   if (
@@ -125,6 +130,7 @@ const updatePost = asyncHandler(async (req, res) => {
     res
       .status(401)
       .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
+    return
   }
 
   const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
@@ -141,12 +147,14 @@ const approvePost = asyncHandler(async (req, res) => {
 
   if (!post) {
     res.status(400).json({ type: 'error', message: 'Post nie istnieje!' })
+    return
   }
 
   if (req.user.ROLE_ADMIN === false) {
     res
       .status(401)
       .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
+    return
   }
 
   const approvedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
@@ -163,12 +171,14 @@ const rejectPost = asyncHandler(async (req, res) => {
 
   if (!post) {
     res.status(400).json({ type: 'error', message: 'Post nie istnieje!' })
+    return
   }
 
   if (req.user.ROLE_ADMIN === false) {
     res
       .status(401)
       .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
+    return
   }
 
   const rejectedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
