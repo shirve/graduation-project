@@ -3,8 +3,10 @@ const router = express.Router()
 const {
   registerUser,
   loginUser,
+  logoutUser,
   updateUser,
   getUser,
+  authenticateUser,
 } = require('../controllers/userController')
 const { protect } = require('../middleware/authMiddleware')
 const { body } = require('express-validator')
@@ -34,9 +36,17 @@ router.post(
   loginUser
 )
 
+// Logout user
+// POST /api/users/logout
+router.post('/logout', logoutUser)
+
 // Update user
 // PUT /api/users/:id/update
 router.put('/:id/update', protect, updateUser)
+
+// Authenticate user from cookies
+// GET /api/users/whoami
+router.get('/whoami', authenticateUser)
 
 // Get user
 // GET /api/users/:id

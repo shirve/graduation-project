@@ -13,7 +13,7 @@ import Alert from '../components/common/Alert'
 import AlertContext from '../context/alert/AlertContext'
 import HeaderContext from '../context/header/HeaderContext'
 
-function Register() {
+const Register = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 

@@ -8,10 +8,6 @@ const API_URL = '/api/users/'
 const registerUser = async (userData: UserRegister) => {
   const response = await axios.post(API_URL + 'register', userData)
 
-  if (response.data) {
-    localStorage.setItem('user', JSON.stringify(response.data))
-  }
-
   return response.data
 }
 
@@ -20,11 +16,13 @@ const registerUser = async (userData: UserRegister) => {
 const loginUser = async (userData: UserLogin) => {
   const response = await axios.post(API_URL + 'login', userData)
 
-  if (response.data) {
-    localStorage.setItem('user', JSON.stringify(response.data))
-  }
-
   return response.data
+}
+
+// Logout user
+// POST /api/users/logout
+const logoutUser = async () => {
+  await axios.post(API_URL + 'logout')
 }
 
 // Update user
@@ -45,16 +43,11 @@ const updateUser = async (userData: User, token: string | undefined) => {
   return response.data
 }
 
-// Logout user
-const logoutUser = () => {
-  localStorage.removeItem('user')
-}
-
 const userService = {
   registerUser,
   loginUser,
-  updateUser,
   logoutUser,
+  updateUser,
 }
 
 export default userService

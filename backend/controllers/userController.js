@@ -29,12 +29,20 @@ const registerUser = asyncHandler(async (req, res) => {
   })
 
   if (user) {
+    const token = generateToken(user._id)
+
+    res.cookie('auth', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+    })
+
     res.status(201).json({
       _id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      token: generateToken(user._id),
+      token: token,
       ROLE_ADMIN: user.ROLE_ADMIN,
     })
   } else {
@@ -52,12 +60,20 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email })
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    res.json({
+    const token = generateToken(user._id)
+
+    res.cookie('auth', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+    })
+
+    res.status(200).json({
       _id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      token: generateToken(user._id),
+      token: token,
       ROLE_ADMIN: user.ROLE_ADMIN,
     })
   } else {
@@ -66,6 +82,12 @@ const loginUser = asyncHandler(async (req, res) => {
       message: 'Nieprawidłowy adres email lub hasło!',
     })
   }
+})
+
+// Logout user
+// POST /api/users/logout
+const logoutUser = asyncHandler(async (req, res) => {
+  res.clearCookie('auth').end()
 })
 
 // Update user
@@ -117,6 +139,34 @@ const getUser = asyncHandler(async (req, res) => {
   })
 })
 
+// Authenticate user from cookies
+// GET /api/users/whoami
+const authenticateUser = asyncHandler(async (req, res) => {
+  try {
+    const token = req.cookies['auth']
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+    const user = await User.findById(decoded.id).select('-password')
+
+    if (!user) {
+      res.status(204).end()
+      return
+    }
+
+    res.status(200).json({
+      _id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      token: token,
+      ROLE_ADMIN: user.ROLE_ADMIN,
+    })
+  } catch (error) {
+    res.status(204).end()
+  }
+})
+
 // Generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -127,6 +177,8 @@ const generateToken = (id) => {
 module.exports = {
   registerUser,
   loginUser,
+  logoutUser,
   updateUser,
   getUser,
+  authenticateUser,
 }

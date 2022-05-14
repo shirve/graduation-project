@@ -14,7 +14,7 @@ import { PostGenres, Option } from '../data/post/PostGenres'
 import Modal from 'react-modal'
 import AlertContext from '../context/alert/AlertContext'
 
-function Posts() {
+const Posts = () => {
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [pageSize, setPageSize] = useState<number>(10)
   const [currentGenre, setCurrentGenre] = useState<Option | null>(null)

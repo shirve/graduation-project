@@ -4,12 +4,6 @@ import { User, UserLogin, UserRegister } from '../../models/User'
 import { RootState } from '../../app/store'
 import { Alert } from '../../models/Alert'
 
-let user: User | null = null
-const userFromLocalStorage = localStorage.getItem('user')
-if (userFromLocalStorage !== null) {
-  user = JSON.parse(userFromLocalStorage)
-}
-
 interface IAuthState {
   user: User | null
   loading: 'idle' | 'pending' | 'fulfilled' | 'failed'
@@ -17,7 +11,7 @@ interface IAuthState {
 }
 
 const initialState: IAuthState = {
-  user: user,
+  user: null,
   loading: 'idle',
   alert: null,
 }
@@ -50,6 +44,12 @@ export const loginUser = createAsyncThunk<
   }
 })
 
+// Logout user
+// POST /api/users/logout
+export const logoutUser = createAsyncThunk('users/logout', async () => {
+  await authService.logoutUser()
+})
+
 // Update user
 // PUT /api/users/:id/update
 export const updateUser = createAsyncThunk<
@@ -65,11 +65,6 @@ export const updateUser = createAsyncThunk<
   }
 })
 
-// Logout user
-export const logoutUser = createAsyncThunk('users/logout', async () => {
-  await authService.logoutUser()
-})
-
 export const userSlice = createSlice({
   name: 'users',
   initialState,
@@ -77,6 +72,9 @@ export const userSlice = createSlice({
     reset: () => initialState,
     alertReset: (state) => {
       state.alert = null
+    },
+    authenticateUser: (state, action) => {
+      state.user = action.payload ? action.payload : null
     },
   },
   extraReducers: (builder) => {
@@ -115,5 +113,5 @@ export const userSlice = createSlice({
   },
 })
 
-export const { reset, alertReset } = userSlice.actions
+export const { reset, alertReset, authenticateUser } = userSlice.actions
 export default userSlice.reducer

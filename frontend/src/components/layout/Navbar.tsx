@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { RootState } from '../../app/store'
 import { logoutUser, reset } from '../../features/user/userSlice'
 
-function Navbar() {
+const Navbar = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user } = useSelector((state: RootState) => state.currentUser)

@@ -22,7 +22,7 @@ const UserProfile = () => {
     if (!user) {
       navigate('/login')
     }
-  }, [])
+  }, [user])
 
   return <div>Twój profil</div>
 }
