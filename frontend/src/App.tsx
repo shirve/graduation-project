@@ -4,7 +4,9 @@ import {
   Routes,
   Route,
   Navigate,
+  Outlet,
 } from 'react-router-dom'
+import ProtectedRoute from './components/ProtectedRoute'
 import Navbar from './components/layout/Navbar'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
@@ -14,7 +16,6 @@ import Posts from './pages/Posts'
 import Projects from './pages/Projects'
 import NotFound from './pages/NotFound'
 import SearchUser from './pages/SearchUser'
-import Dashboard from './pages/dashboard/Dashboard'
 import UserProfile from './pages/dashboard/UserProfile'
 import UserPosts from './pages/dashboard/UserPosts'
 import UserProjects from './pages/dashboard/UserProjects'
@@ -36,21 +37,29 @@ const App = () => {
               <Header />
               <main className='page-wrapper col-xl-8 col-lg-8 col-md-10 col-sm-10 col-xs-12'>
                 <Routes>
-                  <Route path='/dashboard/' element={<Dashboard />}>
-                    <Route path='your-profile' element={<UserProfile />} />
-                    <Route path='your-posts' element={<UserPosts />} />
-                    <Route path='your-projects' element={<UserProjects />} />
+                  <Route path='dashboard' element={<Outlet />}>
+                    <Route element={<ProtectedRoute />}>
+                      <Route index element={<Navigate to='your-profile' />} />
+                      <Route path='your-profile' element={<UserProfile />} />
+                      <Route path='your-posts' element={<UserPosts />} />
+                      <Route path='your-projects' element={<UserProjects />} />
+                      <Route path='*' element={<Navigate to='/not-found' />} />
+                    </Route>
                     <Route
-                      path='unapproved-posts'
-                      element={<UnapprovedPosts />}
-                    />
+                      element={<ProtectedRoute allowedRoles={['admin']} />}
+                    >
+                      <Route
+                        path='unapproved-posts'
+                        element={<UnapprovedPosts />}
+                      />
+                    </Route>
                   </Route>
-                  <Route path='/users/:userId' element={<SearchUser />} />
-                  <Route path='/posts' element={<Posts />} />
-                  <Route path='/projects' element={<Projects />} />
-                  <Route path='/register' element={<Register />} />
-                  <Route path='/login' element={<Login />} />
-                  <Route path='/not-found' element={<NotFound />} />
+                  <Route path='users/:userId' element={<SearchUser />} />
+                  <Route path='posts' element={<Posts />} />
+                  <Route path='projects' element={<Projects />} />
+                  <Route path='register' element={<Register />} />
+                  <Route path='login' element={<Login />} />
+                  <Route path='not-found' element={<NotFound />} />
                   <Route path='/' element={<Navigate to='/posts' />} />
                   <Route path='*' element={<Navigate to='/not-found' />} />
                 </Routes>

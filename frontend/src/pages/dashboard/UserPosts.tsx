@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { alertReset, getUserPosts } from '../../features/posts/postSlice'
 import PostItem from '../../components/common/PostItem'
@@ -13,13 +12,11 @@ import { Post } from '../../models/Post'
 type FilterType = 'approved' | 'unapproved' | 'rejected'
 
 const DashboardUserPosts = () => {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const { setHeader } = useContext(HeaderContext)
   const { setAlert, removeAlert } = useContext(AlertContext)
 
-  const { user } = useSelector((state: RootState) => state.currentUser)
   const { posts, loading, alert } = useSelector(
     (state: RootState) => state.fetchedPosts
   )
@@ -69,11 +66,8 @@ const DashboardUserPosts = () => {
   }, [])
 
   useEffect(() => {
-    if (!user) {
-      navigate('/login')
-    }
     dispatch(getUserPosts())
-  }, [user])
+  }, [])
 
   useEffect(() => {
     if (alert) {

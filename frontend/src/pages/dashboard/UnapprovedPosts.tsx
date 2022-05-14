@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { alertReset, getUnapprovedPosts } from '../../features/posts/postSlice'
 import PostItem from '../../components/common/PostItem'
@@ -10,13 +9,11 @@ import Alert from '../../components/common/Alert'
 import Spinner from '../../components/common/Spinner'
 
 const DashboardUnapprovedPosts = () => {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const { setHeader } = useContext(HeaderContext)
   const { setAlert, removeAlert } = useContext(AlertContext)
 
-  const { user } = useSelector((state: RootState) => state.currentUser)
   const { posts, loading, alert } = useSelector(
     (state: RootState) => state.fetchedPosts
   )
@@ -29,11 +26,8 @@ const DashboardUnapprovedPosts = () => {
   }, [])
 
   useEffect(() => {
-    if (!user || !user.roles.includes('admin')) {
-      navigate('/')
-    }
     dispatch(getUnapprovedPosts())
-  }, [user])
+  }, [])
 
   useEffect(() => {
     if (alert) {
