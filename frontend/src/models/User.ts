@@ -6,7 +6,7 @@ export interface User {
   lastName: string
   email: string
   password: string
-  ROLE_ADMIN: boolean
+  roles: string[]
   token: string
 }
 

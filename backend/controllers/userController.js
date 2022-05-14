@@ -25,7 +25,7 @@ const registerUser = asyncHandler(async (req, res) => {
     lastName,
     email,
     password: hashedPassword,
-    ROLE_ADMIN: false,
+    roles: [],
   })
 
   if (user) {
@@ -43,7 +43,7 @@ const registerUser = asyncHandler(async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       token: token,
-      ROLE_ADMIN: user.ROLE_ADMIN,
+      roles: user.roles,
     })
   } else {
     res
@@ -74,7 +74,7 @@ const loginUser = asyncHandler(async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       token: token,
-      ROLE_ADMIN: user.ROLE_ADMIN,
+      roles: user.roles,
     })
   } else {
     res.status(400).json({
@@ -102,7 +102,7 @@ const updateUser = asyncHandler(async (req, res) => {
     return
   }
 
-  const data = { ...req.body, ROLE_ADMIN: false }
+  const data = { ...req.body, roles: [] }
 
   const updatedUser = await User.findByIdAndUpdate(req.params.id, data, {
     new: true,
@@ -160,7 +160,7 @@ const authenticateUser = asyncHandler(async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       token: token,
-      ROLE_ADMIN: user.ROLE_ADMIN,
+      roles: user.roles,
     })
   } catch (error) {
     res.status(204).end()

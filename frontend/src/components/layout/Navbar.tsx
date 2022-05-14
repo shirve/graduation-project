@@ -86,7 +86,7 @@ const Navbar = () => {
                         TWOJE PROJEKTY
                       </NavLink>
                     </li>
-                    {user.ROLE_ADMIN && (
+                    {user.roles.includes('admin') && (
                       <>
                         <hr className='m-0' />
                         <li>

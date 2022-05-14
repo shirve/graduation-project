@@ -19,10 +19,12 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    ROLE_ADMIN: {
-      type: Boolean,
-      default: false,
-    },
+    roles: [
+      {
+        type: String,
+        required: false,
+      },
+    ],
   },
   {
     timestamp: true,

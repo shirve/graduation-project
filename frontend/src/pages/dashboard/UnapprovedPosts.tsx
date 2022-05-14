@@ -29,7 +29,7 @@ const DashboardUnapprovedPosts = () => {
   }, [])
 
   useEffect(() => {
-    if (!user || !user.ROLE_ADMIN) {
+    if (!user || !user.roles.includes('admin')) {
       navigate('/')
     }
     dispatch(getUnapprovedPosts())

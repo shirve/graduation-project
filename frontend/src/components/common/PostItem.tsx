@@ -95,7 +95,7 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
           <p>{post.data.music}</p>
         </div>
         <div className='post-manage'>
-          {(user?.ROLE_ADMIN === true || user?._id === post.user._id) && (
+          {(user?.roles.includes('admin') || user?._id === post.user._id) && (
             <>
               <button onClick={handleShowEditModal} className='btn'>
                 Edytuj
@@ -105,7 +105,7 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
               </button>
             </>
           )}
-          {user?.ROLE_ADMIN === true &&
+          {user?.roles.includes('admin') &&
             post.status.approved === false &&
             post.status.rejected === false && (
               <>

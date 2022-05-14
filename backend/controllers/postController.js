@@ -52,7 +52,7 @@ const getUnapprovedPosts = asyncHandler(async (req, res) => {
     sort: { createdAt: -1 },
   }
 
-  if (req.user.ROLE_ADMIN === false) {
+  if (!req.user.roles.includes('admin')) {
     res
       .status(401)
       .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
@@ -100,7 +100,7 @@ const deletePost = asyncHandler(async (req, res) => {
 
   if (
     post.user._id.toString() !== req.user._id.toString() &&
-    req.user.ROLE_ADMIN === false
+    !req.user.roles.includes('admin')
   ) {
     res
       .status(401)
@@ -125,7 +125,7 @@ const updatePost = asyncHandler(async (req, res) => {
 
   if (
     post.user._id.toString() !== req.user._id.toString() &&
-    req.user.ROLE_ADMIN === false
+    !req.user.roles.includes('admin')
   ) {
     res
       .status(401)
@@ -150,7 +150,7 @@ const approvePost = asyncHandler(async (req, res) => {
     return
   }
 
-  if (req.user.ROLE_ADMIN === false) {
+  if (!req.user.roles.includes('admin')) {
     res
       .status(401)
       .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
@@ -174,7 +174,7 @@ const rejectPost = asyncHandler(async (req, res) => {
     return
   }
 
-  if (req.user.ROLE_ADMIN === false) {
+  if (!req.user.roles.includes('admin')) {
     res
       .status(401)
       .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
