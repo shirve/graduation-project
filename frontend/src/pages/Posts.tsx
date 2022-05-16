@@ -3,16 +3,14 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import PostForm from '../components/PostForm'
 import { alertReset, getApprovedPosts } from '../features/posts/postSlice'
-import PostItem from '../components/common/PostItem'
-import Pagination from '../components/common/Pagination'
 import { RootState, useAppDispatch } from '../app/store'
 import HeaderContext from '../context/header/HeaderContext'
-import Spinner from '../components/common/Spinner'
 import Alert from '../components/common/Alert'
 import Select from 'react-select'
 import { PostGenres, Option } from '../data/post/PostGenres'
 import Modal from 'react-modal'
 import AlertContext from '../context/alert/AlertContext'
+import PostItems from '../components/PostItems'
 
 const Posts = () => {
   const [currentPage, setCurrentPage] = useState<number>(0)
@@ -30,8 +28,6 @@ const Posts = () => {
     (state: RootState) => state.fetchedPosts
   )
 
-  const { totalPosts, totalPages, prevPage, nextPage } = pagination
-
   useEffect(() => {
     setHeader('PROPOZYCJE GIER')
     return () => {
@@ -43,14 +39,6 @@ const Posts = () => {
   useEffect(() => {
     fetchPaginatedPosts(currentPage, pageSize, currentGenre?.value)
   }, [currentPage, pageSize, currentGenre])
-
-  // If there is no posts on the current page, there is a previous page but no next page -> set page number to previous one
-  // Note: That means you are at the last page and deleted all posts from that page
-  useEffect(() => {
-    if (posts.length < 1 && prevPage && !nextPage) {
-      setCurrentPage(prevPage - 1)
-    }
-  }, [totalPosts])
 
   // If filtered genre or page size changes -> set current page to 0
   useEffect(() => {
@@ -82,6 +70,10 @@ const Posts = () => {
     )
   }
 
+  const handleShowPostFormModal = () => {
+    setShowPostFormModal((prevState) => !prevState)
+  }
+
   const handleGenreChange = (genre: string) => {
     setCurrentGenre({
       value: genre,
@@ -89,18 +81,13 @@ const Posts = () => {
         PostGenres.find((postGenre) => genre === postGenre.value)?.label ??
         genre,
     })
-  }
-
-  const handleShowPostFormModal = () => {
-    setShowPostFormModal((prevState) => !prevState)
+    window.scrollTo(0, 0)
   }
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
     window.scrollTo(0, 0)
   }
-
-  if (loading === 'pending') return <Spinner />
 
   return (
     <React.Fragment>
@@ -150,20 +137,16 @@ const Posts = () => {
         />
       </div>
       {posts.length > 0 ? (
-        <>
-          {posts.map((post, index) => (
-            <PostItem
-              key={index}
-              post={post}
-              onGenreChange={handleGenreChange}
-            />
-          ))}
-          <Pagination
-            totalPages={totalPages ?? 1}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-          />
-        </>
+        <PostItems
+          posts={posts}
+          loading={loading}
+          onGenreChange={handleGenreChange}
+          pagination={{
+            totalPages: pagination?.totalPages ?? 1,
+            currentPage,
+            onPageChange: handlePageChange,
+          }}
+        />
       ) : (
         <p>Nie znaleziono postów</p>
       )}

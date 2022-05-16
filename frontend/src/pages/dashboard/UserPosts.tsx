@@ -1,13 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { alertReset, getUserPosts } from '../../features/posts/postSlice'
-import PostItem from '../../components/common/PostItem'
+import { getUserPosts } from '../../features/posts/postSlice'
 import { RootState } from '../../app/store'
 import HeaderContext from '../../context/header/HeaderContext'
-import AlertContext from '../../context/alert/AlertContext'
-import Alert from '../../components/common/Alert'
-import Spinner from '../../components/common/Spinner'
 import { Post } from '../../models/Post'
+import PostItems from '../../components/PostItems'
 
 type FilterType = 'approved' | 'unapproved' | 'rejected'
 
@@ -15,9 +12,8 @@ const DashboardUserPosts = () => {
   const dispatch = useDispatch()
 
   const { setHeader } = useContext(HeaderContext)
-  const { setAlert, removeAlert } = useContext(AlertContext)
 
-  const { posts, loading, alert } = useSelector(
+  const { posts, loading } = useSelector(
     (state: RootState) => state.fetchedPosts
   )
 
@@ -69,19 +65,6 @@ const DashboardUserPosts = () => {
     dispatch(getUserPosts())
   }, [])
 
-  useEffect(() => {
-    if (alert) {
-      setAlert(alert.type, alert.message, 5)
-    } else {
-      removeAlert()
-    }
-    return () => {
-      if (alert) dispatch(alertReset())
-    }
-  }, [alert])
-
-  if (loading === 'pending') return <Spinner />
-
   return (
     <React.Fragment>
       <ul className='dashboard-posts-navigation'>
@@ -108,12 +91,7 @@ const DashboardUserPosts = () => {
         </li>
       </ul>
       {filteredPosts.length > 0 ? (
-        filteredPosts.map((post, index) => (
-          <React.Fragment key={index}>
-            <PostItem post={post} />
-            <Alert />
-          </React.Fragment>
-        ))
+        <PostItems posts={filteredPosts} loading={loading} />
       ) : (
         <div className='dashboard-posts-info'>
           {filterType === 'approved' && (

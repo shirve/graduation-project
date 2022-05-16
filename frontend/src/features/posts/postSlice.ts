@@ -12,19 +12,14 @@ import { Alert } from '../../models/Alert'
 
 interface IPostsState {
   posts: Post[]
-  pagination: PaginationData
+  pagination: PaginationData | null
   loading: 'idle' | 'pending' | 'fulfilled' | 'failed'
   alert: Alert | undefined | null
 }
 
 const initialState: IPostsState = {
   posts: [],
-  pagination: {
-    totalPosts: null,
-    totalPages: null,
-    prevPage: null,
-    nextPage: null,
-  },
+  pagination: null,
   loading: 'idle',
   alert: null,
 }
@@ -80,7 +75,7 @@ export const getUnapprovedPosts = createAsyncThunk<
 // Create new post
 // POST /api/posts/create
 export const createPost = createAsyncThunk<
-  Post,
+  Alert,
   PostData,
   { state: RootState; rejectValue: Alert }
 >('posts/create', async (postData, thunkAPI) => {
@@ -210,19 +205,12 @@ export const postSlice = createSlice({
         state.alert = action.payload
       })
       .addCase(createPost.pending, (state) => {
-        state.loading = 'pending'
         state.alert = null
       })
       .addCase(createPost.fulfilled, (state, action) => {
-        state.loading = 'fulfilled'
-        state.alert = {
-          type: 'info',
-          message:
-            'Post dodany pomyślnie. Przekazano do zatwierdzenia przez administratora.',
-        }
+        state.alert = action.payload
       })
       .addCase(createPost.rejected, (state, action) => {
-        state.loading = 'failed'
         state.alert = action.payload
       })
       .addCase(updatePost.pending, (state) => {
@@ -250,9 +238,6 @@ export const postSlice = createSlice({
         state.posts = state.posts.filter(
           (post) => post._id !== action.payload._id
         )
-        state.pagination.totalPosts = state.pagination.totalPosts
-          ? state.pagination.totalPosts - 1
-          : state.pagination.totalPosts
       })
       .addCase(deletePost.rejected, (state, action) => {
         state.loading = 'failed'

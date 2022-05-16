@@ -1,20 +1,16 @@
 import React, { useContext, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { alertReset, getUnapprovedPosts } from '../../features/posts/postSlice'
-import PostItem from '../../components/common/PostItem'
+import { getUnapprovedPosts } from '../../features/posts/postSlice'
 import { RootState } from '../../app/store'
 import HeaderContext from '../../context/header/HeaderContext'
-import AlertContext from '../../context/alert/AlertContext'
-import Alert from '../../components/common/Alert'
-import Spinner from '../../components/common/Spinner'
+import PostItems from '../../components/PostItems'
 
 const DashboardUnapprovedPosts = () => {
   const dispatch = useDispatch()
 
   const { setHeader } = useContext(HeaderContext)
-  const { setAlert, removeAlert } = useContext(AlertContext)
 
-  const { posts, loading, alert } = useSelector(
+  const { posts, loading } = useSelector(
     (state: RootState) => state.fetchedPosts
   )
 
@@ -29,28 +25,10 @@ const DashboardUnapprovedPosts = () => {
     dispatch(getUnapprovedPosts())
   }, [])
 
-  useEffect(() => {
-    if (alert) {
-      setAlert(alert.type, alert.message, 5)
-    } else {
-      removeAlert()
-    }
-    return () => {
-      if (alert) dispatch(alertReset())
-    }
-  }, [alert])
-
-  if (loading === 'pending') return <Spinner />
-
   return (
     <React.Fragment>
       {posts.length > 0 ? (
-        posts.map((post, index) => (
-          <React.Fragment key={index}>
-            <PostItem post={post} />
-            <Alert />
-          </React.Fragment>
-        ))
+        <PostItems posts={posts} loading={loading} />
       ) : (
         <p className='text-center'>Brak nowych niezatwierdzonych postów</p>
       )}

@@ -73,7 +73,7 @@ const createPost = asyncHandler(async (req, res) => {
     return
   }
 
-  const post = await Post.create({
+  await Post.create({
     data: req.body.data,
     status: {
       approved: false,
@@ -85,7 +85,12 @@ const createPost = asyncHandler(async (req, res) => {
       name: req.user.firstName + ' ' + req.user.lastName,
     },
   })
-  res.status(200).json(post)
+
+  res.status(201).json({
+    type: 'info',
+    message:
+      'Post dodany pomyślnie. Przekazano do zatwierdzenia przez administratora.',
+  })
 })
 
 // Delete post

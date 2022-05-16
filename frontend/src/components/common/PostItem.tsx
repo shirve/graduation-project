@@ -29,6 +29,7 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
 
   const handlePostDelete = (postId: ObjectId) => {
     dispatch(deletePost(postId))
+    handleShowDeleteModal()
   }
 
   const handlePostApprove = (postId: ObjectId) => {
@@ -37,6 +38,7 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
 
   const handlePostReject = (postId: ObjectId, message: string) => {
     dispatch(rejectPost({ postId, message }))
+    handleShowRejectModal()
   }
 
   const handleShowDeleteModal = () => {
