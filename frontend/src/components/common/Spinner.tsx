@@ -1,7 +1,7 @@
 const Spinner = () => {
   return (
-    <div className='loading-spinner-container'>
-      <div className='loading-spinner' />
+    <div className='dot-spinner-container'>
+      <div className='dot-spinner' />
     </div>
   )
 }
