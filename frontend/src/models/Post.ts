@@ -33,7 +33,8 @@ export interface PaginatedPosts {
 }
 
 export interface PaginationData {
-  totalPosts: number
+  page: number
+  limit: number
   totalPages: number
   prevPage: number | null
   nextPage: number | null

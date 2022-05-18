@@ -2,7 +2,11 @@ import React, { useEffect, useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import PostForm from '../components/PostForm'
-import { alertReset, getApprovedPosts } from '../features/posts/postSlice'
+import {
+  alertReset,
+  getApprovedPosts,
+  setPage,
+} from '../features/posts/postSlice'
 import { RootState, useAppDispatch } from '../app/store'
 import HeaderContext from '../context/header/HeaderContext'
 import Alert from '../components/common/Alert'
@@ -13,9 +17,7 @@ import AlertContext from '../context/alert/AlertContext'
 import PostItems from '../components/PostItems'
 
 const Posts = () => {
-  const [currentPage, setCurrentPage] = useState<number>(0)
-  const [pageSize, setPageSize] = useState<number>(10)
-  const [currentGenre, setCurrentGenre] = useState<Option | null>(null)
+  const [genre, setGenre] = useState<Option | null>(null)
   const [showPostFormModal, setShowPostFormModal] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
@@ -28,6 +30,8 @@ const Posts = () => {
     (state: RootState) => state.fetchedPosts
   )
 
+  const { page, limit } = pagination
+
   useEffect(() => {
     setHeader('PROPOZYCJE GIER')
     return () => {
@@ -35,15 +39,35 @@ const Posts = () => {
     }
   }, [])
 
-  // Fetch posts on component mount or when page, page size or filtered genre changes
+  // Fetch posts on component mount or when page changes
   useEffect(() => {
-    fetchPaginatedPosts(currentPage, pageSize, currentGenre?.value)
-  }, [currentPage, pageSize, currentGenre])
+    dispatch(
+      getApprovedPosts({
+        page,
+        limit,
+        genre: genre?.value,
+      })
+    )
+    window.scrollTo(0, 0)
+  }, [page])
 
-  // If filtered genre or page size changes -> set current page to 0
   useEffect(() => {
-    setCurrentPage(0)
-  }, [currentGenre, pageSize])
+    // If genre changes while on page !== 1 --> set page to 1
+    if (page !== 1) {
+      dispatch(setPage(1))
+    }
+    // If genre changes when on page === 1 --> fetch with current page
+    if (genre && page === 1) {
+      dispatch(
+        getApprovedPosts({
+          page,
+          limit,
+          genre: genre?.value,
+        })
+      )
+      window.scrollTo(0, 0)
+    }
+  }, [genre])
 
   useEffect(() => {
     if (alert) {
@@ -56,36 +80,17 @@ const Posts = () => {
     }
   }, [alert])
 
-  const fetchPaginatedPosts = (
-    page?: number,
-    size?: number,
-    genre?: string
-  ) => {
-    dispatch(
-      getApprovedPosts({
-        page,
-        size,
-        genre,
-      })
-    )
-  }
-
   const handleShowPostFormModal = () => {
     setShowPostFormModal((prevState) => !prevState)
   }
 
   const handleGenreChange = (genre: string) => {
-    setCurrentGenre({
+    setGenre({
       value: genre,
       label:
         PostGenres.find((postGenre) => genre === postGenre.value)?.label ??
         genre,
     })
-    window.scrollTo(0, 0)
-  }
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page)
     window.scrollTo(0, 0)
   }
 
@@ -131,9 +136,9 @@ const Posts = () => {
         <Select
           className='posts-page-filter'
           placeholder='Filtruj według gatunku'
-          value={currentGenre}
+          value={genre}
           options={PostGenres}
-          onChange={(option) => setCurrentGenre(option)}
+          onChange={(option) => setGenre(option)}
         />
       </div>
       {posts.length > 0 ? (
@@ -141,11 +146,6 @@ const Posts = () => {
           posts={posts}
           loading={loading}
           onGenreChange={handleGenreChange}
-          pagination={{
-            totalPages: pagination?.totalPages ?? 1,
-            currentPage,
-            onPageChange: handlePageChange,
-          }}
         />
       ) : (
         <p>Nie znaleziono postów</p>

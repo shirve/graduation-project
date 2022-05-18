@@ -1,35 +1,32 @@
-import React from 'react'
-import lodash from 'lodash'
+import { useSelector } from 'react-redux'
+import { RootState, useAppDispatch } from '../../app/store'
+import { setPage } from '../../features/posts/postSlice'
+import { FaArrowRight, FaArrowLeft } from 'react-icons/fa'
 
-interface Props {
-  totalPages: number
-  currentPage: number
-  onPageChange: (page: number) => void
-}
+const Pagination = () => {
+  const dispatch = useAppDispatch()
+  const { pagination } = useSelector((state: RootState) => state.fetchedPosts)
 
-const Pagination = ({
-  totalPages,
-  currentPage,
-  onPageChange,
-}: Props): React.ReactElement | null => {
+  const { page, totalPages, prevPage, nextPage } = pagination
+
   if (totalPages === 1) return null
-
-  const pages = lodash.range(0, totalPages)
 
   return (
     <div className='pagination'>
-      <ul className='pagination-pages'>
-        {pages.map((page) => (
-          <li
-            key={page}
-            className={page === currentPage ? 'page-item active' : 'page-item'}
-          >
-            <a className='page-link' onClick={() => onPageChange(page)}>
-              {page + 1}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <button
+        className='pagination-prev'
+        onClick={() => dispatch(setPage(prevPage ? page - 1 : page))}
+        disabled={!prevPage}
+      >
+        <FaArrowLeft /> Poprzednia strona
+      </button>
+      <button
+        className='pagination-next'
+        onClick={() => dispatch(setPage(nextPage ? page + 1 : page))}
+        disabled={!nextPage}
+      >
+        Następna strona <FaArrowRight />
+      </button>
     </div>
   )
 }

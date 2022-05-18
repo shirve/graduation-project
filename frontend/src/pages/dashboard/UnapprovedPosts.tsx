@@ -10,9 +10,11 @@ const DashboardUnapprovedPosts = () => {
 
   const { setHeader } = useContext(HeaderContext)
 
-  const { posts, loading } = useSelector(
+  const { posts, pagination, loading } = useSelector(
     (state: RootState) => state.fetchedPosts
   )
+
+  const { page, limit } = pagination
 
   useEffect(() => {
     setHeader('NIEZATWIERDZONE POSTY')
@@ -22,8 +24,14 @@ const DashboardUnapprovedPosts = () => {
   }, [])
 
   useEffect(() => {
-    dispatch(getUnapprovedPosts())
-  }, [])
+    dispatch(
+      getUnapprovedPosts({
+        page,
+        limit,
+      })
+    )
+    window.scrollTo(0, 0)
+  }, [page, limit])
 
   return (
     <React.Fragment>

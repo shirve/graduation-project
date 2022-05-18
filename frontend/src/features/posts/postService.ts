@@ -18,16 +18,16 @@ const getUserPosts = async (token: string | undefined) => {
 }
 
 // Get approved posts
-// GET /api/posts/approved?page=number&size=number&genre=string
+// GET /api/posts/approved?page=number&limit=number&genre=string
 const getApprovedPosts = async (
   page?: number,
-  size?: number,
+  limit?: number,
   genre?: string
 ) => {
   const config = {
     params: {
       page: page ? page : null,
-      size: size ? size : null,
+      limit: limit ? limit : null,
       genre: genre ? genre : null,
     },
   }
@@ -37,11 +37,19 @@ const getApprovedPosts = async (
 }
 
 // Get unapproved posts
-// GET /api/posts/unapproved
-const getUnapprovedPosts = async (token: string | undefined) => {
+// GET /api/posts/unapproved?page=number&limit=number
+const getUnapprovedPosts = async (
+  token: string | undefined,
+  page?: number,
+  limit?: number
+) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
+    },
+    params: {
+      page: page ? page : null,
+      limit: limit ? limit : null,
     },
   }
 

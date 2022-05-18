@@ -416,36 +416,36 @@ a {
 
 .pagination {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   margin-top: 1rem;
-  ul {
-    padding: 0;
-    margin: 0;
-  }
-  &-pages {
+  button {
     display: flex;
     justify-content: center;
-    .page {
-      &-item {
-        cursor: pointer;
-        :hover {
-          color: $text-color-light;
-          background-color: $color-primary;
-          border: 1px $color-primary solid;
-        }
-      }
-      &-item.active {
-        .page-link {
-            background-color: $color-primary;
-            border: 1px $color-primary solid;
-          }
-        }
-        &-link {
-          color: $text-color-dark;
-          background-color: $color-white;
-          border: 1px $color-minimal solid;
-      }
+    align-items: center;
+    color: $text-color-dark;
+    background-color: $color-white;
+    border: 1px $color-minimal solid;
+    border-radius: 4px;
+    padding: 0.375rem 1.5rem;
+    &:hover {
+      color: $text-color-light;
+      background-color: $color-primary;
+    }
+    &:disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+  }
+  &-prev {
+    svg {
+      margin-right: 0.5rem;
+    }
+  }
+  &-next {
+    svg {
+      margin-left: 0.5rem;
     }
   }
 }

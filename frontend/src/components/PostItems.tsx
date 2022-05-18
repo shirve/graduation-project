@@ -8,14 +8,9 @@ interface Props {
   posts: Post[]
   loading?: string
   onGenreChange?: (genre: string) => void
-  pagination?: {
-    totalPages: number
-    currentPage: number
-    onPageChange: (page: number) => void
-  }
 }
 
-const PostItems = ({ posts, loading, onGenreChange, pagination }: Props) => {
+const PostItems = ({ posts, loading, onGenreChange }: Props) => {
   if (loading === 'pending') return <Spinner />
 
   return (
@@ -23,13 +18,7 @@ const PostItems = ({ posts, loading, onGenreChange, pagination }: Props) => {
       {posts.map((post, index) => (
         <PostItem key={index} post={post} onGenreChange={onGenreChange} />
       ))}
-      {pagination && (
-        <Pagination
-          totalPages={pagination.totalPages}
-          currentPage={pagination.currentPage}
-          onPageChange={pagination.onPageChange}
-        />
-      )}
+      <Pagination />
     </React.Fragment>
   )
 }

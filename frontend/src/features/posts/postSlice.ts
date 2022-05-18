@@ -12,14 +12,20 @@ import { Alert } from '../../models/Alert'
 
 interface IPostsState {
   posts: Post[]
-  pagination: PaginationData | null
+  pagination: PaginationData
   loading: 'idle' | 'pending' | 'fulfilled' | 'failed'
   alert: Alert | undefined | null
 }
 
 const initialState: IPostsState = {
   posts: [],
-  pagination: null,
+  pagination: {
+    page: 1,
+    limit: 10,
+    totalPages: 1,
+    prevPage: null,
+    nextPage: null,
+  },
   loading: 'idle',
   alert: null,
 }
@@ -40,16 +46,16 @@ export const getUserPosts = createAsyncThunk<
 })
 
 // Get approved posts
-// GET /api/posts/approved?page=number&size=number&genre=string
+// GET /api/posts/approved?page=number&limit=number&genre=string
 export const getApprovedPosts = createAsyncThunk<
   PaginatedPosts,
-  { page?: number; size?: number; genre?: string },
+  { page?: number; limit?: number; genre?: string },
   { state: RootState; rejectValue: Alert }
 >('posts/approved', async (pagination, thunkAPI) => {
   try {
     return await postService.getApprovedPosts(
       pagination.page,
-      pagination.size,
+      pagination.limit,
       pagination.genre
     )
   } catch (error: any) {
@@ -58,15 +64,19 @@ export const getApprovedPosts = createAsyncThunk<
 })
 
 // Get unapproved posts
-// GET /api/posts/unapproved
+// GET /api/posts/unapproved?page=number&limit=number
 export const getUnapprovedPosts = createAsyncThunk<
-  Post[],
-  void,
+  PaginatedPosts,
+  { page?: number; limit?: number },
   { state: RootState; rejectValue: Alert }
->('posts/unapproved', async (_, thunkAPI) => {
+>('posts/unapproved', async (pagination, thunkAPI) => {
   try {
     const token = thunkAPI.getState().currentUser.user?.token
-    return await postService.getUnapprovedPosts(token)
+    return await postService.getUnapprovedPosts(
+      token,
+      pagination.page,
+      pagination.limit
+    )
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -159,6 +169,9 @@ export const postSlice = createSlice({
     alertReset: (state) => {
       state.alert = null
     },
+    setPage: (state, action) => {
+      state.pagination.page = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -197,8 +210,8 @@ export const postSlice = createSlice({
       .addCase(getUnapprovedPosts.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
         state.alert = null
-        state.posts = action.payload
-        state.pagination = initialState.pagination
+        state.posts = action.payload.posts
+        state.pagination = action.payload.pagination
       })
       .addCase(getUnapprovedPosts.rejected, (state, action) => {
         state.loading = 'failed'
@@ -276,5 +289,5 @@ export const postSlice = createSlice({
   },
 })
 
-export const { reset, alertReset } = postSlice.actions
+export const { reset, alertReset, setPage } = postSlice.actions
 export default postSlice.reducer

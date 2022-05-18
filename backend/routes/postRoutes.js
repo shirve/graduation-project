@@ -19,11 +19,11 @@ const { validate } = require('../middleware/validateMiddleware')
 router.get('/', protect, getUserPosts)
 
 // Get approved posts
-// GET /api/posts/approved?page=number&size=number&genre=string
+// GET /api/posts/approved?page=number&limit=number&genre=string
 router.get('/approved', getApprovedPosts)
 
 // Get unapproved posts
-// GET /api/posts/unapproved
+// GET /api/posts/unapproved?page=number&limit=number
 router.get('/unapproved', protect, getUnapprovedPosts)
 
 // Add post
