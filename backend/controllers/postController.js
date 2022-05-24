@@ -136,7 +136,14 @@ const updatePost = asyncHandler(async (req, res) => {
     return
   }
 
-  const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
+  post.data = req.body.data
+  post.status = {
+    approved: false,
+    rejected: false,
+    message: null,
+  }
+
+  const updatedPost = await Post.findByIdAndUpdate(req.params.id, post, {
     new: true,
   })
 
@@ -160,7 +167,13 @@ const approvePost = asyncHandler(async (req, res) => {
     return
   }
 
-  const approvedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
+  post.status = {
+    approved: true,
+    rejected: false,
+    message: null,
+  }
+
+  const approvedPost = await Post.findByIdAndUpdate(req.params.id, post, {
     new: true,
   })
 
@@ -184,7 +197,13 @@ const rejectPost = asyncHandler(async (req, res) => {
     return
   }
 
-  const rejectedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
+  post.status = {
+    approved: false,
+    rejected: true,
+    message: req.body.message,
+  }
+
+  const rejectedPost = await Post.findByIdAndUpdate(req.params.id, post, {
     new: true,
   })
 
