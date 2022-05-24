@@ -91,7 +91,11 @@ const DashboardUserPosts = () => {
         </li>
       </ul>
       {filteredPosts.length > 0 ? (
-        <PostItems posts={filteredPosts} loading={loading} />
+        <PostItems
+          posts={filteredPosts}
+          loading={loading}
+          displayedButtons={['edit', 'delete']}
+        />
       ) : (
         <div className='dashboard-posts-info'>
           {filterType === 'approved' && (

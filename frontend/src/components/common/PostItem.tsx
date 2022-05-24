@@ -6,7 +6,7 @@ import {
   approvePost,
   rejectPost,
 } from '../../features/posts/postSlice'
-import { Post } from '../../models/Post'
+import { Post, PostItemButtonTypes } from '../../models/Post'
 import { ObjectId } from 'mongoose'
 import { Link } from 'react-router-dom'
 import Modal from 'react-modal'
@@ -15,9 +15,14 @@ import PostForm from '../PostForm'
 interface Props {
   post: Post
   onGenreChange?: (genre: string) => void
+  displayedButtons?: PostItemButtonTypes[]
 }
 
-const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
+const PostItem = ({
+  post,
+  onGenreChange,
+  displayedButtons,
+}: Props): ReactElement => {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [showRejectModal, setShowRejectModal] = useState(false)
@@ -97,30 +102,35 @@ const PostItem = ({ post, onGenreChange }: Props): ReactElement => {
           <p>{post.data.music}</p>
         </div>
         <div className='post-manage'>
-          {(user?.roles.includes('admin') || user?._id === post.user._id) && (
-            <>
-              <button onClick={handleShowEditModal} className='btn'>
-                Edytuj
-              </button>
+          {displayedButtons?.includes('edit') && user?._id === post.user._id && (
+            <button onClick={handleShowEditModal} className='btn'>
+              Edytuj
+            </button>
+          )}
+          {displayedButtons?.includes('delete') &&
+            (user?.roles.includes('admin') || user?._id === post.user._id) && (
               <button onClick={handleShowDeleteModal} className='btn'>
                 Usuń
               </button>
-            </>
-          )}
-          {user?.roles.includes('admin') &&
+            )}
+          {displayedButtons?.includes('reject') &&
+            user?.roles.includes('admin') &&
             post.status.approved === false &&
             post.status.rejected === false && (
-              <>
-                <button onClick={handleShowRejectModal} className='btn'>
-                  Odrzuć
-                </button>
-                <button
-                  onClick={() => handlePostApprove(post._id)}
-                  className='btn'
-                >
-                  Zatwierdź
-                </button>
-              </>
+              <button onClick={handleShowRejectModal} className='btn'>
+                Odrzuć
+              </button>
+            )}
+          {displayedButtons?.includes('approve') &&
+            user?.roles.includes('admin') &&
+            post.status.approved === false &&
+            post.status.rejected === false && (
+              <button
+                onClick={() => handlePostApprove(post._id)}
+                className='btn'
+              >
+                Zatwierdź
+              </button>
             )}
         </div>
         {post.status.rejected && (

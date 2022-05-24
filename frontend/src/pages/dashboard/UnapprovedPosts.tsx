@@ -36,7 +36,11 @@ const DashboardUnapprovedPosts = () => {
   return (
     <React.Fragment>
       {posts.length > 0 ? (
-        <PostItems posts={posts} loading={loading} />
+        <PostItems
+          posts={posts}
+          loading={loading}
+          displayedButtons={['delete', 'reject', 'approve']}
+        />
       ) : (
         <p className='text-center'>Brak nowych niezatwierdzonych postów</p>
       )}

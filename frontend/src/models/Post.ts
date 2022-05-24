@@ -39,3 +39,5 @@ export interface PaginationData {
   prevPage: number | null
   nextPage: number | null
 }
+
+export type PostItemButtonTypes = 'delete' | 'edit' | 'reject' | 'approve'
