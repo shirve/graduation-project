@@ -6,7 +6,7 @@ const Post = require('../models/postModel')
 const getUserPosts = asyncHandler(async (req, res) => {
   const query = { 'user._id': { $eq: req.user._id } }
   const options = {
-    sort: { createdAt: -1 },
+    sort: { createdAt: 'desc' },
   }
 
   const posts = await Post.find(query, null, options)
@@ -18,7 +18,7 @@ const getUserPosts = asyncHandler(async (req, res) => {
 const getApprovedPosts = asyncHandler(async (req, res) => {
   const { page, limit, genre } = req.query
 
-  const offset = page > 1 ? (page - 1) * limit : 0
+  const offset = page ? page * limit : 0
 
   const query = { 'status.approved': { $eq: true } }
   const sort = { createdAt: 'desc' }
@@ -31,28 +31,24 @@ const getApprovedPosts = asyncHandler(async (req, res) => {
     res.status(200).json({
       posts: data.docs,
       pagination: {
-        page: data.page,
+        page: data.page - 1,
         limit: data.limit,
         totalPages: data.totalPages,
-        prevPage: data.prevPage,
-        nextPage: data.nextPage,
       },
     })
   })
 })
 
 // Get unapproved posts
-// GET /api/posts/unapproved?page=number&limit=number
+// GET /api/posts/unapproved
 const getUnapprovedPosts = asyncHandler(async (req, res) => {
-  const { page, limit } = req.query
-
-  const offset = page > 1 ? (page - 1) * limit : 0
-
   const query = {
     'status.approved': { $eq: false },
     'status.rejected': { $eq: false },
   }
-  const sort = { createdAt: 'desc' }
+  const options = {
+    sort: { createdAt: 'desc' },
+  }
 
   if (!req.user.roles.includes('admin')) {
     res
@@ -61,18 +57,8 @@ const getUnapprovedPosts = asyncHandler(async (req, res) => {
     return
   }
 
-  Post.paginate(query, { sort, limit, offset }).then((data) => {
-    res.status(200).json({
-      posts: data.docs,
-      pagination: {
-        page: data.page,
-        limit: data.limit,
-        totalPages: data.totalPages,
-        prevPage: data.prevPage,
-        nextPage: data.nextPage,
-      },
-    })
-  })
+  const posts = await Post.find(query, null, options)
+  res.status(200).json(posts)
 })
 
 // Add post

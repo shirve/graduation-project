@@ -20,11 +20,9 @@ interface IPostsState {
 const initialState: IPostsState = {
   posts: [],
   pagination: {
-    page: 1,
+    page: 0,
     limit: 10,
     totalPages: 1,
-    prevPage: null,
-    nextPage: null,
   },
   loading: 'idle',
   alert: null,
@@ -64,19 +62,15 @@ export const getApprovedPosts = createAsyncThunk<
 })
 
 // Get unapproved posts
-// GET /api/posts/unapproved?page=number&limit=number
+// GET /api/posts/unapproved
 export const getUnapprovedPosts = createAsyncThunk<
-  PaginatedPosts,
-  { page?: number; limit?: number },
+  Post[],
+  void,
   { state: RootState; rejectValue: Alert }
->('posts/unapproved', async (pagination, thunkAPI) => {
+>('posts/unapproved', async (_, thunkAPI) => {
   try {
     const token = thunkAPI.getState().currentUser.user?.token
-    return await postService.getUnapprovedPosts(
-      token,
-      pagination.page,
-      pagination.limit
-    )
+    return await postService.getUnapprovedPosts(token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -210,8 +204,8 @@ export const postSlice = createSlice({
       .addCase(getUnapprovedPosts.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
         state.alert = null
-        state.posts = action.payload.posts
-        state.pagination = action.payload.pagination
+        state.posts = action.payload
+        state.pagination = initialState.pagination
       })
       .addCase(getUnapprovedPosts.rejected, (state, action) => {
         state.loading = 'failed'

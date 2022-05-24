@@ -52,12 +52,12 @@ const Posts = () => {
   }, [page])
 
   useEffect(() => {
-    // If genre changes while on page !== 1 --> set page to 1
-    if (page !== 1) {
-      dispatch(setPage(1))
+    // If genre changes while on page !== 0 --> set page to 0
+    if (page !== 0) {
+      dispatch(setPage(0))
     }
-    // If genre changes when on page === 1 --> fetch with current page
-    if (genre && page === 1) {
+    // If genre changes when on page === 0 --> fetch with current page
+    if (genre && page === 0) {
       dispatch(
         getApprovedPosts({
           page,

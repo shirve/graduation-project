@@ -23,7 +23,7 @@ router.get('/', protect, getUserPosts)
 router.get('/approved', getApprovedPosts)
 
 // Get unapproved posts
-// GET /api/posts/unapproved?page=number&limit=number
+// GET /api/posts/unapproved
 router.get('/unapproved', protect, getUnapprovedPosts)
 
 // Add post

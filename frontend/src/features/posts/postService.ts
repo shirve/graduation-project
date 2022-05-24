@@ -37,19 +37,11 @@ const getApprovedPosts = async (
 }
 
 // Get unapproved posts
-// GET /api/posts/unapproved?page=number&limit=number
-const getUnapprovedPosts = async (
-  token: string | undefined,
-  page?: number,
-  limit?: number
-) => {
+// GET /api/posts/unapproved
+const getUnapprovedPosts = async (token: string | undefined) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
-    },
-    params: {
-      page: page ? page : null,
-      limit: limit ? limit : null,
     },
   }
 
