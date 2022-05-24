@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import {
@@ -23,6 +23,7 @@ const PostItem = ({
   onGenreChange,
   displayedButtons,
 }: Props): ReactElement => {
+  const [readMore, setReadMore] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [showRejectModal, setShowRejectModal] = useState(false)
@@ -31,6 +32,12 @@ const PostItem = ({
   const { user } = useSelector((state: RootState) => state.currentUser)
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (!displayedButtons?.includes('more')) {
+      setReadMore(true)
+    }
+  }, [])
 
   const handlePostDelete = (postId: ObjectId) => {
     dispatch(deletePost(postId))
@@ -88,50 +95,68 @@ const PostItem = ({
           <h3>{post.data.title}</h3>
           <h4>Fabuła</h4>
           <p>{post.data.story}</p>
-          <h4>Rozgrywka</h4>
-          <p>{post.data.gameplay}</p>
-          <h4>Mechanika</h4>
-          <p>{post.data.mechanics}</p>
-          <h4>Bohaterowie</h4>
-          <p>{post.data.characters}</p>
-          <h4>Poziomy</h4>
-          <p>{post.data.levels}</p>
-          <h4>Grafika</h4>
-          <p>{post.data.graphics}</p>
-          <h4>Muzyka</h4>
-          <p>{post.data.music}</p>
+          {readMore && (
+            <React.Fragment>
+              <h4>Rozgrywka</h4>
+              <p>{post.data.gameplay}</p>
+              <h4>Mechanika</h4>
+              <p>{post.data.mechanics}</p>
+              <h4>Bohaterowie</h4>
+              <p>{post.data.characters}</p>
+              <h4>Poziomy</h4>
+              <p>{post.data.levels}</p>
+              <h4>Grafika</h4>
+              <p>{post.data.graphics}</p>
+              <h4>Muzyka</h4>
+              <p>{post.data.music}</p>
+            </React.Fragment>
+          )}
         </div>
         <div className='post-manage'>
-          {displayedButtons?.includes('edit') && user?._id === post.user._id && (
-            <button onClick={handleShowEditModal} className='btn'>
-              Edytuj
-            </button>
+          {displayedButtons?.includes('more') && readMore === false && (
+            <span
+              onClick={() => setReadMore(!readMore)}
+              className='post-manage-read-more'
+            >
+              Czytaj więcej...
+            </span>
           )}
-          {displayedButtons?.includes('delete') &&
-            (user?.roles.includes('admin') || user?._id === post.user._id) && (
-              <button onClick={handleShowDeleteModal} className='btn'>
-                Usuń
-              </button>
-            )}
-          {displayedButtons?.includes('reject') &&
-            user?.roles.includes('admin') &&
-            post.status.approved === false &&
-            post.status.rejected === false && (
-              <button onClick={handleShowRejectModal} className='btn'>
-                Odrzuć
-              </button>
-            )}
-          {displayedButtons?.includes('approve') &&
-            user?.roles.includes('admin') &&
-            post.status.approved === false &&
-            post.status.rejected === false && (
-              <button
-                onClick={() => handlePostApprove(post._id)}
-                className='btn'
-              >
-                Zatwierdź
-              </button>
-            )}
+          {readMore && (
+            <React.Fragment>
+              {displayedButtons?.includes('edit') &&
+                user?._id === post.user._id && (
+                  <button onClick={handleShowEditModal} className='btn'>
+                    Edytuj
+                  </button>
+                )}
+              {displayedButtons?.includes('delete') &&
+                (user?.roles.includes('admin') ||
+                  user?._id === post.user._id) && (
+                  <button onClick={handleShowDeleteModal} className='btn'>
+                    Usuń
+                  </button>
+                )}
+              {displayedButtons?.includes('reject') &&
+                user?.roles.includes('admin') &&
+                post.status.approved === false &&
+                post.status.rejected === false && (
+                  <button onClick={handleShowRejectModal} className='btn'>
+                    Odrzuć
+                  </button>
+                )}
+              {displayedButtons?.includes('approve') &&
+                user?.roles.includes('admin') &&
+                post.status.approved === false &&
+                post.status.rejected === false && (
+                  <button
+                    onClick={() => handlePostApprove(post._id)}
+                    className='btn'
+                  >
+                    Zatwierdź
+                  </button>
+                )}
+            </React.Fragment>
+          )}
         </div>
         {post.status.rejected && (
           <div className='post-status'>{post.status.message}</div>

@@ -192,6 +192,10 @@ a {
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-top: 1rem;
+    &-read-more {
+      margin: auto;
+      cursor: pointer;
+    }
   }
   &-status {
     border-top: 1px $color-minimal solid;

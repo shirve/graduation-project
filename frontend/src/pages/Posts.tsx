@@ -146,7 +146,7 @@ const Posts = () => {
           posts={posts}
           loading={loading}
           onGenreChange={handleGenreChange}
-          displayedButtons={['delete']}
+          displayedButtons={['more', 'delete']}
         />
       ) : (
         <p>Nie znaleziono postów</p>

@@ -38,4 +38,9 @@ export interface PaginationData {
   totalPages: number
 }
 
-export type PostItemButtonTypes = 'delete' | 'edit' | 'reject' | 'approve'
+export type PostItemButtonTypes =
+  | 'more'
+  | 'delete'
+  | 'edit'
+  | 'reject'
+  | 'approve'
