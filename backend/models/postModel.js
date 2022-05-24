@@ -69,6 +69,12 @@ const postSchema = mongoose.Schema(
         required: false,
       },
     },
+    liked: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+      },
+    ],
   },
   {
     timestamps: true,

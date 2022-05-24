@@ -155,6 +155,21 @@ export const rejectPost = createAsyncThunk<
   }
 })
 
+// Like post
+// PATCH /api/posts/:id/like
+export const likePost = createAsyncThunk<
+  Post,
+  ObjectId,
+  { state: RootState; rejectValue: Alert }
+>('posts/like', async (postId, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().currentUser.user?.token
+    return await postService.likePost(postId, token)
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data)
+  }
+})
+
 export const postSlice = createSlice({
   name: 'posts',
   initialState,
@@ -279,6 +294,11 @@ export const postSlice = createSlice({
       .addCase(rejectPost.rejected, (state, action) => {
         state.loading = 'failed'
         state.alert = action.payload
+      })
+      .addCase(likePost.fulfilled, (state, action) => {
+        state.posts = state.posts.map((post) =>
+          action.payload._id === post._id ? action.payload : post
+        )
       })
   },
 })

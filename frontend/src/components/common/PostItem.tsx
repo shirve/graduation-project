@@ -5,6 +5,7 @@ import {
   deletePost,
   approvePost,
   rejectPost,
+  likePost,
 } from '../../features/posts/postSlice'
 import { Post, PostItemButtonTypes } from '../../models/Post'
 import { ObjectId } from 'mongoose'
@@ -34,7 +35,7 @@ const PostItem = ({
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (!displayedButtons?.includes('more')) {
+    if (!displayedButtons?.includes('readMore')) {
       setReadMore(true)
     }
   }, [])
@@ -51,6 +52,12 @@ const PostItem = ({
   const handlePostReject = (postId: ObjectId, message: string) => {
     dispatch(rejectPost({ postId, message }))
     handleShowRejectModal()
+  }
+
+  const handlePostLike = (postId: ObjectId) => {
+    if (user && !post.liked.includes(user._id)) {
+      dispatch(likePost(postId))
+    }
   }
 
   const handleShowDeleteModal = () => {
@@ -113,7 +120,7 @@ const PostItem = ({
           )}
         </div>
         <div className='post-manage'>
-          {displayedButtons?.includes('more') && readMore === false && (
+          {displayedButtons?.includes('readMore') && readMore === false && (
             <span
               onClick={() => setReadMore(!readMore)}
               className='post-manage-read-more'
@@ -123,6 +130,15 @@ const PostItem = ({
           )}
           {readMore && (
             <React.Fragment>
+              {displayedButtons?.includes('like') && user && (
+                <button
+                  onClick={() => handlePostLike(post._id)}
+                  className='btn'
+                >
+                  Chcę zagrać
+                  <span className='badge bg-reversed'>{post.liked.length}</span>
+                </button>
+              )}
               {displayedButtons?.includes('edit') &&
                 user?._id === post.user._id && (
                   <button onClick={handleShowEditModal} className='btn'>

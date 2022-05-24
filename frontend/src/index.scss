@@ -115,6 +115,12 @@ a {
   }
 }
 
+.badge.bg-reversed {
+  margin-left: 0.5rem;
+  color: $color-primary;
+  background-color: $text-color-light;
+}
+
 @media (max-width: 675px) {
   .dashboard-posts-navigation {
     justify-content: flex-start;
@@ -438,7 +444,6 @@ a {
     li.selected {
       background-color: $color-primary;
       color: $text-color-light;
-      border: 1px $color-primary solid;
       border-radius: 0.25rem;
     }
   }

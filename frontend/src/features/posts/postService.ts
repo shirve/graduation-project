@@ -146,6 +146,20 @@ const rejectPost = async (
   return response.data
 }
 
+// Like post
+// PATCH /api/posts/:id/like
+const likePost = async (postId: ObjectId, token: string | undefined) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+
+  const response = await axios.patch(API_URL + `${postId}/like`, null, config)
+
+  return response.data
+}
+
 const postService = {
   getUserPosts,
   getApprovedPosts,
@@ -155,6 +169,7 @@ const postService = {
   updatePost,
   approvePost,
   rejectPost,
+  likePost,
 }
 
 export default postService

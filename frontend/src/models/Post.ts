@@ -12,6 +12,7 @@ export interface Post {
     rejected: boolean
     message: string | null
   }
+  liked: ObjectId[]
   createdAt: Date
   updatedAt: Date
 }
@@ -39,7 +40,8 @@ export interface PaginationData {
 }
 
 export type PostItemButtonTypes =
-  | 'more'
+  | 'like'
+  | 'readMore'
   | 'delete'
   | 'edit'
   | 'reject'

@@ -191,6 +191,36 @@ const rejectPost = asyncHandler(async (req, res) => {
   res.status(200).json(rejectedPost)
 })
 
+// Like post
+// PATCH /api/posts/:id/like
+const likePost = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id)
+
+  if (!post) {
+    res.status(400).json({ type: 'error', message: 'Post nie istnieje!' })
+    return
+  }
+
+  if (!req.user) {
+    res
+      .status(401)
+      .json({ type: 'error', message: 'Użytkownik nie zalogowany!' })
+    return
+  }
+
+  if (post.liked.includes(req.user._id)) {
+    res.status(401).end()
+    return
+  }
+
+  post.liked.push(req.user._id)
+  const likedPost = await Post.findByIdAndUpdate(req.params.id, post, {
+    new: true,
+  })
+
+  res.status(200).json(likedPost)
+})
+
 module.exports = {
   getUserPosts,
   getApprovedPosts,
@@ -200,4 +230,5 @@ module.exports = {
   deletePost,
   approvePost,
   rejectPost,
+  likePost,
 }
