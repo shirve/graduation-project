@@ -1,4 +1,5 @@
 import React, { ReactElement, useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import {
@@ -7,10 +8,10 @@ import {
   rejectPost,
   likePost,
 } from '../../features/posts/postSlice'
-import { Post, PostItemButtonTypes } from '../../models/Post'
-import { ObjectId } from 'mongoose'
-import { Link } from 'react-router-dom'
 import Modal from 'react-modal'
+import { ObjectId } from 'mongoose'
+import { FaGamepad } from 'react-icons/fa'
+import { Post, PostItemButtonTypes } from '../../models/Post'
 import PostForm from '../PostForm'
 
 interface Props {
@@ -55,7 +56,7 @@ const PostItem = ({
   }
 
   const handlePostLike = (postId: ObjectId) => {
-    if (user && !post.liked.includes(user._id)) {
+    if (user) {
       dispatch(likePost(postId))
     }
   }
@@ -79,11 +80,7 @@ const PostItem = ({
           <p>
             <Link to={`/users/${post.user._id}`}>{post.user.name}</Link>
           </p>
-          <p>
-            {post.updatedAt > post.createdAt
-              ? new Date(post.updatedAt).toLocaleString('pl-PL')
-              : new Date(post.createdAt).toLocaleString('pl-PL')}
-          </p>
+          <p>{new Date(post.createdAt).toLocaleString('pl-PL')}</p>
         </div>
         <ul className='post-tags'>
           {post.data.genres &&
@@ -130,13 +127,13 @@ const PostItem = ({
           )}
           {readMore && (
             <React.Fragment>
-              {displayedButtons?.includes('like') && user && (
+              {displayedButtons?.includes('like') && (
                 <button
                   onClick={() => handlePostLike(post._id)}
                   className='btn'
                 >
-                  Chcę zagrać
-                  <span className='badge bg-reversed'>{post.liked.length}</span>
+                  <FaGamepad style={{ fontSize: 24, marginRight: 10 }} />
+                  {post.liked.length}
                 </button>
               )}
               {displayedButtons?.includes('edit') &&

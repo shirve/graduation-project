@@ -228,16 +228,16 @@ const likePost = asyncHandler(async (req, res) => {
   }
 
   if (post.liked.includes(req.user._id)) {
-    res.status(401).end()
-    return
+    post.liked.remove(req.user._id)
+  } else {
+    post.liked.push(req.user._id)
   }
 
-  post.liked.push(req.user._id)
-  const likedPost = await Post.findByIdAndUpdate(req.params.id, post, {
+  const updatedPost = await Post.findByIdAndUpdate(req.params.id, post, {
     new: true,
   })
 
-  res.status(200).json(likedPost)
+  res.status(200).json(updatedPost)
 })
 
 module.exports = {

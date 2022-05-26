@@ -115,12 +115,6 @@ a {
   }
 }
 
-.badge.bg-reversed {
-  margin-left: 0.5rem;
-  color: $color-primary;
-  background-color: $text-color-light;
-}
-
 @media (max-width: 675px) {
   .dashboard-posts-navigation {
     justify-content: flex-start;
@@ -362,6 +356,9 @@ a {
 }
 
 .btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: $text-color-light;
   background-color: $color-primary;
   border-style: none;
