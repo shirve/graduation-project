@@ -1,11 +1,13 @@
 import axios from 'axios'
-import { User, UserLogin, UserRegister } from '../../models/User'
+import { UserViewModel } from '../../models/Users/UserViewModel'
+import { UserLoginViewModel } from '../../models/Users/UserLoginViewModel'
+import { UserRegisterViewModel } from '../../models/Users/UserRegisterViewModel'
 
 const API_URL = '/api/users/'
 
 // Register user
 // POST /api/users/register
-const registerUser = async (userData: UserRegister) => {
+const registerUser = async (userData: UserRegisterViewModel) => {
   const response = await axios.post(API_URL + 'register', userData)
 
   return response.data
@@ -13,7 +15,7 @@ const registerUser = async (userData: UserRegister) => {
 
 // Login user
 // POST /api/users/login
-const loginUser = async (userData: UserLogin) => {
+const loginUser = async (userData: UserLoginViewModel) => {
   const response = await axios.post(API_URL + 'login', userData)
 
   return response.data
@@ -27,7 +29,10 @@ const logoutUser = async () => {
 
 // Update user
 // PUT /api/users/:id/update
-const updateUser = async (userData: User, token: string | undefined) => {
+const updateUser = async (
+  userData: UserViewModel,
+  token: string | undefined
+) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,

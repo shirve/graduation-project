@@ -1,20 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { RootState } from '../../app/store'
 import postService from './postService'
 import { ObjectId } from 'mongoose'
-import {
-  PaginatedPosts,
-  PaginationData,
-  Post,
-  PostData,
-} from '../../models/Post'
-import { RootState } from '../../app/store'
-import { Alert } from '../../models/Alert'
+import { GameSuggestionViewModel } from '../../models/GameSuggestions/GameSuggestionViewModel'
+import { GameSuggestionDataViewModel } from '../../models/GameSuggestions/GameSuggestionDataViewModel'
+import { PaginatedGameSuggestionsViewModel } from '../../models/GameSuggestions/PaginatedGameSuggestionsViewModel'
+import { PaginationViewModel } from '../../models/Pagination/PaginationViewModel'
+import { AlertViewModel } from '../../models/Alert/AlertViewModel'
 
 interface IPostsState {
-  posts: Post[]
-  pagination: PaginationData
+  posts: GameSuggestionViewModel[]
+  pagination: PaginationViewModel
   loading: 'idle' | 'pending' | 'fulfilled' | 'failed'
-  alert: Alert | undefined | null
+  alert: AlertViewModel | undefined | null
 }
 
 const initialState: IPostsState = {
@@ -31,9 +29,9 @@ const initialState: IPostsState = {
 // Get user posts
 // GET /api/posts
 export const getUserPosts = createAsyncThunk<
-  Post[],
+  GameSuggestionViewModel[],
   void,
-  { state: RootState; rejectValue: Alert }
+  { state: RootState; rejectValue: AlertViewModel }
 >('posts/userPosts', async (_, thunkAPI) => {
   try {
     const token = thunkAPI.getState().currentUser.user?.token
@@ -46,9 +44,9 @@ export const getUserPosts = createAsyncThunk<
 // Get approved posts
 // GET /api/posts/approved?page=number&limit=number&genre=string
 export const getApprovedPosts = createAsyncThunk<
-  PaginatedPosts,
+  PaginatedGameSuggestionsViewModel,
   { page?: number; limit?: number; genre?: string },
-  { state: RootState; rejectValue: Alert }
+  { state: RootState; rejectValue: AlertViewModel }
 >('posts/approved', async (pagination, thunkAPI) => {
   try {
     return await postService.getApprovedPosts(
@@ -64,9 +62,9 @@ export const getApprovedPosts = createAsyncThunk<
 // Get unapproved posts
 // GET /api/posts/unapproved
 export const getUnapprovedPosts = createAsyncThunk<
-  Post[],
+  GameSuggestionViewModel[],
   void,
-  { state: RootState; rejectValue: Alert }
+  { state: RootState; rejectValue: AlertViewModel }
 >('posts/unapproved', async (_, thunkAPI) => {
   try {
     const token = thunkAPI.getState().currentUser.user?.token
@@ -79,9 +77,9 @@ export const getUnapprovedPosts = createAsyncThunk<
 // Create new post
 // POST /api/posts/create
 export const createPost = createAsyncThunk<
-  Alert,
-  PostData,
-  { state: RootState; rejectValue: Alert }
+  AlertViewModel,
+  GameSuggestionDataViewModel,
+  { state: RootState; rejectValue: AlertViewModel }
 >('posts/create', async (postData, thunkAPI) => {
   try {
     const token = thunkAPI.getState().currentUser.user?.token
@@ -96,7 +94,7 @@ export const createPost = createAsyncThunk<
 export const deletePost = createAsyncThunk<
   { _id: ObjectId },
   ObjectId,
-  { state: RootState; rejectValue: Alert }
+  { state: RootState; rejectValue: AlertViewModel }
 >('posts/delete', async (postId, thunkAPI) => {
   try {
     const token = thunkAPI.getState().currentUser.user?.token
@@ -109,9 +107,9 @@ export const deletePost = createAsyncThunk<
 // Update post
 // PUT /api/posts/:id/update
 export const updatePost = createAsyncThunk<
-  Post,
-  { postId: ObjectId; data: PostData },
-  { state: RootState; rejectValue: Alert }
+  GameSuggestionViewModel,
+  { postId: ObjectId; data: GameSuggestionDataViewModel },
+  { state: RootState; rejectValue: AlertViewModel }
 >('posts/update', async (postData, thunkAPI) => {
   try {
     const token = thunkAPI.getState().currentUser.user?.token
@@ -124,9 +122,9 @@ export const updatePost = createAsyncThunk<
 // Approve post
 // PATCH /api/posts/:id/approve
 export const approvePost = createAsyncThunk<
-  Post,
+  GameSuggestionViewModel,
   ObjectId,
-  { state: RootState; rejectValue: Alert }
+  { state: RootState; rejectValue: AlertViewModel }
 >('posts/approve', async (postId, thunkAPI) => {
   try {
     const token = thunkAPI.getState().currentUser.user?.token
@@ -139,9 +137,9 @@ export const approvePost = createAsyncThunk<
 // Reject post
 // PATCH /api/posts/:id/reject
 export const rejectPost = createAsyncThunk<
-  Post,
+  GameSuggestionViewModel,
   { postId: ObjectId; message: string },
-  { state: RootState; rejectValue: Alert }
+  { state: RootState; rejectValue: AlertViewModel }
 >('posts/reject', async (postData, thunkAPI) => {
   try {
     const token = thunkAPI.getState().currentUser.user?.token
@@ -158,9 +156,9 @@ export const rejectPost = createAsyncThunk<
 // Like post
 // PATCH /api/posts/:id/like
 export const likePost = createAsyncThunk<
-  Post,
+  GameSuggestionViewModel,
   ObjectId,
-  { state: RootState; rejectValue: Alert }
+  { state: RootState; rejectValue: AlertViewModel }
 >('posts/like', async (postId, thunkAPI) => {
   try {
     const token = thunkAPI.getState().currentUser.user?.token

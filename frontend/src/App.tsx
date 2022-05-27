@@ -6,30 +6,31 @@ import {
   Navigate,
   Outlet,
 } from 'react-router-dom'
-import ProtectedRoute from './components/ProtectedRoute'
-import Navbar from './components/layout/Navbar'
-import Header from './components/layout/Header'
-import Footer from './components/layout/Footer'
-import Register from './pages/Register'
-import Login from './pages/Login'
-import Posts from './pages/Posts'
-import Projects from './pages/Projects'
-import NotFound from './pages/NotFound'
-import SearchUser from './pages/SearchUser'
-import UserProfile from './pages/dashboard/UserProfile'
-import UserPosts from './pages/dashboard/UserPosts'
-import UserProjects from './pages/dashboard/UserProjects'
-import UnapprovedPosts from './pages/dashboard/UnapprovedPosts'
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
+import Navbar from './components/layout/Navbar/Navbar'
+import Header from './components/layout/Header/Header'
+import Footer from './components/layout/Footer/Footer'
+import RegisterPage from './pages/RegisterPage/RegisterPage'
+import LoginPage from './pages/LoginPage/LoginPage'
+import GameSuggestionsPage from './pages/GameSuggestionsPage/GameSuggestionsPage'
+import ProjectsPage from './pages/ProjectsPage/ProjectsPage'
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage'
+import UserDetailsPage from './pages/UserDetailsPage/UserDetailsPage'
+import UserProfilePage from './pages/DashboardPages/UserProfilePage/UserProfilePage'
+import UserGameSuggestionsPage from './pages/DashboardPages/UserGameSuggestionsPage/UserGameSuggestionsPage'
+import UserProjectsPage from './pages/DashboardPages/UserProjectsPage/UserProjectsPage'
+import UnapprovedPostsPage from './pages/DashboardPages/UnapprovedPostsPage/UnapprovedPostsPage'
 import { HeaderProvider } from './context/header/HeaderContext'
 import { AlertProvider } from './context/alert/AlertContext'
 import useAuthentication from './hooks/useAuthentication'
+import Spinner from './components/common/Spinner/Spinner'
 
 const App = () => {
   const { authenticated } = useAuthentication()
 
   return (
     <React.Fragment>
-      {authenticated && (
+      {authenticated ? (
         <Router>
           <HeaderProvider>
             <AlertProvider>
@@ -39,10 +40,13 @@ const App = () => {
                 <Routes>
                   <Route path='dashboard' element={<Outlet />}>
                     <Route element={<ProtectedRoute />}>
-                      <Route index element={<Navigate to='your-profile' />} />
-                      <Route path='your-profile' element={<UserProfile />} />
-                      <Route path='your-posts' element={<UserPosts />} />
-                      <Route path='your-projects' element={<UserProjects />} />
+                      <Route index element={<Navigate to='profile' />} />
+                      <Route path='profile' element={<UserProfilePage />} />
+                      <Route
+                        path='game-suggestions'
+                        element={<UserGameSuggestionsPage />}
+                      />
+                      <Route path='projects' element={<UserProjectsPage />} />
                       <Route path='*' element={<Navigate to='/not-found' />} />
                     </Route>
                     <Route
@@ -50,17 +54,23 @@ const App = () => {
                     >
                       <Route
                         path='unapproved-posts'
-                        element={<UnapprovedPosts />}
+                        element={<UnapprovedPostsPage />}
                       />
                     </Route>
                   </Route>
-                  <Route path='users/:userId' element={<SearchUser />} />
-                  <Route path='posts' element={<Posts />} />
-                  <Route path='projects' element={<Projects />} />
-                  <Route path='register' element={<Register />} />
-                  <Route path='login' element={<Login />} />
-                  <Route path='not-found' element={<NotFound />} />
-                  <Route path='/' element={<Navigate to='/posts' />} />
+                  <Route path='users/:userId' element={<UserDetailsPage />} />
+                  <Route
+                    path='game-suggestions'
+                    element={<GameSuggestionsPage />}
+                  />
+                  <Route path='projects' element={<ProjectsPage />} />
+                  <Route path='register' element={<RegisterPage />} />
+                  <Route path='login' element={<LoginPage />} />
+                  <Route path='not-found' element={<NotFoundPage />} />
+                  <Route
+                    path='/'
+                    element={<Navigate to='/game-suggestions' />}
+                  />
                   <Route path='*' element={<Navigate to='/not-found' />} />
                 </Routes>
               </main>
@@ -68,6 +78,8 @@ const App = () => {
             </AlertProvider>
           </HeaderProvider>
         </Router>
+      ) : (
+        <Spinner centered />
       )}
     </React.Fragment>
   )

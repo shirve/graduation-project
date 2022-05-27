@@ -1,13 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import authService from './userService'
-import { User, UserLogin, UserRegister } from '../../models/User'
+import { UserViewModel } from '../../models/Users/UserViewModel'
+import { UserLoginViewModel } from '../../models/Users/UserLoginViewModel'
+import { UserRegisterViewModel } from '../../models/Users/UserRegisterViewModel'
 import { RootState } from '../../app/store'
-import { Alert } from '../../models/Alert'
+import { AlertViewModel } from '../../models/Alert/AlertViewModel'
 
 interface IAuthState {
-  user: User | null
+  user: UserViewModel | null
   loading: 'idle' | 'pending' | 'fulfilled' | 'failed'
-  alert: Alert | undefined | null
+  alert: AlertViewModel | undefined | null
 }
 
 const initialState: IAuthState = {
@@ -19,9 +21,9 @@ const initialState: IAuthState = {
 // Register user
 // POST /api/users/register
 export const registerUser = createAsyncThunk<
-  User,
-  UserRegister,
-  { rejectValue: Alert }
+  UserViewModel,
+  UserRegisterViewModel,
+  { rejectValue: AlertViewModel }
 >('users/register', async (userData, thunkAPI) => {
   try {
     return await authService.registerUser(userData)
@@ -33,9 +35,9 @@ export const registerUser = createAsyncThunk<
 // Login user
 // POST /api/users/login
 export const loginUser = createAsyncThunk<
-  User,
-  UserLogin,
-  { rejectValue: Alert }
+  UserViewModel,
+  UserLoginViewModel,
+  { rejectValue: AlertViewModel }
 >('users/login', async (userData, thunkAPI) => {
   try {
     return await authService.loginUser(userData)
@@ -53,9 +55,9 @@ export const logoutUser = createAsyncThunk('users/logout', async () => {
 // Update user
 // PUT /api/users/:id/update
 export const updateUser = createAsyncThunk<
-  User,
-  User,
-  { state: RootState; rejectValue: Alert }
+  UserViewModel,
+  UserViewModel,
+  { state: RootState; rejectValue: AlertViewModel }
 >('users/update', async (userData, thunkAPI) => {
   try {
     const token = thunkAPI.getState().currentUser.user?.token

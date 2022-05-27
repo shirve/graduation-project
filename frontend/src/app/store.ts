@@ -6,7 +6,7 @@ import postReducer from '../features/posts/postSlice'
 export const store = configureStore({
   reducer: {
     currentUser: userReducer,
-    fetchedPosts: postReducer,
+    gameSuggestions: postReducer,
   },
   devTools: process.env.NODE_ENV === 'development',
 })

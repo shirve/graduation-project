@@ -1,0 +1,14 @@
+.default-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fafafa;
+  background-color: #17376E;
+  border-style: none;
+  border-radius: 2rem;
+  padding: 0.375rem 1.5rem;
+  &:hover {
+    color: #fafafa;
+    background-color: #17376E;
+  }
+}

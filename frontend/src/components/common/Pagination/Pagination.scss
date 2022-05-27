@@ -1,0 +1,24 @@
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    li {
+      margin: 0;
+      padding: 0.5rem 1rem;
+      svg {
+        color: #121212;
+      }
+    }
+    li.selected {
+      background-color: #17376E;
+      color: #fafafa;
+      border-radius: 0.25rem;
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { PostData } from '../../models/Post'
+import { GameSuggestionDataViewModel } from '../../models/GameSuggestions/GameSuggestionDataViewModel'
 import { ObjectId } from 'mongoose'
 
 const API_URL = '/api/posts/'
@@ -51,7 +51,10 @@ const getUnapprovedPosts = async (token: string | undefined) => {
 
 // Create new post
 // POST /api/posts/create
-const createPost = async (data: PostData, token: string | undefined) => {
+const createPost = async (
+  data: GameSuggestionDataViewModel,
+  token: string | undefined
+) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -81,7 +84,7 @@ const deletePost = async (postId: ObjectId, token: string | undefined) => {
 // PUT /api/posts/:id/update
 const updatePost = async (
   postId: ObjectId,
-  data: PostData,
+  data: GameSuggestionDataViewModel,
   token: string | undefined
 ) => {
   const config = {

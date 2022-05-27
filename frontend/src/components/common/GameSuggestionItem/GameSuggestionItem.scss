@@ -1,0 +1,171 @@
+.game-suggestion {
+  &-wrapper {
+  margin-top: 1rem;
+  color: #121212;
+  background-color: #fff;
+  border: 1px #ccc solid;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  white-space: pre-line;
+  }
+  &-info {
+    display: flex;
+    justify-content: space-between;
+    p {
+      margin: 0;
+    }
+    a {
+      color: #121212;
+    }
+  }
+  &-tags {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    li {
+      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+  }
+  &-content {
+    h3 {
+      margin-top: 0.5rem;
+      font-weight: 700;
+    }
+    h4 {
+      margin-bottom: 0;
+    }
+    p {
+      margin-bottom: 0.5rem;
+    }
+  }
+  &-manage {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    &-read-more {
+      margin: auto;
+      cursor: pointer;
+    }
+  }
+  &-status {
+    border-top: 1px #ccc solid;
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+  &-modal {
+    &-overlay {
+      z-index: 9999;
+      display: flex;
+      position: fixed;
+      inset: 0px;
+      background-color: rgba(0, 0, 0, 0.6);
+      animation: modal-blur-in 0.5s forwards;
+    }
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      padding: 0;
+      border: none;
+      .btn-close {
+        font-size: 1.4rem;
+      }
+    }
+    &-content {
+      margin: auto;
+      position: absolute;
+      width: fit-content;
+      inset: 2rem;
+      border: 1px #cccccc solid;
+      background: #fff;
+      overflow: auto;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      &.edit-modal {
+        .game-suggestion-form {
+          width: 800px;
+        }
+        .modal-header {
+          h3 {
+            margin: 0;
+          }
+          .btn-close {
+            font-size: 1.4rem;
+          }
+        }
+      }
+      &.reject-modal {
+        height: fit-content;
+        textarea {
+          width: 800px;
+          height: 200px;
+        }
+        .modal-header {
+          h5 {
+            margin: 0;
+          }
+          .btn-close {
+            font-size: 1.2rem;
+          }
+        }
+      }
+      &.delete-modal {
+        height: fit-content;
+        p {
+          margin: 0;
+        }
+      }
+    }
+    &-buttons {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      button {
+        width: 120px;
+      }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .game-suggestion-modal-content {
+    width: 80%;
+    &.edit-modal {
+      .game-suggestion-form {
+        width: 100%;
+      }
+    }
+    &.reject-modal {
+      textarea {
+        width: 100%;
+      }
+    }
+    &.delete-modal {
+      width: fit-content;
+    }
+  }
+}
+
+@media (max-width: 465px) {
+  .game-suggestion-modal-content {
+    inset: 1rem;
+    width: 90%;
+  }
+}
+
+@keyframes modal-blur-in {
+  from {
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+  to {
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+}

@@ -1,9 +1,9 @@
 import { createContext, useReducer } from 'react'
 import alertReducer from './AlertReducer'
-import { Alert } from '../../models/Alert'
+import { AlertViewModel } from '../../models/Alert/AlertViewModel'
 
 interface IAlertContext {
-  alert: Alert
+  alert: AlertViewModel
   setAlert: (type: string, message: string, duration?: number) => void
   removeAlert: () => void
 }
@@ -11,7 +11,7 @@ interface IAlertContext {
 const AlertContext = createContext({} as IAlertContext)
 
 export const AlertProvider = ({ children }: { children: React.ReactNode }) => {
-  const initialState: Alert = {
+  const initialState: AlertViewModel = {
     type: '',
     message: '',
   }
