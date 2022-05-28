@@ -9,17 +9,15 @@ import { RootState } from '../../app/store'
 import { useAppDispatch } from '../../app/store'
 import { RegisterFormFields } from '../../constants/Auth/RegisterFormFields'
 import Spinner from '../../components/common/Spinner/Spinner'
-import Alert from '../../components/common/Alert/Alert'
-import AlertContext from '../../context/alert/AlertContext'
 import HeaderContext from '../../context/header/HeaderContext'
 import WideButton from '../../components/common/Buttons/WideButton/WideButton'
 import styles from './RegisterPage.module.scss'
+import { toast } from 'react-toastify'
 
 const RegisterPage = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const { setAlert, removeAlert } = useContext(AlertContext)
   const { setHeader } = useContext(HeaderContext)
 
   const { user, loading, alert } = useSelector(
@@ -40,13 +38,11 @@ const RegisterPage = () => {
   }, [user, loading])
 
   useEffect(() => {
-    if (alert) {
-      setAlert(alert.type, alert.message)
-    } else {
-      removeAlert()
+    if (alert?.type === 'error') {
+      toast.error(alert.message)
     }
     return () => {
-      if (alert) dispatch(alertReset())
+      dispatch(alertReset())
     }
   }, [alert])
 
@@ -119,7 +115,6 @@ const RegisterPage = () => {
                   )}
               </React.Fragment>
             ))}
-            <Alert />
             <WideButton type='submit' disabled={isSubmitting}>
               Zarejestruj
             </WideButton>

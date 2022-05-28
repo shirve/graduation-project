@@ -6,6 +6,8 @@ import {
   Navigate,
   Outlet,
 } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import Navbar from './components/layout/Navbar/Navbar'
 import Header from './components/layout/Header/Header'
@@ -21,7 +23,6 @@ import UserGameSuggestionsPage from './pages/DashboardPages/UserGameSuggestionsP
 import UserProjectsPage from './pages/DashboardPages/UserProjectsPage/UserProjectsPage'
 import UnapprovedPostsPage from './pages/DashboardPages/UnapprovedPostsPage/UnapprovedPostsPage'
 import { HeaderProvider } from './context/header/HeaderContext'
-import { AlertProvider } from './context/alert/AlertContext'
 import useAuthentication from './hooks/useAuthentication'
 import Spinner from './components/common/Spinner/Spinner'
 
@@ -33,50 +34,44 @@ const App = () => {
       {authenticated ? (
         <Router>
           <HeaderProvider>
-            <AlertProvider>
-              <Navbar />
-              <Header />
-              <main className='page-wrapper col-xl-8 col-lg-8 col-md-10 col-sm-10 col-xs-12'>
-                <Routes>
-                  <Route path='dashboard' element={<Outlet />}>
-                    <Route element={<ProtectedRoute />}>
-                      <Route index element={<Navigate to='profile' />} />
-                      <Route path='profile' element={<UserProfilePage />} />
-                      <Route
-                        path='game-suggestions'
-                        element={<UserGameSuggestionsPage />}
-                      />
-                      <Route path='projects' element={<UserProjectsPage />} />
-                      <Route path='*' element={<Navigate to='/not-found' />} />
-                    </Route>
+            <Navbar />
+            <Header />
+            <main className='page-wrapper col-xl-8 col-lg-8 col-md-10 col-sm-10 col-xs-12'>
+              <Routes>
+                <Route path='dashboard' element={<Outlet />}>
+                  <Route element={<ProtectedRoute />}>
+                    <Route index element={<Navigate to='profile' />} />
+                    <Route path='profile' element={<UserProfilePage />} />
                     <Route
-                      element={<ProtectedRoute allowedRoles={['admin']} />}
-                    >
-                      <Route
-                        path='unapproved-posts'
-                        element={<UnapprovedPostsPage />}
-                      />
-                    </Route>
+                      path='game-suggestions'
+                      element={<UserGameSuggestionsPage />}
+                    />
+                    <Route path='projects' element={<UserProjectsPage />} />
+                    <Route path='*' element={<Navigate to='/not-found' />} />
                   </Route>
-                  <Route path='users/:userId' element={<UserDetailsPage />} />
-                  <Route
-                    path='game-suggestions'
-                    element={<GameSuggestionsPage />}
-                  />
-                  <Route path='projects' element={<ProjectsPage />} />
-                  <Route path='register' element={<RegisterPage />} />
-                  <Route path='login' element={<LoginPage />} />
-                  <Route path='not-found' element={<NotFoundPage />} />
-                  <Route
-                    path='/'
-                    element={<Navigate to='/game-suggestions' />}
-                  />
-                  <Route path='*' element={<Navigate to='/not-found' />} />
-                </Routes>
-              </main>
-              <Footer />
-            </AlertProvider>
+                  <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+                    <Route
+                      path='unapproved-posts'
+                      element={<UnapprovedPostsPage />}
+                    />
+                  </Route>
+                </Route>
+                <Route path='users/:userId' element={<UserDetailsPage />} />
+                <Route
+                  path='game-suggestions'
+                  element={<GameSuggestionsPage />}
+                />
+                <Route path='projects' element={<ProjectsPage />} />
+                <Route path='register' element={<RegisterPage />} />
+                <Route path='login' element={<LoginPage />} />
+                <Route path='not-found' element={<NotFoundPage />} />
+                <Route path='/' element={<Navigate to='/game-suggestions' />} />
+                <Route path='*' element={<Navigate to='/not-found' />} />
+              </Routes>
+            </main>
+            <Footer />
           </HeaderProvider>
+          <ToastContainer position='top-center' />
         </Router>
       ) : (
         <Spinner centered />

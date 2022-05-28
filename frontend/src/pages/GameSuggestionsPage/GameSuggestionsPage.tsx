@@ -9,16 +9,15 @@ import {
 } from '../../features/posts/postSlice'
 import { RootState, useAppDispatch } from '../../app/store'
 import HeaderContext from '../../context/header/HeaderContext'
-import Alert from '../../components/common/Alert/Alert'
 import Select from 'react-select'
 import { GameSuggestionGenres } from '../../constants/GameSuggestions/GameSuggestionGenres'
 import { SelectFieldOptionViewModel } from '../../models/Forms/SelectFieldOptionViewModel'
 import Modal from 'react-modal'
-import AlertContext from '../../context/alert/AlertContext'
 import GameSuggestionItems from '../../components/GameSuggestionItems/GameSuggestionItems'
 import WideButton from '../../components/common/Buttons/WideButton/WideButton'
 import CloseButton from '../../components/common/Buttons/CloseButton/CloseButton'
 import styles from './GameSuggestionsPage.module.scss'
+import { toast } from 'react-toastify'
 
 const GameSuggestionsPage = () => {
   const [genre, setGenre] = useState<SelectFieldOptionViewModel | null>(null)
@@ -27,7 +26,6 @@ const GameSuggestionsPage = () => {
   const dispatch = useAppDispatch()
 
   const { setHeader } = useContext(HeaderContext)
-  const { setAlert, removeAlert } = useContext(AlertContext)
 
   const { user } = useSelector((state: RootState) => state.currentUser)
   const { posts, pagination, loading, alert } = useSelector(
@@ -74,13 +72,14 @@ const GameSuggestionsPage = () => {
   }, [genre])
 
   useEffect(() => {
-    if (alert) {
-      setAlert(alert.type, alert.message, 5)
-    } else {
-      removeAlert()
+    if (alert?.type === 'info') {
+      toast.info(alert.message)
+    }
+    if (alert?.type === 'error') {
+      toast.error(alert.message)
     }
     return () => {
-      if (alert) dispatch(alertReset())
+      dispatch(alertReset())
     }
   }, [alert])
 
@@ -127,7 +126,6 @@ const GameSuggestionsPage = () => {
           </Modal>
         </React.Fragment>
       )}
-      <Alert />
       <div className={styles.header}>
         <h3>Najnowsze posty</h3>
         <Select

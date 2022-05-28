@@ -9,17 +9,15 @@ import { RootState } from '../../app/store'
 import { useAppDispatch } from '../../app/store'
 import { LoginFormFields } from '../../constants/Auth/LoginFormFields'
 import Spinner from '../../components/common/Spinner/Spinner'
-import Alert from '../../components/common/Alert/Alert'
-import AlertContext from '../../context/alert/AlertContext'
 import HeaderContext from '../../context/header/HeaderContext'
-import styles from './LoginPage.module.scss'
 import WideButton from '../../components/common/Buttons/WideButton/WideButton'
+import { toast } from 'react-toastify'
+import styles from './LoginPage.module.scss'
 
 const LoginPage = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const { setAlert, removeAlert } = useContext(AlertContext)
   const { setHeader } = useContext(HeaderContext)
 
   const { user, loading, alert } = useSelector(
@@ -40,13 +38,11 @@ const LoginPage = () => {
   }, [user, loading])
 
   useEffect(() => {
-    if (alert) {
-      setAlert(alert.type, alert.message)
-    } else {
-      removeAlert()
+    if (alert?.type === 'error') {
+      toast.error(alert.message)
     }
     return () => {
-      if (alert) dispatch(alertReset())
+      dispatch(alertReset())
     }
   }, [alert])
 
@@ -105,7 +101,6 @@ const LoginPage = () => {
                   )}
               </React.Fragment>
             ))}
-            <Alert />
             <WideButton type='submit' disabled={isSubmitting}>
               Zaloguj
             </WideButton>

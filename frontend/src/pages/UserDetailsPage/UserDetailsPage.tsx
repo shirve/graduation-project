@@ -3,9 +3,8 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { UserDetailsViewModel } from '../../models/Users/UserDetailsViewModel'
 import Spinner from '../../components/common/Spinner/Spinner'
-import Alert from '../../components/common/Alert/Alert'
-import AlertContext from '../../context/alert/AlertContext'
 import HeaderContext from '../../context/header/HeaderContext'
+import { toast } from 'react-toastify'
 import styles from './UserDetailsPage.module.scss'
 
 const UserDetailsPage = () => {
@@ -13,7 +12,6 @@ const UserDetailsPage = () => {
   const [loading, setLoading] = useState(true)
   const { userId } = useParams()
 
-  const { setAlert, removeAlert } = useContext(AlertContext)
   const { setHeader } = useContext(HeaderContext)
 
   useEffect(() => {
@@ -24,18 +22,14 @@ const UserDetailsPage = () => {
   }, [])
 
   useEffect(() => {
-    removeAlert()
-
     if (userId !== undefined) {
       getUser(userId)
     }
-
-    return () => removeAlert()
   }, [])
 
   const getUser = async (userId: string) => {
     const res = await axios.get(`/api/users/${userId}`).catch((error) => {
-      setAlert(error.response.data.type, error.response.data.message)
+      toast.error(error.response.data.message)
       setLoading(false)
     })
     setUser(res?.data)
@@ -46,13 +40,12 @@ const UserDetailsPage = () => {
 
   return (
     <React.Fragment>
-      <Alert />
       {user && (
         <div>
-          <p>
+          <div>
             {user.firstName}&nbsp;{user.lastName}
-          </p>
-          <p>{user.email}</p>
+          </div>
+          <div>{user.email}</div>
         </div>
       )}
     </React.Fragment>
