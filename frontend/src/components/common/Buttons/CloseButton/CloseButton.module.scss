@@ -1,0 +1,27 @@
+@import '../../../../styles/CommonStyles.scss';
+
+.closeButton {
+  position: absolute;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  opacity: 0.3;
+  cursor: pointer;
+  &:hover {
+    opacity: 1;
+  }
+  &:before, &:after {
+    position: absolute;
+    left: 1rem;
+    content: '';
+    height: 2rem;
+    width: 2px;
+    background-color: $black;
+  }
+  &:before {
+    transform: rotate(45deg);
+  }
+  &:after {
+    transform: rotate(-45deg);
+  }
+}

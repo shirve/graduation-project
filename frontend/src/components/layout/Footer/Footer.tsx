@@ -1,10 +1,10 @@
-import './Footer.scss'
+import styles from './Footer.module.scss'
 
 const Footer = () => {
   const footerYear = new Date().getFullYear()
 
   return (
-    <footer className='footer'>
+    <footer className={styles.footer}>
       Copyright &copy; {footerYear} Wszelkie prawa zastrzeżone
     </footer>
   )

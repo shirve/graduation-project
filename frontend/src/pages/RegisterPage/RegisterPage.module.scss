@@ -1,0 +1,24 @@
+@import '../../styles/CommonStyles.scss';
+
+.register {
+  margin-top: -0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    width: 350px;
+    .error {
+      display: flex;
+      justify-content: flex-end;
+      font-size: 0.875em;
+      color: $red;
+    }
+    button {
+      margin: 1rem 0;
+    } 
+  }
+}

@@ -12,7 +12,8 @@ import Spinner from '../../components/common/Spinner/Spinner'
 import Alert from '../../components/common/Alert/Alert'
 import AlertContext from '../../context/alert/AlertContext'
 import HeaderContext from '../../context/header/HeaderContext'
-import './RegisterPage.scss'
+import WideButton from '../../components/common/Buttons/WideButton/WideButton'
+import styles from './RegisterPage.module.scss'
 
 const RegisterPage = () => {
   const navigate = useNavigate()
@@ -91,8 +92,8 @@ const RegisterPage = () => {
         handleBlur,
         handleSubmit,
       }) => (
-        <div className='register-page'>
-          <form className='register-page-form' onSubmit={handleSubmit}>
+        <div className={styles.register}>
+          <form className={styles.form} onSubmit={handleSubmit}>
             {RegisterFormFields.map((field) => (
               <React.Fragment key={field.name}>
                 <FormField
@@ -103,33 +104,29 @@ const RegisterPage = () => {
                   label={field.label}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={
+                  invalid={
                     errors[field.name as keyof typeof values] &&
                     touched[field.name as keyof typeof values]
-                      ? 'is-invalid'
-                      : ''
+                      ? true
+                      : false
                   }
                 />
                 {errors[field.name as keyof typeof values] &&
                   touched[field.name as keyof typeof values] && (
-                    <p className='register-page-form-error'>
+                    <div className={styles.error}>
                       {errors[field.name as keyof typeof values]}
-                    </p>
+                    </div>
                   )}
               </React.Fragment>
             ))}
             <Alert />
-            <button
-              type='submit'
-              disabled={isSubmitting}
-              className='register-page-form-button'
-            >
+            <WideButton type='submit' disabled={isSubmitting}>
               Zarejestruj
-            </button>
+            </WideButton>
           </form>
-          <p>
+          <div>
             Posiadasz już konto? <Link to='/login'>Zaloguj się</Link>
-          </p>
+          </div>
         </div>
       )}
     </Formik>

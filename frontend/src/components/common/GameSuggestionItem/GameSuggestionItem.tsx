@@ -16,7 +16,7 @@ import { GameSuggestionButtonTypes } from '../../../models/GameSuggestions/GameS
 import GameSuggestionForm from '../../GameSuggestionForm/GameSuggestionForm'
 import Button from '../Buttons/Button/Button'
 import CloseButton from '../Buttons/CloseButton/CloseButton'
-import './GameSuggestionItem.scss'
+import styles from './GameSuggestionItem.module.scss'
 
 interface Props {
   post: GameSuggestionViewModel
@@ -79,14 +79,14 @@ const GameSuggestionItem = ({
 
   return (
     <React.Fragment>
-      <div className='game-suggestion-wrapper'>
-        <div className='game-suggestion-info'>
-          <p>
+      <div className={styles.wrapper}>
+        <div className={styles.info}>
+          <div>
             <Link to={`/users/${post.user._id}`}>{post.user.name}</Link>
-          </p>
-          <p>{new Date(post.createdAt).toLocaleString('pl-PL')}</p>
+          </div>
+          <div>{new Date(post.createdAt).toLocaleString('pl-PL')}</div>
         </div>
-        <ul className='game-suggestion-tags'>
+        <ul className={styles.tags}>
           {post.data.genres &&
             post.data.genres.map((genre) => (
               <li
@@ -99,7 +99,7 @@ const GameSuggestionItem = ({
               </li>
             ))}
         </ul>
-        <div className='game-suggestion-content'>
+        <div className={styles.content}>
           <h3>{post.data.title}</h3>
           <h4>Fabuła</h4>
           <p>{post.data.story}</p>
@@ -120,11 +120,11 @@ const GameSuggestionItem = ({
             </React.Fragment>
           )}
         </div>
-        <div className='game-suggestion-manage'>
+        <div className={styles.manage}>
           {displayedButtons?.includes('readMore') && readMore === false && (
             <span
               onClick={() => setReadMore(!readMore)}
-              className='game-suggestion-manage-read-more'
+              className={styles.readMore}
             >
               Czytaj więcej...
             </span>
@@ -164,18 +164,18 @@ const GameSuggestionItem = ({
           )}
         </div>
         {post.status.rejected && (
-          <div className='game-suggestion-status'>{post.status.message}</div>
+          <div className={styles.status}>{post.status.message}</div>
         )}
       </div>
 
       <Modal
         appElement={document.getElementById('root') || undefined}
         isOpen={showDeleteModal}
-        overlayClassName='game-suggestion-modal-overlay'
-        className='game-suggestion-modal-content delete-modal'
+        overlayClassName={styles.modalOverlay}
+        className={`${styles.modalContent} ${styles.deleteModalContent}`}
       >
-        <p>Na pewno chcesz usunąć ten post?</p>
-        <div className='game-suggestion-modal-buttons'>
+        <div>Na pewno chcesz usunąć ten post?</div>
+        <div className={styles.modalButtons}>
           <Button onClick={handleShowDeleteModal}>Anuluj</Button>
           <Button onClick={() => handlePostDelete(post._id)}>Usuń</Button>
         </div>
@@ -184,19 +184,18 @@ const GameSuggestionItem = ({
       <Modal
         appElement={document.getElementById('root') || undefined}
         isOpen={showRejectModal}
-        overlayClassName='game-suggestion-modal-overlay'
-        className='game-suggestion-modal-content reject-modal'
+        overlayClassName={styles.modalOverlay}
+        className={`${styles.modalContent} ${styles.rejectModalContent}`}
       >
-        <header className='game-suggestion-modal-header'>
-          <h5>Wiadomość</h5>
+        <div className={styles.modalHeader}>
+          <h4>Wiadomość</h4>
           <CloseButton onClick={handleShowRejectModal} />
-        </header>
+        </div>
         <textarea
-          className='form-control'
           value={rejectMessage}
           onChange={(e) => setRejectMessage(e.target.value)}
         />
-        <div className='game-suggestion-modal-buttons'>
+        <div className={styles.modalButtons}>
           <Button onClick={() => handlePostReject(post._id, rejectMessage)}>
             Odrzuć
           </Button>
@@ -206,13 +205,13 @@ const GameSuggestionItem = ({
       <Modal
         appElement={document.getElementById('root') || undefined}
         isOpen={showEditModal}
-        overlayClassName='game-suggestion-modal-overlay'
-        className='game-suggestion-modal-content edit-modal'
+        overlayClassName={styles.modalOverlay}
+        className={`${styles.modalContent} ${styles.editModalContent}`}
       >
-        <header className='game-suggestion-modal-header'>
-          <h3>Edytuj propozycje gry</h3>
+        <div className={styles.modalHeader}>
+          <h4>Edytuj propozycje gry</h4>
           <CloseButton onClick={handleShowEditModal} />
-        </header>
+        </div>
         <GameSuggestionForm post={post} showForm={handleShowEditModal} />
       </Modal>
     </React.Fragment>

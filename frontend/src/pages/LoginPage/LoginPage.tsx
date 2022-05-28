@@ -12,7 +12,8 @@ import Spinner from '../../components/common/Spinner/Spinner'
 import Alert from '../../components/common/Alert/Alert'
 import AlertContext from '../../context/alert/AlertContext'
 import HeaderContext from '../../context/header/HeaderContext'
-import './LoginPage.scss'
+import styles from './LoginPage.module.scss'
+import WideButton from '../../components/common/Buttons/WideButton/WideButton'
 
 const LoginPage = () => {
   const navigate = useNavigate()
@@ -77,8 +78,8 @@ const LoginPage = () => {
         handleBlur,
         handleSubmit,
       }) => (
-        <div className='login-page'>
-          <form className='login-page-form' onSubmit={handleSubmit}>
+        <div className={styles.login}>
+          <form className={styles.form} onSubmit={handleSubmit}>
             {LoginFormFields.map((field) => (
               <React.Fragment key={field.name}>
                 <FormField
@@ -89,33 +90,29 @@ const LoginPage = () => {
                   label={field.label}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={
+                  invalid={
                     errors[field.name as keyof typeof values] &&
                     touched[field.name as keyof typeof values]
-                      ? 'is-invalid'
-                      : ''
+                      ? true
+                      : false
                   }
                 />
                 {errors[field.name as keyof typeof values] &&
                   touched[field.name as keyof typeof values] && (
-                    <p className='login-page-form-error'>
+                    <div className={styles.error}>
                       {errors[field.name as keyof typeof values]}
-                    </p>
+                    </div>
                   )}
               </React.Fragment>
             ))}
             <Alert />
-            <button
-              type='submit'
-              disabled={isSubmitting}
-              className='login-page-form-button'
-            >
+            <WideButton type='submit' disabled={isSubmitting}>
               Zaloguj
-            </button>
+            </WideButton>
           </form>
-          <p>
+          <div>
             Nie masz jeszcze konta? <Link to='/register'>Zarejestruj się</Link>
-          </p>
+          </div>
         </div>
       )}
     </Formik>

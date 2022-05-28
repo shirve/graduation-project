@@ -1,0 +1,17 @@
+@import '../../../../styles/CommonStyles.scss';
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $white-muted;
+  background-color: $blue;
+  border-style: none;
+  border-radius: 2rem;
+  padding: 0.375rem 1.5rem;
+  width: 100%;
+  &:hover {
+    color: $white-muted;
+    background-color: $blue;
+  }
+}

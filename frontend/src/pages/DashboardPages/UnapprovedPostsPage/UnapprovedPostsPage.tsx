@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getUnapprovedPosts } from '../../../features/posts/postSlice'
 import { RootState } from '../../../app/store'
 import HeaderContext from '../../../context/header/HeaderContext'
-import PostItems from '../../../components/GameSuggestionItems/GameSuggestionItems'
+import GameSuggestionItems from '../../../components/GameSuggestionItems/GameSuggestionItems'
+import styles from './UnapprovedPostsPage.module.scss'
 
 const UnapprovedPostsPage = () => {
   const dispatch = useDispatch()
@@ -28,9 +29,11 @@ const UnapprovedPostsPage = () => {
   return (
     <React.Fragment>
       {posts.length === 0 && (
-        <p className='text-center'>Brak nowych niezatwierdzonych postów</p>
+        <div className={styles.center}>
+          Brak nowych niezatwierdzonych postów
+        </div>
       )}
-      <PostItems
+      <GameSuggestionItems
         posts={posts}
         loading={loading}
         displayedButtons={['delete', 'reject', 'approve']}

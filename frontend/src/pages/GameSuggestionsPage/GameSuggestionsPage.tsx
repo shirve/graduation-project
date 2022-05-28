@@ -15,9 +15,10 @@ import { GameSuggestionGenres } from '../../constants/GameSuggestions/GameSugges
 import { SelectFieldOptionViewModel } from '../../models/Forms/SelectFieldOptionViewModel'
 import Modal from 'react-modal'
 import AlertContext from '../../context/alert/AlertContext'
-import PostItems from '../../components/GameSuggestionItems/GameSuggestionItems'
-import './GameSuggestionsPage.scss'
+import GameSuggestionItems from '../../components/GameSuggestionItems/GameSuggestionItems'
+import WideButton from '../../components/common/Buttons/WideButton/WideButton'
 import CloseButton from '../../components/common/Buttons/CloseButton/CloseButton'
+import styles from './GameSuggestionsPage.module.scss'
 
 const GameSuggestionsPage = () => {
   const [genre, setGenre] = useState<SelectFieldOptionViewModel | null>(null)
@@ -99,49 +100,46 @@ const GameSuggestionsPage = () => {
 
   return (
     <React.Fragment>
-      <p>
+      <div className={styles.description}>
         Przeglądaj propozycje gier innych studentów z podobnymi
         zainteresowaniami, nawiązuj nowe kontakty, łącz się w grupy projektowe i
         realizuj najciekawsze pomysły. Aby dodać nową propozycję gry
         <Link to='/register'> Zrejestruj się</Link> lub
         <Link to='/login'> Zaloguj</Link> jeśli posiadasz już konto a następnie
         przejdź do formularza dodawania nowej propozycji gry poniżej.
-      </p>
+      </div>
       {user && (
         <React.Fragment>
-          <button
-            className='game-suggestions-page-button'
-            onClick={handleShowPostFormModal}
-          >
+          <WideButton onClick={handleShowPostFormModal}>
             NOWA PROPOZYCJA GRY
-          </button>
+          </WideButton>
           <Modal
             appElement={document.getElementById('root') || undefined}
             isOpen={showPostFormModal}
-            overlayClassName='game-suggestions-modal-overlay'
-            className='game-suggestions-modal-content'
+            overlayClassName={styles.modalOverlay}
+            className={styles.modalContent}
           >
-            <header className='game-suggestions-modal-header'>
-              <h3>Nowa propozycja gry</h3>
+            <div className={styles.modalHeader}>
+              <h4>Nowa propozycja gry</h4>
               <CloseButton onClick={handleShowPostFormModal} />
-            </header>
+            </div>
             <GameSuggestionForm showForm={handleShowPostFormModal} />
           </Modal>
         </React.Fragment>
       )}
       <Alert />
-      <div className='game-suggestions-page-header'>
+      <div className={styles.header}>
         <h3>Najnowsze posty</h3>
         <Select
-          className='game-suggestions-page-filter'
+          className={styles.filter}
           placeholder='Filtruj według gatunku'
           value={genre}
           options={GameSuggestionGenres}
           onChange={(option) => setGenre(option)}
         />
       </div>
-      {posts.length === 0 && <p>Nie znaleziono postów</p>}
-      <PostItems
+      {posts.length === 0 && <div>Nie znaleziono postów</div>}
+      <GameSuggestionItems
         posts={posts}
         loading={loading}
         onGenreChange={handleGenreChange}

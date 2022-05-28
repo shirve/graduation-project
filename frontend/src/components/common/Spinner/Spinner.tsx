@@ -1,4 +1,4 @@
-import './Spinner.scss'
+import styles from './Spinner.module.scss'
 
 interface Props {
   centered?: boolean
@@ -6,8 +6,8 @@ interface Props {
 
 const Spinner = ({ centered = false }: Props) => {
   return (
-    <div className={centered ? 'spinner-wrapper-centered' : 'spinner-wrapper'}>
-      <div className='spinner' />
+    <div className={centered ? styles.wrapperCentered : styles.wrapper}>
+      <div className={styles.spinner} />
     </div>
   )
 }

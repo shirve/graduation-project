@@ -3,7 +3,7 @@ import { Field } from 'formik'
 import { Options } from 'react-select'
 import SelectField from '../SelectField/SelectField'
 import { SelectFieldOptionViewModel } from '../../../../models/Forms/SelectFieldOptionViewModel'
-import './FormField.scss'
+import styles from './FormField.module.scss'
 
 interface Props {
   component: ReactNode
@@ -11,9 +11,9 @@ interface Props {
   name: string
   value: string | string[]
   label?: string
-  className?: string
   options?: Options<SelectFieldOptionViewModel>
   multiple?: boolean
+  invalid?: boolean
   onChange: (e: ChangeEvent) => void
   onBlur: (e: FocusEvent) => void
 }
@@ -24,14 +24,14 @@ const FormField = ({
   name,
   value,
   label,
-  className,
   options,
   multiple = false,
+  invalid,
   onChange,
 }: Props): ReactElement => {
   return (
     <React.Fragment>
-      <label className='form-field-label' htmlFor={name}>
+      <label className={styles.label} htmlFor={name}>
         {label}
       </label>
       <Field
@@ -39,7 +39,7 @@ const FormField = ({
         type={type}
         name={name}
         value={value}
-        className={`form-control form-field ${className}`}
+        className={invalid ? `${styles.field} ${styles.invalid}` : styles.field}
         onChange={onChange}
         options={options}
         multiple={multiple}

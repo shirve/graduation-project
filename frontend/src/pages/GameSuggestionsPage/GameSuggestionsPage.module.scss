@@ -1,0 +1,86 @@
+@import '../../styles/CommonStyles.scss';
+
+.description {
+  margin-bottom: 1rem;
+}
+
+.header {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .filter {
+    width: 250px;
+  }
+}
+
+@media (max-width: 475px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    .filter {
+      width: 100%;
+    }
+  }
+}
+
+.modalOverlay {
+  z-index: 9999;
+  display: flex;
+  position: fixed;
+  inset: 0px;
+  background-color: rgba(0, 0, 0, 0.6);
+  animation: modal-blur-in 0.5s forwards;
+  .modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding: 0;
+    border: none;
+    h4 {
+      margin: 0;
+    }
+  }
+  .modalContent {
+    margin: auto;
+    position: absolute;
+    width: fit-content;
+    inset: 2rem;
+    border: 1px $gray solid;
+    background: $white;
+    overflow: auto;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    width: 800px;
+  }
+}
+
+@media (max-width: 900px) {
+  .modalOverlay {
+    .modalContent {
+      width: 80%;
+    }
+  }
+}
+
+@media (max-width: 465px) {
+  .modalOverlay {
+    .modalContent {
+      inset: 1rem;
+      width: 90%;
+    }
+  }
+}
+
+@keyframes modal-blur-in {
+  from {
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+  to {
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+}
+

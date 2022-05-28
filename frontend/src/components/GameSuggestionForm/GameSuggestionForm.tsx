@@ -8,7 +8,8 @@ import FormField from '../common/Forms/FormField/FormField'
 import { GameSuggestionFormFields } from '../../constants/GameSuggestions/GameSuggestionFormFields'
 import { GameSuggestionViewModel } from '../../models/GameSuggestions/GameSuggestionViewModel'
 import { GameSuggestionDataViewModel } from '../../models/GameSuggestions/GameSuggestionDataViewModel'
-import './GameSuggestionForm.scss'
+import WideButton from '../common/Buttons/WideButton/WideButton'
+import styles from './GameSuggestionForm.module.scss'
 
 interface IFormModel {
   title: string
@@ -86,7 +87,7 @@ const GameSuggestionForm = ({ post, showForm }: Props) => {
         handleBlur,
         handleSubmit,
       }) => (
-        <form className='game-suggestion-form' onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit}>
           {GameSuggestionFormFields.map((field) => (
             <React.Fragment key={field.name}>
               <FormField
@@ -97,30 +98,26 @@ const GameSuggestionForm = ({ post, showForm }: Props) => {
                 label={field.label}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className={
+                invalid={
                   errors[field.name as keyof typeof values] &&
                   touched[field.name as keyof typeof values]
-                    ? 'is-invalid'
-                    : ''
+                    ? true
+                    : false
                 }
                 options={field.options}
                 multiple={field.multiple}
               />
               {errors[field.name as keyof typeof values] &&
                 touched[field.name as keyof typeof values] && (
-                  <p className='game-suggestion-form-error'>
+                  <div className={styles.error}>
                     {errors[field.name as keyof typeof values]}
-                  </p>
+                  </div>
                 )}
             </React.Fragment>
           ))}
-          <button
-            type='submit'
-            disabled={isSubmitting}
-            className='game-suggestion-form-button'
-          >
+          <WideButton type='submit' disabled={isSubmitting}>
             {post ? 'EDYTUJ PROPOZYCJĘ GRY' : 'DODAJ NOWĄ PROPOZYCJĘ GRY'}
-          </button>
+          </WideButton>
           {post && (
             <small>
               *Po edycji post zostanie ponownie przesłany do zatwierdzenia przez

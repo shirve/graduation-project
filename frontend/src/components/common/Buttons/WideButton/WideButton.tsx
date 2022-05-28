@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './Button.module.scss'
+import styles from './WideButton.module.scss'
 
 interface Props {
   type?: 'button' | 'submit' | 'reset'
@@ -8,7 +8,12 @@ interface Props {
   onClick?: () => void
 }
 
-const Button = ({ type = 'button', disabled, children, onClick }: Props) => {
+const WideButton = ({
+  type = 'button',
+  disabled,
+  children,
+  onClick,
+}: Props) => {
   return (
     <button
       type={type}
@@ -21,4 +26,4 @@ const Button = ({ type = 'button', disabled, children, onClick }: Props) => {
   )
 }
 
-export default Button
+export default WideButton

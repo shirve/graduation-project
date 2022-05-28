@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
-import './NotFoundPage.scss'
+import styles from './NotFoundPage.module.scss'
 
 const NotFoundPage = () => {
   return (
-    <div className='not-found'>
-      <p>404</p>
-      <p>Page Not Found</p>
+    <div className={styles.notFound}>
+      <div>404</div>
+      <div>Page Not Found</div>
       <Link to='/'>Strona Główna</Link>
     </div>
   )

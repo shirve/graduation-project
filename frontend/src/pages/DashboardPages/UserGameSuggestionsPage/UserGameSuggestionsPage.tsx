@@ -4,8 +4,8 @@ import { getUserPosts } from '../../../features/posts/postSlice'
 import { RootState } from '../../../app/store'
 import HeaderContext from '../../../context/header/HeaderContext'
 import { GameSuggestionViewModel } from '../../../models/GameSuggestions/GameSuggestionViewModel'
-import PostItems from '../../../components/GameSuggestionItems/GameSuggestionItems'
-import './UserGameSuggestionsPage.scss'
+import GameSuggestionItems from '../../../components/GameSuggestionItems/GameSuggestionItems'
+import styles from './UserGameSuggestionsPage.module.scss'
 
 type FilterType = 'approved' | 'unapproved' | 'rejected'
 
@@ -70,43 +70,43 @@ const UserGameSuggestionsPage = () => {
 
   return (
     <React.Fragment>
-      <ul className='user-game-suggestions-page-navigation'>
+      <ul className={styles.navigation}>
         <li
-          className={filterType === 'approved' ? 'active' : ''}
+          className={filterType === 'approved' && styles.active}
           onClick={() => handleFilterChange('approved')}
         >
-          Zatwierdzone&nbsp;
-          <span className='badge'>{filteredApprovedPosts.length}</span>
+          Zatwierdzone
+          <span className={styles.badge}>{filteredApprovedPosts.length}</span>
         </li>
         <li
-          className={filterType === 'unapproved' ? 'active' : ''}
+          className={filterType === 'unapproved' && styles.active}
           onClick={() => handleFilterChange('unapproved')}
         >
-          Niezatwierdzone&nbsp;
-          <span className='badge'>{filteredUnapprovedPosts.length}</span>
+          Niezatwierdzone
+          <span className={styles.badge}>{filteredUnapprovedPosts.length}</span>
         </li>
         <li
-          className={filterType === 'rejected' ? 'active' : ''}
+          className={filterType === 'rejected' && styles.active}
           onClick={() => handleFilterChange('rejected')}
         >
-          Odrzucone&nbsp;
-          <span className='badge'>{filteredRejectedPosts.length}</span>
+          Odrzucone
+          <span className={styles.badge}>{filteredRejectedPosts.length}</span>
         </li>
       </ul>
       {filteredPosts.length === 0 && (
-        <div className='user-game-suggestions-page-info'>
+        <div className={styles.info}>
           {filterType === 'approved' && (
-            <p>Nie masz jeszcze żadnych zatwierdzonych propozycji gier</p>
+            <div>Nie masz jeszcze żadnych zatwierdzonych propozycji gier</div>
           )}
           {filterType === 'unapproved' && (
-            <p>Nie masz żadnych niezatwierdzonych propozycji gier</p>
+            <div>Nie masz żadnych niezatwierdzonych propozycji gier</div>
           )}
           {filterType === 'rejected' && (
-            <p>Nie masz żadnych odrzuconych propozycji gier</p>
+            <div>Nie masz żadnych odrzuconych propozycji gier</div>
           )}
         </div>
       )}
-      <PostItems
+      <GameSuggestionItems
         posts={filteredPosts}
         loading={loading}
         displayedButtons={['edit', 'delete']}

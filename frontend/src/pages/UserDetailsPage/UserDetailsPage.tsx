@@ -6,7 +6,7 @@ import Spinner from '../../components/common/Spinner/Spinner'
 import Alert from '../../components/common/Alert/Alert'
 import AlertContext from '../../context/alert/AlertContext'
 import HeaderContext from '../../context/header/HeaderContext'
-import './UserDetailsPage.scss'
+import styles from './UserDetailsPage.module.scss'
 
 const UserDetailsPage = () => {
   const [user, setUser] = useState<UserDetailsViewModel>()

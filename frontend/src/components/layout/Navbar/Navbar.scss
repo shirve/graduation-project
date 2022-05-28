@@ -1,12 +1,14 @@
+@import '../../../styles/CommonStyles.scss';
+
 nav.navbar {
   padding: 1rem 0;
-  background-color: #0D2857;
+  background-color: $dark-blue;
 }
 
 .nav {
   &-item {
     font-size: 1.125rem;
-    color: #fafafa;
+    color: $white-muted;
     position: relative;
   }
   &-link {
@@ -17,8 +19,8 @@ nav.navbar {
     width: 300px;
     top: 59px;
     transform: translate(-40%);
-    background-color: #0D2857;
-    border: 1px solid #0D2857;
+    background-color: $dark-blue;
+    border: 1px solid $dark-blue;
     border-bottom-left-radius: 1.2rem;
     border-bottom-right-radius: 1.2rem;
     padding: 0.5rem 1rem 0.5rem 1rem;

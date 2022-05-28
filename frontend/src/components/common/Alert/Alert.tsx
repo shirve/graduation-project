@@ -5,7 +5,7 @@ import {
   FaInfoCircle,
   FaCheckCircle,
 } from 'react-icons/fa'
-import './Alert.scss'
+import styles from './Alert.module.scss'
 
 const Alert = () => {
   const { alert } = useContext(AlertContext)
@@ -13,20 +13,20 @@ const Alert = () => {
   return (
     <React.Fragment>
       {alert.type === 'error' && (
-        <div className='alert alert-danger'>
-          <FaExclamationTriangle className='alert-icon' />
+        <div className={`${styles.alert} ${styles.alertError}`}>
+          <FaExclamationTriangle className={styles.alertIcon} />
           {alert.message}
         </div>
       )}
       {alert.type === 'success' && (
-        <div className='alert alert-success'>
-          <FaCheckCircle className='alert-icon' />
+        <div className={`${styles.alert} ${styles.alertSuccess}`}>
+          <FaCheckCircle className={styles.alertIcon} />
           {alert.message}
         </div>
       )}
       {alert.type === 'info' && (
-        <div className='alert alert-info'>
-          <FaInfoCircle className='alert-icon' />
+        <div className={`${styles.alert} ${styles.alertInfo}`}>
+          <FaInfoCircle className={styles.alertIcon} />
           {alert.message}
         </div>
       )}

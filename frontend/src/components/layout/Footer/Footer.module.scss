@@ -1,0 +1,12 @@
+@import '../../../styles/CommonStyles.scss';
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px $gray solid;
+  padding: 2rem 1rem;
+  margin-top: 1rem;
+  background-color: $dark-blue;
+  color: $white-muted;
+}

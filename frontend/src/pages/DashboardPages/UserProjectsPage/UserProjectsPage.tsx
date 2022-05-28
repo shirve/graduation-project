@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import HeaderContext from '../../../context/header/HeaderContext'
-import './UserProjectsPage.scss'
+import styles from './UserProjectsPage.module.scss'
 
 const UserProjectsPage = () => {
   const { setHeader } = useContext(HeaderContext)
