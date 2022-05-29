@@ -14,7 +14,7 @@ import { GameSuggestionGenres } from '../../constants/GameSuggestions/GameSugges
 import { SelectFieldOptionViewModel } from '../../models/Forms/SelectFieldOptionViewModel'
 import Modal from 'react-modal'
 import GameSuggestionItems from '../../components/GameSuggestionItems/GameSuggestionItems'
-import WideButton from '../../components/common/Buttons/WideButton/WideButton'
+import Button from '../../components/common/Buttons/Button/Button'
 import CloseButton from '../../components/common/Buttons/CloseButton/CloseButton'
 import styles from './GameSuggestionsPage.module.scss'
 import { toast } from 'react-toastify'
@@ -73,6 +73,7 @@ const GameSuggestionsPage = () => {
 
   useEffect(() => {
     if (alert?.type === 'info') {
+      handleShowPostFormModal()
       toast.info(alert.message)
     }
     if (alert?.type === 'error') {
@@ -109,9 +110,9 @@ const GameSuggestionsPage = () => {
       </div>
       {user && (
         <React.Fragment>
-          <WideButton onClick={handleShowPostFormModal}>
-            NOWA PROPOZYCJA GRY
-          </WideButton>
+          <Button onClick={handleShowPostFormModal} width={'100%'}>
+            Nowa propozycja gry
+          </Button>
           <Modal
             appElement={document.getElementById('root') || undefined}
             isOpen={showPostFormModal}
@@ -122,14 +123,14 @@ const GameSuggestionsPage = () => {
               <h4>Nowa propozycja gry</h4>
               <CloseButton onClick={handleShowPostFormModal} />
             </div>
-            <GameSuggestionForm showForm={handleShowPostFormModal} />
+            <GameSuggestionForm />
           </Modal>
         </React.Fragment>
       )}
       <div className={styles.header}>
         <h3>Najnowsze posty</h3>
         <Select
-          className={styles.filter}
+          className={styles.select}
           placeholder='Filtruj według gatunku'
           value={genre}
           options={GameSuggestionGenres}

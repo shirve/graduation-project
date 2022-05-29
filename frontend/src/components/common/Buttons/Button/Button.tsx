@@ -2,19 +2,38 @@ import React from 'react'
 import styles from './Button.module.scss'
 
 interface Props {
+  children: React.ReactNode
+  onClick: () => void
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
-  children?: React.ReactNode
-  onClick?: () => void
+  height?: string
+  width?: string
+  marginTop?: string
+  marginBottom?: string
 }
 
-const Button = ({ type = 'button', disabled, children, onClick }: Props) => {
+const Button = ({
+  children,
+  onClick,
+  type,
+  disabled,
+  height,
+  width,
+  marginTop,
+  marginBottom,
+}: Props) => {
   return (
     <button
-      type={type}
-      disabled={disabled}
+      type={type ? type : 'button'}
       className={styles.button}
       onClick={onClick}
+      disabled={disabled}
+      style={{
+        height: height,
+        width: width,
+        marginTop: marginTop,
+        marginBottom: marginBottom,
+      }}
     >
       {children}
     </button>

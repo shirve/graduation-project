@@ -29,9 +29,7 @@ const UnapprovedPostsPage = () => {
   return (
     <React.Fragment>
       {posts.length === 0 && (
-        <div className={styles.center}>
-          Brak nowych niezatwierdzonych postów
-        </div>
+        <div className={styles.info}>Brak nowych niezatwierdzonych postów</div>
       )}
       <GameSuggestionItems
         posts={posts}

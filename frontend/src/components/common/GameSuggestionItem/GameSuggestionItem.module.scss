@@ -11,6 +11,7 @@
   .info {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     a {
       color: $black-muted;
     }
@@ -74,15 +75,15 @@
     }
   }
   .modalContent {
-    margin: auto;
     position: absolute;
-    width: fit-content;
     inset: 2rem;
-    border: 1px $gray solid;
-    background: $white;
-    overflow: auto;
-    border-radius: 0.5rem;
+    width: fit-content;
+    margin: auto;
     padding: 1rem;
+    background: $white;
+    border: 1px $gray solid;
+    border-radius: 0.25rem;
+    overflow: auto;
   }
   .deleteModalContent {
     height: fit-content
@@ -107,9 +108,6 @@
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
-    button {
-      width: 120px;
-    }
   }
 }
 

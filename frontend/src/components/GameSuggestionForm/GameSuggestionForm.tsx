@@ -8,7 +8,7 @@ import FormField from '../common/Forms/FormField/FormField'
 import { GameSuggestionFormFields } from '../../constants/GameSuggestions/GameSuggestionFormFields'
 import { GameSuggestionViewModel } from '../../models/GameSuggestions/GameSuggestionViewModel'
 import { GameSuggestionDataViewModel } from '../../models/GameSuggestions/GameSuggestionDataViewModel'
-import WideButton from '../common/Buttons/WideButton/WideButton'
+import Button from '../common/Buttons/Button/Button'
 import styles from './GameSuggestionForm.module.scss'
 
 interface IFormModel {
@@ -25,10 +25,9 @@ interface IFormModel {
 
 interface Props {
   post?: GameSuggestionViewModel
-  showForm: () => void
 }
 
-const GameSuggestionForm = ({ post, showForm }: Props) => {
+const GameSuggestionForm = ({ post }: Props) => {
   const formikRef = useRef<FormikProps<IFormModel>>(null)
 
   const dispatch = useAppDispatch()
@@ -42,7 +41,6 @@ const GameSuggestionForm = ({ post, showForm }: Props) => {
     if (post) dispatch(updatePost({ postId: post._id, data }))
     if (!post) dispatch(createPost(data))
     resetForm()
-    showForm()
   }
 
   const PostFormSchema = Yup.object().shape({
@@ -92,7 +90,6 @@ const GameSuggestionForm = ({ post, showForm }: Props) => {
             <React.Fragment key={field.name}>
               <FormField
                 component={field.component}
-                type={field.type}
                 name={field.name}
                 value={values[field.name as keyof typeof values]}
                 label={field.label}
@@ -115,9 +112,14 @@ const GameSuggestionForm = ({ post, showForm }: Props) => {
                 )}
             </React.Fragment>
           ))}
-          <WideButton type='submit' disabled={isSubmitting}>
-            {post ? 'EDYTUJ PROPOZYCJĘ GRY' : 'DODAJ NOWĄ PROPOZYCJĘ GRY'}
-          </WideButton>
+          <Button
+            type={'submit'}
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            width={'100%'}
+          >
+            {post ? 'Edytuj propozycję gry' : 'Dodaj nową propozycję gry'}
+          </Button>
           {post && (
             <small>
               *Po edycji post zostanie ponownie przesłany do zatwierdzenia przez

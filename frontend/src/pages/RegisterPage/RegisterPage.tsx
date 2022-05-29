@@ -10,7 +10,7 @@ import { useAppDispatch } from '../../app/store'
 import { RegisterFormFields } from '../../constants/Auth/RegisterFormFields'
 import Spinner from '../../components/common/Spinner/Spinner'
 import HeaderContext from '../../context/header/HeaderContext'
-import WideButton from '../../components/common/Buttons/WideButton/WideButton'
+import Button from '../../components/common/Buttons/Button/Button'
 import styles from './RegisterPage.module.scss'
 import { toast } from 'react-toastify'
 
@@ -115,9 +115,14 @@ const RegisterPage = () => {
                   )}
               </React.Fragment>
             ))}
-            <WideButton type='submit' disabled={isSubmitting}>
+            <Button
+              type={'submit'}
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              width={'100%'}
+            >
               Zarejestruj
-            </WideButton>
+            </Button>
           </form>
           <div>
             Posiadasz już konto? <Link to='/login'>Zaloguj się</Link>

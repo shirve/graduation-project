@@ -9,7 +9,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  .filter {
+  h3 {
+    margin: 0;
+  }
+  .select {
     width: 250px;
   }
 }
@@ -18,7 +21,7 @@
   .header {
     flex-direction: column;
     align-items: flex-start;
-    .filter {
+    .select {
       width: 100%;
     }
   }
@@ -43,16 +46,15 @@
     }
   }
   .modalContent {
-    margin: auto;
     position: absolute;
-    width: fit-content;
     inset: 2rem;
-    border: 1px $gray solid;
-    background: $white;
-    overflow: auto;
-    border-radius: 0.5rem;
-    padding: 1rem;
     width: 800px;
+    margin: auto;
+    padding: 1rem;
+    background: $white;
+    border: 1px $gray solid;
+    border-radius: 0.25rem;
+    overflow: auto;
   }
 }
 

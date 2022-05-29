@@ -176,8 +176,12 @@ const GameSuggestionItem = ({
       >
         <div>Na pewno chcesz usunąć ten post?</div>
         <div className={styles.modalButtons}>
-          <Button onClick={handleShowDeleteModal}>Anuluj</Button>
-          <Button onClick={() => handlePostDelete(post._id)}>Usuń</Button>
+          <Button onClick={handleShowDeleteModal} width={'100%'}>
+            Anuluj
+          </Button>
+          <Button onClick={() => handlePostDelete(post._id)} width={'100%'}>
+            Usuń
+          </Button>
         </div>
       </Modal>
 
@@ -196,7 +200,10 @@ const GameSuggestionItem = ({
           onChange={(e) => setRejectMessage(e.target.value)}
         />
         <div className={styles.modalButtons}>
-          <Button onClick={() => handlePostReject(post._id, rejectMessage)}>
+          <Button
+            onClick={() => handlePostReject(post._id, rejectMessage)}
+            width={'100%'}
+          >
             Odrzuć
           </Button>
         </div>
@@ -212,7 +219,7 @@ const GameSuggestionItem = ({
           <h4>Edytuj propozycje gry</h4>
           <CloseButton onClick={handleShowEditModal} />
         </div>
-        <GameSuggestionForm post={post} showForm={handleShowEditModal} />
+        <GameSuggestionForm post={post} />
       </Modal>
     </React.Fragment>
   )

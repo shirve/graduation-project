@@ -10,7 +10,7 @@ import { useAppDispatch } from '../../app/store'
 import { LoginFormFields } from '../../constants/Auth/LoginFormFields'
 import Spinner from '../../components/common/Spinner/Spinner'
 import HeaderContext from '../../context/header/HeaderContext'
-import WideButton from '../../components/common/Buttons/WideButton/WideButton'
+import Button from '../../components/common/Buttons/Button/Button'
 import { toast } from 'react-toastify'
 import styles from './LoginPage.module.scss'
 
@@ -101,9 +101,14 @@ const LoginPage = () => {
                   )}
               </React.Fragment>
             ))}
-            <WideButton type='submit' disabled={isSubmitting}>
+            <Button
+              type={'submit'}
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              width={'100%'}
+            >
               Zaloguj
-            </WideButton>
+            </Button>
           </form>
           <div>
             Nie masz jeszcze konta? <Link to='/register'>Zarejestruj się</Link>

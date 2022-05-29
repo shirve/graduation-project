@@ -72,21 +72,21 @@ const UserGameSuggestionsPage = () => {
     <React.Fragment>
       <ul className={styles.navigation}>
         <li
-          className={filterType === 'approved' && styles.active}
+          className={filterType === 'approved' ? styles.active : undefined}
           onClick={() => handleFilterChange('approved')}
         >
           Zatwierdzone
           <span className={styles.badge}>{filteredApprovedPosts.length}</span>
         </li>
         <li
-          className={filterType === 'unapproved' && styles.active}
+          className={filterType === 'unapproved' ? styles.active : undefined}
           onClick={() => handleFilterChange('unapproved')}
         >
           Niezatwierdzone
           <span className={styles.badge}>{filteredUnapprovedPosts.length}</span>
         </li>
         <li
-          className={filterType === 'rejected' && styles.active}
+          className={filterType === 'rejected' ? styles.active : undefined}
           onClick={() => handleFilterChange('rejected')}
         >
           Odrzucone
