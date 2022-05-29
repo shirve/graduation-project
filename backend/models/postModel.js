@@ -69,6 +69,30 @@ const postSchema = mongoose.Schema(
         required: false,
       },
     },
+    contributors: [
+      {
+        user: {
+          _id: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+          },
+          name: {
+            type: String,
+            required: true,
+          },
+        },
+        status: {
+          approved: {
+            type: Boolean,
+            default: false,
+          },
+          message: {
+            type: String,
+            required: false,
+          },
+        },
+      },
+    ],
     liked: [
       {
         type: mongoose.Schema.Types.ObjectId,
