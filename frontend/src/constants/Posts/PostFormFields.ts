@@ -1,6 +1,6 @@
-import { GameSuggestionGenres } from './GameSuggestionGenres'
+import { PostGenres } from './PostGenres'
 
-export const GameSuggestionFormFields = [
+export const PostFormFields = [
   {
     name: 'title',
     component: 'input',
@@ -29,7 +29,7 @@ export const GameSuggestionFormFields = [
     name: 'genres',
     component: 'select',
     label: 'Gatunek/Gatunki',
-    options: GameSuggestionGenres,
+    options: PostGenres,
     multiple: true,
   },
 ]

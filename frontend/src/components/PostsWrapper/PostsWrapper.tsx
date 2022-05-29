@@ -1,18 +1,18 @@
 import React from 'react'
-import { GameSuggestionViewModel } from '../../models/GameSuggestions/GameSuggestionViewModel'
-import { GameSuggestionButtonTypes } from '../../models/GameSuggestions/GameSuggestionButtonTypes'
-import GameSuggestionItem from '../common/GameSuggestionItem/GameSuggestionItem'
+import { PostViewModel } from '../../models/Posts/PostViewModel'
+import { PostButtonTypes } from '../../models/Posts/PostButtonTypes'
+import PostItem from '../common/PostItem/PostItem'
 import Pagination from '../common/Pagination/Pagination'
 import Spinner from '../common/Spinner/Spinner'
 
 interface Props {
-  posts: GameSuggestionViewModel[]
+  posts: PostViewModel[]
   loading?: string
   onGenreChange?: (genre: string) => void
-  displayedButtons?: GameSuggestionButtonTypes[]
+  displayedButtons?: PostButtonTypes[]
 }
 
-const GameSuggestionItems = ({
+const PostsWrapper = ({
   posts,
   loading,
   onGenreChange,
@@ -23,7 +23,7 @@ const GameSuggestionItems = ({
   return (
     <React.Fragment>
       {posts.map((post, index) => (
-        <GameSuggestionItem
+        <PostItem
           key={index}
           post={post}
           onGenreChange={onGenreChange}
@@ -35,4 +35,4 @@ const GameSuggestionItems = ({
   )
 }
 
-export default GameSuggestionItems
+export default PostsWrapper

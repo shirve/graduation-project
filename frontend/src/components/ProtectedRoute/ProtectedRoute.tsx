@@ -7,7 +7,7 @@ interface Props {
 }
 
 const ProtectedRoute = ({ allowedRoles }: Props) => {
-  const { user } = useSelector((state: RootState) => state.currentUser)
+  const { user } = useSelector((state: RootState) => state.user)
 
   return (!allowedRoles && user) ||
     user?.roles.find((role) => allowedRoles?.includes(role)) ? (

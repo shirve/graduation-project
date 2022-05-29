@@ -1,13 +1,13 @@
 import { ObjectId } from 'mongoose'
-import { GameSuggestionDataViewModel } from './GameSuggestionDataViewModel'
+import { PostDataViewModel } from './PostDataViewModel'
 
-export interface GameSuggestionViewModel {
+export interface PostViewModel {
   _id: ObjectId
   user: {
     _id: ObjectId
     name: string
   }
-  data: GameSuggestionDataViewModel
+  data: PostDataViewModel
   status: {
     approved: boolean
     rejected: boolean

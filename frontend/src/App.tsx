@@ -14,12 +14,12 @@ import Header from './components/layout/Header/Header'
 import Footer from './components/layout/Footer/Footer'
 import RegisterPage from './pages/RegisterPage/RegisterPage'
 import LoginPage from './pages/LoginPage/LoginPage'
-import GameSuggestionsPage from './pages/GameSuggestionsPage/GameSuggestionsPage'
+import PostsPage from './pages/PostsPage/PostsPage'
 import ProjectsPage from './pages/ProjectsPage/ProjectsPage'
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage'
 import UserDetailsPage from './pages/UserDetailsPage/UserDetailsPage'
 import UserProfilePage from './pages/DashboardPages/UserProfilePage/UserProfilePage'
-import UserGameSuggestionsPage from './pages/DashboardPages/UserGameSuggestionsPage/UserGameSuggestionsPage'
+import UserPostsPage from './pages/DashboardPages/UserPostsPage/UserPostsPage'
 import UserProjectsPage from './pages/DashboardPages/UserProjectsPage/UserProjectsPage'
 import UnapprovedPostsPage from './pages/DashboardPages/UnapprovedPostsPage/UnapprovedPostsPage'
 import { HeaderProvider } from './context/header/HeaderContext'
@@ -42,10 +42,7 @@ const App = () => {
                   <Route element={<ProtectedRoute />}>
                     <Route index element={<Navigate to='profile' />} />
                     <Route path='profile' element={<UserProfilePage />} />
-                    <Route
-                      path='game-suggestions'
-                      element={<UserGameSuggestionsPage />}
-                    />
+                    <Route path='posts' element={<UserPostsPage />} />
                     <Route path='projects' element={<UserProjectsPage />} />
                     <Route path='*' element={<Navigate to='/not-found' />} />
                   </Route>
@@ -57,15 +54,12 @@ const App = () => {
                   </Route>
                 </Route>
                 <Route path='users/:userId' element={<UserDetailsPage />} />
-                <Route
-                  path='game-suggestions'
-                  element={<GameSuggestionsPage />}
-                />
+                <Route path='posts' element={<PostsPage />} />
                 <Route path='projects' element={<ProjectsPage />} />
                 <Route path='register' element={<RegisterPage />} />
                 <Route path='login' element={<LoginPage />} />
                 <Route path='not-found' element={<NotFoundPage />} />
-                <Route path='/' element={<Navigate to='/game-suggestions' />} />
+                <Route path='/' element={<Navigate to='/posts' />} />
                 <Route path='*' element={<Navigate to='/not-found' />} />
               </Routes>
             </main>

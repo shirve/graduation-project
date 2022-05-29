@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
-import userReducer from '../features/user/userSlice'
+import userReducer from '../features/users/userSlice'
 import postReducer from '../features/posts/postSlice'
 
 export const store = configureStore({
   reducer: {
-    currentUser: userReducer,
-    gameSuggestions: postReducer,
+    user: userReducer,
+    posts: postReducer,
   },
   devTools: process.env.NODE_ENV === 'development',
 })

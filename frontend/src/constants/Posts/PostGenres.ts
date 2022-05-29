@@ -1,6 +1,6 @@
 import { SelectFieldOptionViewModel } from '../../models/Forms/SelectFieldOptionViewModel'
 
-export const GameSuggestionGenres: SelectFieldOptionViewModel[] = [
+export const PostGenres: SelectFieldOptionViewModel[] = [
   { value: 'strzelanki', label: 'Strzelanki' },
   { value: 'zręcznościowe', label: 'Zręcznościowe' },
   { value: 'przygodowe', label: 'Przygodowe' },

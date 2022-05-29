@@ -3,25 +3,21 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getUserPosts } from '../../../features/posts/postSlice'
 import { RootState } from '../../../app/store'
 import HeaderContext from '../../../context/header/HeaderContext'
-import { GameSuggestionViewModel } from '../../../models/GameSuggestions/GameSuggestionViewModel'
-import GameSuggestionItems from '../../../components/GameSuggestionItems/GameSuggestionItems'
-import styles from './UserGameSuggestionsPage.module.scss'
+import { PostViewModel } from '../../../models/Posts/PostViewModel'
+import PostsWrapper from '../../../components/PostsWrapper/PostsWrapper'
+import styles from './UserPostsPage.module.scss'
 
 type FilterType = 'approved' | 'unapproved' | 'rejected'
 
-const UserGameSuggestionsPage = () => {
+const UserPostsPage = () => {
   const dispatch = useDispatch()
 
   const { setHeader } = useContext(HeaderContext)
 
-  const { posts, loading } = useSelector(
-    (state: RootState) => state.gameSuggestions
-  )
+  const { posts, loading } = useSelector((state: RootState) => state.posts)
 
   const [filterType, setFilterType] = useState<FilterType>('approved')
-  const [filteredPosts, setFilteredPosts] = useState<GameSuggestionViewModel[]>(
-    []
-  )
+  const [filteredPosts, setFilteredPosts] = useState<PostViewModel[]>([])
 
   const filteredApprovedPosts = posts.filter((post) => post.status.approved)
 
@@ -106,7 +102,7 @@ const UserGameSuggestionsPage = () => {
           )}
         </div>
       )}
-      <GameSuggestionItems
+      <PostsWrapper
         posts={filteredPosts}
         loading={loading}
         displayedButtons={['edit', 'delete']}
@@ -115,4 +111,4 @@ const UserGameSuggestionsPage = () => {
   )
 }
 
-export default UserGameSuggestionsPage
+export default UserPostsPage

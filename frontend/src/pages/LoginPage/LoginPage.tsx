@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { alertReset, loginUser } from '../../features/user/userSlice'
+import { alertReset, loginUser } from '../../features/users/userSlice'
 import FormField from '../../components/common/Forms/FormField/FormField'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -20,9 +20,7 @@ const LoginPage = () => {
 
   const { setHeader } = useContext(HeaderContext)
 
-  const { user, loading, alert } = useSelector(
-    (state: RootState) => state.currentUser
-  )
+  const { user, loading, alert } = useSelector((state: RootState) => state.user)
 
   useEffect(() => {
     setHeader('ZALOGUJ SIĘ')
@@ -75,7 +73,7 @@ const LoginPage = () => {
         handleSubmit,
       }) => (
         <div className={styles.login}>
-          <form className={styles.form} onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
             {LoginFormFields.map((field) => (
               <React.Fragment key={field.name}>
                 <FormField

@@ -2,14 +2,14 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { RootState } from '../../app/store'
 import postService from './postService'
 import { ObjectId } from 'mongoose'
-import { GameSuggestionViewModel } from '../../models/GameSuggestions/GameSuggestionViewModel'
-import { GameSuggestionDataViewModel } from '../../models/GameSuggestions/GameSuggestionDataViewModel'
-import { PaginatedGameSuggestionsViewModel } from '../../models/GameSuggestions/PaginatedGameSuggestionsViewModel'
+import { PostViewModel } from '../../models/Posts/PostViewModel'
+import { PostDataViewModel } from '../../models/Posts/PostDataViewModel'
+import { PaginatedPostsViewModel } from '../../models/Posts/PaginatedPostsViewModel'
 import { PaginationViewModel } from '../../models/Pagination/PaginationViewModel'
 import { AlertViewModel } from '../../models/Alert/AlertViewModel'
 
 interface IPostsState {
-  posts: GameSuggestionViewModel[]
+  posts: PostViewModel[]
   pagination: PaginationViewModel
   loading: 'idle' | 'pending' | 'fulfilled' | 'failed'
   alert: AlertViewModel | undefined | null
@@ -29,12 +29,12 @@ const initialState: IPostsState = {
 // Get user posts
 // GET /api/posts
 export const getUserPosts = createAsyncThunk<
-  GameSuggestionViewModel[],
+  PostViewModel[],
   void,
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/userPosts', async (_, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().currentUser.user?.token
+    const token = thunkAPI.getState().user.user?.token
     return await postService.getUserPosts(token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
@@ -44,7 +44,7 @@ export const getUserPosts = createAsyncThunk<
 // Get approved posts
 // GET /api/posts/approved?page=number&limit=number&genre=string
 export const getApprovedPosts = createAsyncThunk<
-  PaginatedGameSuggestionsViewModel,
+  PaginatedPostsViewModel,
   { page?: number; limit?: number; genre?: string },
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/approved', async (pagination, thunkAPI) => {
@@ -62,12 +62,12 @@ export const getApprovedPosts = createAsyncThunk<
 // Get unapproved posts
 // GET /api/posts/unapproved
 export const getUnapprovedPosts = createAsyncThunk<
-  GameSuggestionViewModel[],
+  PostViewModel[],
   void,
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/unapproved', async (_, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().currentUser.user?.token
+    const token = thunkAPI.getState().user.user?.token
     return await postService.getUnapprovedPosts(token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
@@ -78,11 +78,11 @@ export const getUnapprovedPosts = createAsyncThunk<
 // POST /api/posts/create
 export const createPost = createAsyncThunk<
   AlertViewModel,
-  GameSuggestionDataViewModel,
+  PostDataViewModel,
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/create', async (postData, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().currentUser.user?.token
+    const token = thunkAPI.getState().user.user?.token
     return await postService.createPost(postData, token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
@@ -97,7 +97,7 @@ export const deletePost = createAsyncThunk<
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/delete', async (postId, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().currentUser.user?.token
+    const token = thunkAPI.getState().user.user?.token
     return await postService.deletePost(postId, token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
@@ -107,12 +107,12 @@ export const deletePost = createAsyncThunk<
 // Update post
 // PUT /api/posts/:id/update
 export const updatePost = createAsyncThunk<
-  GameSuggestionViewModel,
-  { postId: ObjectId; data: GameSuggestionDataViewModel },
+  PostViewModel,
+  { postId: ObjectId; data: PostDataViewModel },
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/update', async (postData, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().currentUser.user?.token
+    const token = thunkAPI.getState().user.user?.token
     return await postService.updatePost(postData.postId, postData.data, token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
@@ -122,12 +122,12 @@ export const updatePost = createAsyncThunk<
 // Approve post
 // PATCH /api/posts/:id/approve
 export const approvePost = createAsyncThunk<
-  GameSuggestionViewModel,
+  PostViewModel,
   ObjectId,
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/approve', async (postId, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().currentUser.user?.token
+    const token = thunkAPI.getState().user.user?.token
     return await postService.approvePost(postId, token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
@@ -137,12 +137,12 @@ export const approvePost = createAsyncThunk<
 // Reject post
 // PATCH /api/posts/:id/reject
 export const rejectPost = createAsyncThunk<
-  GameSuggestionViewModel,
+  PostViewModel,
   { postId: ObjectId; message: string },
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/reject', async (postData, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().currentUser.user?.token
+    const token = thunkAPI.getState().user.user?.token
     return await postService.rejectPost(
       postData.postId,
       postData.message,
@@ -156,12 +156,12 @@ export const rejectPost = createAsyncThunk<
 // Like post
 // PATCH /api/posts/:id/like
 export const likePost = createAsyncThunk<
-  GameSuggestionViewModel,
+  PostViewModel,
   ObjectId,
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/like', async (postId, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().currentUser.user?.token
+    const token = thunkAPI.getState().user.user?.token
     return await postService.likePost(postId, token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)

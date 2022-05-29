@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GameSuggestionDataViewModel } from '../../models/GameSuggestions/GameSuggestionDataViewModel'
+import { PostDataViewModel } from '../../models/Posts/PostDataViewModel'
 import { ObjectId } from 'mongoose'
 
 const API_URL = '/api/posts/'
@@ -52,7 +52,7 @@ const getUnapprovedPosts = async (token: string | undefined) => {
 // Create new post
 // POST /api/posts/create
 const createPost = async (
-  data: GameSuggestionDataViewModel,
+  data: PostDataViewModel,
   token: string | undefined
 ) => {
   const config = {
@@ -84,7 +84,7 @@ const deletePost = async (postId: ObjectId, token: string | undefined) => {
 // PUT /api/posts/:id/update
 const updatePost = async (
   postId: ObjectId,
-  data: GameSuggestionDataViewModel,
+  data: PostDataViewModel,
   token: string | undefined
 ) => {
   const config = {

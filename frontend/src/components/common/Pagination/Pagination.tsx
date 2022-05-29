@@ -7,9 +7,7 @@ import './Pagination.scss'
 
 const Pagination = () => {
   const dispatch = useAppDispatch()
-  const { pagination } = useSelector(
-    (state: RootState) => state.gameSuggestions
-  )
+  const { pagination } = useSelector((state: RootState) => state.posts)
 
   const { page, totalPages } = pagination
 

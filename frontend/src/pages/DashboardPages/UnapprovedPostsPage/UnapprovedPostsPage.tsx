@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getUnapprovedPosts } from '../../../features/posts/postSlice'
 import { RootState } from '../../../app/store'
 import HeaderContext from '../../../context/header/HeaderContext'
-import GameSuggestionItems from '../../../components/GameSuggestionItems/GameSuggestionItems'
+import PostsWrapper from '../../../components/PostsWrapper/PostsWrapper'
 import styles from './UnapprovedPostsPage.module.scss'
 
 const UnapprovedPostsPage = () => {
@@ -11,9 +11,7 @@ const UnapprovedPostsPage = () => {
 
   const { setHeader } = useContext(HeaderContext)
 
-  const { posts, loading } = useSelector(
-    (state: RootState) => state.gameSuggestions
-  )
+  const { posts, loading } = useSelector((state: RootState) => state.posts)
 
   useEffect(() => {
     setHeader('NIEZATWIERDZONE POSTY')
@@ -31,7 +29,7 @@ const UnapprovedPostsPage = () => {
       {posts.length === 0 && (
         <div className={styles.info}>Brak nowych niezatwierdzonych postów</div>
       )}
-      <GameSuggestionItems
+      <PostsWrapper
         posts={posts}
         loading={loading}
         displayedButtons={['delete', 'reject', 'approve']}

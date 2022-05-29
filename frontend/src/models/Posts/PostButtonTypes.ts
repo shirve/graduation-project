@@ -1,4 +1,4 @@
-export type GameSuggestionButtonTypes =
+export type PostButtonTypes =
   | 'like'
   | 'readMore'
   | 'delete'

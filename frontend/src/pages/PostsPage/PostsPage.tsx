@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import GameSuggestionForm from '../../components/GameSuggestionForm/GameSuggestionForm'
+import PostForm from '../../components/PostForm/PostForm'
 import {
   alertReset,
   getApprovedPosts,
@@ -10,16 +10,16 @@ import {
 import { RootState, useAppDispatch } from '../../app/store'
 import HeaderContext from '../../context/header/HeaderContext'
 import Select from 'react-select'
-import { GameSuggestionGenres } from '../../constants/GameSuggestions/GameSuggestionGenres'
+import { PostGenres } from '../../constants/Posts/PostGenres'
 import { SelectFieldOptionViewModel } from '../../models/Forms/SelectFieldOptionViewModel'
 import Modal from 'react-modal'
-import GameSuggestionItems from '../../components/GameSuggestionItems/GameSuggestionItems'
+import PostsWrapper from '../../components/PostsWrapper/PostsWrapper'
 import Button from '../../components/common/Buttons/Button/Button'
 import CloseButton from '../../components/common/Buttons/CloseButton/CloseButton'
-import styles from './GameSuggestionsPage.module.scss'
+import styles from './PostsPage.module.scss'
 import { toast } from 'react-toastify'
 
-const GameSuggestionsPage = () => {
+const PostsPage = () => {
   const [genre, setGenre] = useState<SelectFieldOptionViewModel | null>(null)
   const [showPostFormModal, setShowPostFormModal] = useState<boolean>(false)
 
@@ -27,9 +27,9 @@ const GameSuggestionsPage = () => {
 
   const { setHeader } = useContext(HeaderContext)
 
-  const { user } = useSelector((state: RootState) => state.currentUser)
+  const { user } = useSelector((state: RootState) => state.user)
   const { posts, pagination, loading, alert } = useSelector(
-    (state: RootState) => state.gameSuggestions
+    (state: RootState) => state.posts
   )
 
   const { page, limit } = pagination
@@ -92,8 +92,8 @@ const GameSuggestionsPage = () => {
     setGenre({
       value: genre,
       label:
-        GameSuggestionGenres.find((postGenre) => genre === postGenre.value)
-          ?.label ?? genre,
+        PostGenres.find((postGenre) => genre === postGenre.value)?.label ??
+        genre,
     })
     window.scrollTo(0, 0)
   }
@@ -123,7 +123,7 @@ const GameSuggestionsPage = () => {
               <h4>Nowa propozycja gry</h4>
               <CloseButton onClick={handleShowPostFormModal} />
             </div>
-            <GameSuggestionForm />
+            <PostForm />
           </Modal>
         </React.Fragment>
       )}
@@ -133,12 +133,12 @@ const GameSuggestionsPage = () => {
           className={styles.select}
           placeholder='Filtruj według gatunku'
           value={genre}
-          options={GameSuggestionGenres}
+          options={PostGenres}
           onChange={(option) => setGenre(option)}
         />
       </div>
       {posts.length === 0 && <div>Nie znaleziono postów</div>}
-      <GameSuggestionItems
+      <PostsWrapper
         posts={posts}
         loading={loading}
         onGenreChange={handleGenreChange}
@@ -148,4 +148,4 @@ const GameSuggestionsPage = () => {
   )
 }
 
-export default GameSuggestionsPage
+export default PostsPage

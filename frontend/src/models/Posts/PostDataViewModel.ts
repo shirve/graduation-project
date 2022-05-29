@@ -1,4 +1,4 @@
-export interface GameSuggestionDataViewModel {
+export interface PostDataViewModel {
   title: string
   story: string
   gameplay: string

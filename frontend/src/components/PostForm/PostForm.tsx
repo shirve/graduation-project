@@ -5,11 +5,11 @@ import { Formik, FormikProps, FormikState } from 'formik'
 import * as Yup from 'yup'
 import { useAppDispatch } from '../../app/store'
 import FormField from '../common/Forms/FormField/FormField'
-import { GameSuggestionFormFields } from '../../constants/GameSuggestions/GameSuggestionFormFields'
-import { GameSuggestionViewModel } from '../../models/GameSuggestions/GameSuggestionViewModel'
-import { GameSuggestionDataViewModel } from '../../models/GameSuggestions/GameSuggestionDataViewModel'
+import { PostFormFields } from '../../constants/Posts/PostFormFields'
+import { PostViewModel } from '../../models/Posts/PostViewModel'
+import { PostDataViewModel } from '../../models/Posts/PostDataViewModel'
 import Button from '../common/Buttons/Button/Button'
-import styles from './GameSuggestionForm.module.scss'
+import styles from './PostForm.module.scss'
 
 interface IFormModel {
   title: string
@@ -24,16 +24,16 @@ interface IFormModel {
 }
 
 interface Props {
-  post?: GameSuggestionViewModel
+  post?: PostViewModel
 }
 
-const GameSuggestionForm = ({ post }: Props) => {
+const PostForm = ({ post }: Props) => {
   const formikRef = useRef<FormikProps<IFormModel>>(null)
 
   const dispatch = useAppDispatch()
 
   const handleSubmit = (
-    data: GameSuggestionDataViewModel,
+    data: PostDataViewModel,
     resetForm: (
       nextState?: Partial<FormikState<IFormModel>> | undefined
     ) => void
@@ -85,8 +85,8 @@ const GameSuggestionForm = ({ post }: Props) => {
         handleBlur,
         handleSubmit,
       }) => (
-        <form className={styles.form} onSubmit={handleSubmit}>
-          {GameSuggestionFormFields.map((field) => (
+        <form onSubmit={handleSubmit}>
+          {PostFormFields.map((field) => (
             <React.Fragment key={field.name}>
               <FormField
                 component={field.component}
@@ -132,4 +132,4 @@ const GameSuggestionForm = ({ post }: Props) => {
   )
 }
 
-export default GameSuggestionForm
+export default PostForm

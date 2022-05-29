@@ -11,20 +11,20 @@ import {
 import Modal from 'react-modal'
 import { ObjectId } from 'mongoose'
 import { FaGamepad } from 'react-icons/fa'
-import { GameSuggestionViewModel } from '../../../models/GameSuggestions/GameSuggestionViewModel'
-import { GameSuggestionButtonTypes } from '../../../models/GameSuggestions/GameSuggestionButtonTypes'
-import GameSuggestionForm from '../../GameSuggestionForm/GameSuggestionForm'
+import { PostViewModel } from '../../../models/Posts/PostViewModel'
+import { PostButtonTypes } from '../../../models/Posts/PostButtonTypes'
+import PostForm from '../../PostForm/PostForm'
 import Button from '../Buttons/Button/Button'
 import CloseButton from '../Buttons/CloseButton/CloseButton'
-import styles from './GameSuggestionItem.module.scss'
+import styles from './PostItem.module.scss'
 
 interface Props {
-  post: GameSuggestionViewModel
+  post: PostViewModel
   onGenreChange?: (genre: string) => void
-  displayedButtons?: GameSuggestionButtonTypes[]
+  displayedButtons?: PostButtonTypes[]
 }
 
-const GameSuggestionItem = ({
+const PostItem = ({
   post,
   onGenreChange,
   displayedButtons,
@@ -35,7 +35,7 @@ const GameSuggestionItem = ({
   const [showRejectModal, setShowRejectModal] = useState(false)
   const [rejectMessage, setRejectMessage] = useState('')
 
-  const { user } = useSelector((state: RootState) => state.currentUser)
+  const { user } = useSelector((state: RootState) => state.user)
 
   const dispatch = useDispatch()
 
@@ -219,10 +219,10 @@ const GameSuggestionItem = ({
           <h4>Edytuj propozycje gry</h4>
           <CloseButton onClick={handleShowEditModal} />
         </div>
-        <GameSuggestionForm post={post} />
+        <PostForm post={post} />
       </Modal>
     </React.Fragment>
   )
 }
 
-export default GameSuggestionItem
+export default PostItem

@@ -3,13 +3,13 @@ import { FaChevronDown } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { RootState } from '../../../app/store'
-import { logoutUser, reset } from '../../../features/user/userSlice'
+import { logoutUser, reset } from '../../../features/users/userSlice'
 import './Navbar.scss'
 
 const Navbar = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { user } = useSelector((state: RootState) => state.currentUser)
+  const { user } = useSelector((state: RootState) => state.user)
   const [showDropdownList, setShowDropdownList] = useState(false)
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const Navbar = () => {
         >
           <ul className='navbar-nav'>
             <li className='nav-item'>
-              <NavLink className='nav-link' to='/game-suggestions'>
+              <NavLink className='nav-link' to='/posts'>
                 PROPOZYCJE GIER
               </NavLink>
             </li>
@@ -72,10 +72,7 @@ const Navbar = () => {
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink
-                        className='nav-link'
-                        to='/dashboard/game-suggestions'
-                      >
+                      <NavLink className='nav-link' to='/dashboard/posts'>
                         TWOJE PROPOZYCJE GIER
                       </NavLink>
                     </li>

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
-import { alertReset, registerUser } from '../../features/user/userSlice'
+import { alertReset, registerUser } from '../../features/users/userSlice'
 import FormField from '../../components/common/Forms/FormField/FormField'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -20,9 +20,7 @@ const RegisterPage = () => {
 
   const { setHeader } = useContext(HeaderContext)
 
-  const { user, loading, alert } = useSelector(
-    (state: RootState) => state.currentUser
-  )
+  const { user, loading, alert } = useSelector((state: RootState) => state.user)
 
   useEffect(() => {
     setHeader('ZAREJESTRUJ SIĘ')
@@ -89,7 +87,7 @@ const RegisterPage = () => {
         handleSubmit,
       }) => (
         <div className={styles.register}>
-          <form className={styles.form} onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
             {RegisterFormFields.map((field) => (
               <React.Fragment key={field.name}>
                 <FormField

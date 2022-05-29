@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useAppDispatch } from '../app/store'
-import { authenticateUser } from '../features/user/userSlice'
+import { authenticateUser } from '../features/users/userSlice'
 
 const useAuthentication = () => {
   const dispatch = useAppDispatch()

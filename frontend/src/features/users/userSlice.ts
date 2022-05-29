@@ -60,7 +60,7 @@ export const updateUser = createAsyncThunk<
   { state: RootState; rejectValue: AlertViewModel }
 >('users/update', async (userData, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().currentUser.user?.token
+    const token = thunkAPI.getState().user.user?.token
     return await authService.updateUser(userData, token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
