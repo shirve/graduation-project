@@ -30,6 +30,6 @@ export const PostFormFields = [
     component: 'select',
     label: 'Gatunek/Gatunki',
     options: PostGenres,
-    multiple: true,
+    isMulti: true,
   },
 ]

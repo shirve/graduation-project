@@ -1,17 +1,19 @@
-import React, { useEffect, useContext } from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { alertReset, loginUser } from '../../features/users/userSlice'
-import FormField from '../../components/common/Forms/FormField/FormField'
-import { Formik } from 'formik'
-import * as Yup from 'yup'
+import { useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import { useAppDispatch } from '../../app/store'
-import { LoginFormFields } from '../../constants/Auth/LoginFormFields'
-import Spinner from '../../components/common/Spinner/Spinner'
-import HeaderContext from '../../context/header/HeaderContext'
-import Button from '../../components/common/Buttons/Button/Button'
+import { alertReset, loginUser } from '../../features/users/userSlice'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 import { toast } from 'react-toastify'
+import HeaderContext from '../../context/header/HeaderContext'
+import InputField from '../../components/common/Forms/InputField/InputField'
+import Button from '../../components/common/Buttons/Button/Button'
+import Spinner from '../../components/common/Spinner/Spinner'
+import { LoginFormFields } from '../../constants/Auth/LoginFormFields'
+import { UserLoginViewModel } from '../../models/Users/UserLoginViewModel'
 import styles from './LoginPage.module.scss'
 
 const LoginPage = () => {
@@ -44,76 +46,56 @@ const LoginPage = () => {
     }
   }, [alert])
 
-  const SignInSchema = Yup.object().shape({
-    email: Yup.string()
+  const loginSchema = yup.object().shape({
+    email: yup
+      .string()
       .email('Podany adres e-mail jest niepoprawny')
       .max(255)
       .required('To pole jest wymagane'),
-    password: Yup.string().required('To pole jest wymagane'),
+    password: yup.string().required('To pole jest wymagane'),
   })
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<UserLoginViewModel>({
+    resolver: yupResolver(loginSchema),
+  })
+
+  const onSubmit = (data: UserLoginViewModel) => {
+    dispatch(loginUser(data))
+  }
 
   if (loading === 'pending') return <Spinner />
 
   return (
-    <Formik
-      initialValues={{
-        email: '',
-        password: '',
-      }}
-      onSubmit={(values) => dispatch(loginUser(values))}
-      validationSchema={SignInSchema}
-    >
-      {({
-        values,
-        errors,
-        touched,
-        isSubmitting,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-      }) => (
-        <div className={styles.login}>
-          <form onSubmit={handleSubmit}>
-            {LoginFormFields.map((field) => (
-              <React.Fragment key={field.name}>
-                <FormField
-                  component={field.component}
-                  type={field.type}
-                  name={field.name}
-                  value={values[field.name as keyof typeof values]}
-                  label={field.label}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  invalid={
-                    errors[field.name as keyof typeof values] &&
-                    touched[field.name as keyof typeof values]
-                      ? true
-                      : false
-                  }
-                />
-                {errors[field.name as keyof typeof values] &&
-                  touched[field.name as keyof typeof values] && (
-                    <div className={styles.error}>
-                      {errors[field.name as keyof typeof values]}
-                    </div>
-                  )}
-              </React.Fragment>
-            ))}
-            <Button
-              type={'submit'}
-              onClick={handleSubmit}
-              disabled={isSubmitting}
-              width={'100%'}
-            >
-              Zaloguj
-            </Button>
-          </form>
-          <div>
-            Nie masz jeszcze konta? <Link to='/register'>Zarejestruj się</Link>
-          </div>
-        </div>
-      )}
-    </Formik>
+    <div className={styles.login}>
+      <form>
+        {LoginFormFields.map((field) => (
+          <InputField
+            key={field.name}
+            register={register}
+            errors={errors}
+            name={field.name}
+            label={field.label}
+            type={field.type}
+            marginTop={'0.5rem'}
+          />
+        ))}
+        <Button
+          type={'submit'}
+          onClick={handleSubmit(onSubmit)}
+          disabled={isSubmitting}
+          width={'100%'}
+        >
+          Zaloguj
+        </Button>
+      </form>
+      <div>
+        Nie masz jeszcze konta? <Link to='/register'>Zarejestruj się</Link>
+      </div>
+    </div>
   )
 }
 
