@@ -1,46 +1,65 @@
-import { FieldProps } from 'formik'
-import Select, { Options, PropsValue } from 'react-select'
+import { Control, Controller } from 'react-hook-form'
+import Select, { MultiValue, SingleValue } from 'react-select'
 import { SelectFieldOptionViewModel } from '../../../../models/Forms/SelectFieldOptionViewModel'
+import styles from './SelectField.module.scss'
 
 interface Props {
-  options: Options<SelectFieldOptionViewModel>
-  multiple?: boolean
+  control: Control<any>
+  errors: any
+  name: string
+  label: string
+  options: SelectFieldOptionViewModel[]
+  isMulti?: boolean
   placeholder?: string
+  marginTop?: string
+  marginBottom?: string
 }
 
 const SelectField = ({
-  field,
-  form,
+  control,
+  errors,
+  name,
+  label,
   options,
-  multiple = false,
-  placeholder = '',
-}: Props & FieldProps) => {
-  const onChange = (
-    option: PropsValue<
-      SelectFieldOptionViewModel | SelectFieldOptionViewModel[]
-    >
-  ) => {
-    form.setFieldValue(
-      field.name,
-      multiple
-        ? (option as SelectFieldOptionViewModel[]).map(
-            (item: SelectFieldOptionViewModel) => item.value
-          )
-        : Array.of((option as SelectFieldOptionViewModel).value)
-    )
-  }
-
+  isMulti,
+  placeholder,
+  marginTop,
+  marginBottom,
+}: Props) => {
   return (
-    <Select
-      name={field.name}
-      value={field.value.map((value: string) =>
-        options.find((option) => value === option.value && option)
+    <div className={styles.wrapper} style={{ marginTop, marginBottom }}>
+      <label>{label}</label>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field: { value, onChange } }) => {
+          return (
+            <Select
+              options={options}
+              placeholder={placeholder ? placeholder : ''}
+              value={options.filter((option) => value?.includes(option.value))}
+              onChange={(selectedOption) =>
+                onChange(
+                  isMulti
+                    ? (
+                        selectedOption as MultiValue<SelectFieldOptionViewModel>
+                      ).map((option) => option.value)
+                    : Array.of(
+                        (
+                          selectedOption as SingleValue<SelectFieldOptionViewModel>
+                        )?.value
+                      )
+                )
+              }
+              isMulti={isMulti ? isMulti : false}
+            />
+          )
+        }}
+      />
+      {errors[name] && (
+        <span className={styles.error}>{errors[name].message}</span>
       )}
-      onChange={onChange}
-      options={options}
-      isMulti={multiple}
-      placeholder={placeholder}
-    />
+    </div>
   )
 }
 

@@ -29,10 +29,10 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
       style={{
-        height: height,
-        width: width,
-        marginTop: marginTop,
-        marginBottom: marginBottom,
+        height,
+        width,
+        marginTop,
+        marginBottom,
       }}
     >
       {children}
