@@ -44,11 +44,9 @@ const SelectField = ({
                     ? (
                         selectedOption as MultiValue<SelectFieldOptionViewModel>
                       ).map((option) => option.value)
-                    : Array.of(
-                        (
-                          selectedOption as SingleValue<SelectFieldOptionViewModel>
-                        )?.value
-                      )
+                    : (
+                        selectedOption as SingleValue<SelectFieldOptionViewModel>
+                      )?.value
                 )
               }
               isMulti={isMulti ? isMulti : false}
