@@ -18,6 +18,7 @@ import Button from '../../components/common/Buttons/Button/Button'
 import CloseButton from '../../components/common/Buttons/CloseButton/CloseButton'
 import styles from './PostsPage.module.scss'
 import { toast } from 'react-toastify'
+import { CustomSelectFieldStyles } from '../../styles/SelectField/CustomSelectFieldStyles'
 
 const PostsPage = () => {
   const [genre, setGenre] = useState<SelectFieldOptionViewModel | null>(null)
@@ -135,6 +136,7 @@ const PostsPage = () => {
           value={genre}
           options={PostGenres}
           onChange={(option) => setGenre(option)}
+          styles={CustomSelectFieldStyles}
         />
       </div>
       {posts.length === 0 && <div>Nie znaleziono postów</div>}

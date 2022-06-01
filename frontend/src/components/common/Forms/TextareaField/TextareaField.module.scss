@@ -13,6 +13,9 @@
   textarea:focus-visible {
     outline: none;
   }
+  textarea::placeholder {
+    color: $dark-gray
+  }
   textarea.invalid {
     border-color: $red;
     background-image: url("../../../../assets/invalid.svg");

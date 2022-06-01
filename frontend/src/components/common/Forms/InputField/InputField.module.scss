@@ -13,6 +13,9 @@
   input:focus-visible {
     outline: none;
   }
+  input::placeholder {
+    color: $dark-gray
+  }
   input.invalid {
     border-color: $red;
     background-image: url("../../../../assets/invalid.svg");

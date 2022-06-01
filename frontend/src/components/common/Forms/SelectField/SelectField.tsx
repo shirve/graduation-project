@@ -1,6 +1,7 @@
 import { Control, Controller } from 'react-hook-form'
 import Select, { MultiValue, SingleValue } from 'react-select'
 import { SelectFieldOptionViewModel } from '../../../../models/Forms/SelectFieldOptionViewModel'
+import { CustomSelectFieldStyles } from '../../../../styles/SelectField/CustomSelectFieldStyles'
 import styles from './SelectField.module.scss'
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
   options: SelectFieldOptionViewModel[]
   isMulti?: boolean
   placeholder?: string
+  disabled?: boolean
   marginTop?: string
   marginBottom?: string
 }
@@ -23,6 +25,7 @@ const SelectField = ({
   options,
   isMulti,
   placeholder,
+  disabled,
   marginTop,
   marginBottom,
 }: Props) => {
@@ -49,7 +52,9 @@ const SelectField = ({
                       )?.value
                 )
               }
-              isMulti={isMulti ? isMulti : false}
+              isMulti={isMulti}
+              styles={CustomSelectFieldStyles}
+              isDisabled={disabled}
             />
           )
         }}

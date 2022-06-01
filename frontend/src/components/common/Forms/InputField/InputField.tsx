@@ -8,6 +8,7 @@ interface Props {
   label: string
   type?: string
   placeholder?: string
+  disabled?: boolean
   marginTop?: string
   marginBottom?: string
 }
@@ -19,6 +20,7 @@ const InputField = ({
   label,
   type,
   placeholder,
+  disabled,
   marginTop,
   marginBottom,
 }: Props) => {
@@ -30,6 +32,7 @@ const InputField = ({
         className={errors[name] ? styles.invalid : ''}
         type={type ? type : 'text'}
         placeholder={placeholder}
+        disabled={disabled}
       />
       {errors[name] && (
         <span className={styles.error}>{errors[name].message}</span>

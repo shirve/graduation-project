@@ -7,6 +7,7 @@ interface Props {
   name: string
   label: string
   placeholder?: string
+  disabled?: boolean
   marginTop?: string
   marginBottom?: string
 }
@@ -17,6 +18,7 @@ const TextareaField = ({
   name,
   label,
   placeholder,
+  disabled,
   marginTop,
   marginBottom,
 }: Props) => {
@@ -27,6 +29,7 @@ const TextareaField = ({
         {...register(name)}
         className={errors[name] ? styles.invalid : ''}
         placeholder={placeholder}
+        disabled={disabled}
       />
       {errors[name] && (
         <span className={styles.error}>{errors[name].message}</span>
