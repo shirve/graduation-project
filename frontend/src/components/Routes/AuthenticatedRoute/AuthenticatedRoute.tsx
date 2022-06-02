@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { RootState, useAppDispatch } from '../app/store'
+import { RootState, useAppDispatch } from '../../../app/store'
 import { useSelector } from 'react-redux'
-import { setUser } from '../features/users/userSlice'
-import { jwtDecode } from '../utils/jwtDecode'
-import { setAxiosAuthorizationHeaders } from '../utils/setAxiosAuthorizationHeaders'
-import Spinner from '../components/common/Spinner/Spinner'
+import { setUser } from '../../../features/users/userSlice'
+import { jwtDecode } from '../../../utils/jwtDecode'
+import { setAxiosAuthorizationHeaders } from '../../../utils/setAxiosAuthorizationHeaders'
+import Spinner from '../../common/Spinner/Spinner'
 
-const useAuth = () => {
+const AuthenticatedRoute = ({
+  children,
+}: {
+  children: JSX.Element
+}): JSX.Element => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const { user } = useSelector((state: RootState) => state.user)
@@ -30,13 +34,7 @@ const useAuth = () => {
     }
   }, [isAuthenticated, user])
 
-  const checkIfUserIsLoggedIn = (children: JSX.Element): JSX.Element => {
-    return isAuthenticated ? children : <Spinner centered />
-  }
-
-  return {
-    checkIfUserIsLoggedIn,
-  }
+  return isAuthenticated ? children : <Spinner centered />
 }
 
-export default useAuth
+export default AuthenticatedRoute
