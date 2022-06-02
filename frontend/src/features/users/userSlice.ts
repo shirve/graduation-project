@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { usersClient } from '../../api/AxiosClients'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { UserViewModel } from '../../models/Users/UserViewModel'
 import { UserLoginViewModel } from '../../models/Users/UserLoginViewModel'
@@ -6,8 +6,6 @@ import { UserRegisterViewModel } from '../../models/Users/UserRegisterViewModel'
 import { AlertViewModel } from '../../models/Alert/AlertViewModel'
 import { jwtDecode } from '../../utils/jwtDecode'
 import { setAxiosAuthorizationHeaders } from '../../utils/setAxiosAuthorizationHeaders'
-
-const API_URL = '/api/users/'
 
 interface IAuthState {
   user: UserViewModel | null
@@ -29,13 +27,9 @@ export const registerUser = createAsyncThunk<
   { rejectValue: AlertViewModel }
 >('users/register', async (userData, thunkAPI) => {
   try {
-    const token = await axios
-      .post(API_URL + 'register', userData)
-      .then((res) => {
-        return res.data
-      })
-    setAxiosAuthorizationHeaders(token)
-    return jwtDecode(token)
+    const { data } = await usersClient.post('/register', userData)
+    setAxiosAuthorizationHeaders(data)
+    return jwtDecode(data)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -49,11 +43,9 @@ export const loginUser = createAsyncThunk<
   { rejectValue: AlertViewModel }
 >('users/login', async (userData, thunkAPI) => {
   try {
-    const token = await axios.post(API_URL + 'login', userData).then((res) => {
-      return res.data
-    })
-    setAxiosAuthorizationHeaders(token)
-    return jwtDecode(token)
+    const { data } = await usersClient.post('/login', userData)
+    setAxiosAuthorizationHeaders(data)
+    return jwtDecode(data)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -62,7 +54,7 @@ export const loginUser = createAsyncThunk<
 // Logout user
 // POST /api/users/logout
 export const logoutUser = createAsyncThunk('users/logout', async () => {
-  await axios.post(API_URL + 'logout')
+  await usersClient.post('/logout')
 })
 
 // Update user
@@ -73,11 +65,8 @@ export const updateUser = createAsyncThunk<
   { rejectValue: AlertViewModel }
 >('users/update', async (userData, thunkAPI) => {
   try {
-    return await axios
-      .put(API_URL + `${userData._id}/update`, userData)
-      .then((res) => {
-        return res.data
-      })
+    const { data } = await usersClient.put(`/${userData._id}/update`, userData)
+    return data
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }

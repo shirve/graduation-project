@@ -6,6 +6,7 @@ import Spinner from '../../components/common/Spinner/Spinner'
 import HeaderContext from '../../context/header/HeaderContext'
 import { toast } from 'react-toastify'
 import styles from './UserDetailsPage.module.scss'
+import { usersClient } from '../../api/AxiosClients'
 
 const UserDetailsPage = () => {
   const [user, setUser] = useState<UserDetailsViewModel>()
@@ -28,7 +29,7 @@ const UserDetailsPage = () => {
   }, [])
 
   const getUser = async (userId: string) => {
-    const res = await axios.get(`/api/users/${userId}`).catch((error) => {
+    const res = await usersClient.get(`/${userId}`).catch((error) => {
       toast.error(error.response.data.message)
       setLoading(false)
     })

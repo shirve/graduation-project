@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { usersClient } from '../../../api/AxiosClients'
 import { RootState, useAppDispatch } from '../../../app/store'
 import { useSelector } from 'react-redux'
 import { setUser } from '../../../features/users/userSlice'
@@ -17,13 +17,11 @@ const AuthenticatedRoute = ({
   const { user } = useSelector((state: RootState) => state.user)
 
   const setUserAndAxiosAuthorizationHeaders = async () => {
-    const token = await axios.get('/api/users/whoami').then((res) => {
-      return res.data
-    })
-    if (token !== '') {
-      const user = jwtDecode(token)
+    const { data } = await usersClient.get('/whoami')
+    if (data !== '') {
+      const user = jwtDecode(data)
       dispatch(setUser(user))
-      setAxiosAuthorizationHeaders(token)
+      setAxiosAuthorizationHeaders(data)
     }
     setIsAuthenticated(true)
   }

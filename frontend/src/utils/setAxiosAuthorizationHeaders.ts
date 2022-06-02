@@ -1,5 +1,6 @@
-import axios from 'axios'
+import { postsClient, usersClient } from '../api/AxiosClients'
 
 export const setAxiosAuthorizationHeaders = (token: string): void => {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+  postsClient.defaults.headers.common['Authorization'] = `Bearer ${token}`
+  usersClient.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }
