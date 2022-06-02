@@ -1,12 +1,14 @@
+import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { RootState } from '../../app/store'
-import postService from './postService'
 import { ObjectId } from 'mongoose'
 import { PostViewModel } from '../../models/Posts/PostViewModel'
 import { PostDataViewModel } from '../../models/Posts/PostDataViewModel'
 import { PaginatedPostsViewModel } from '../../models/Posts/PaginatedPostsViewModel'
 import { PaginationViewModel } from '../../models/Pagination/PaginationViewModel'
 import { AlertViewModel } from '../../models/Alert/AlertViewModel'
+
+const API_URL = '/api/posts/'
 
 interface IPostsState {
   posts: PostViewModel[]
@@ -34,8 +36,9 @@ export const getUserPosts = createAsyncThunk<
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/userPosts', async (_, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().user.user?.token
-    return await postService.getUserPosts(token)
+    return await axios.get(API_URL).then((res) => {
+      return res.data
+    })
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -49,11 +52,13 @@ export const getApprovedPosts = createAsyncThunk<
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/approved', async (pagination, thunkAPI) => {
   try {
-    return await postService.getApprovedPosts(
-      pagination.page,
-      pagination.limit,
-      pagination.genre
-    )
+    const config = {
+      params: { ...pagination },
+    }
+
+    return await axios.get(API_URL + 'approved', config).then((res) => {
+      return res.data
+    })
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -67,8 +72,9 @@ export const getUnapprovedPosts = createAsyncThunk<
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/unapproved', async (_, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().user.user?.token
-    return await postService.getUnapprovedPosts(token)
+    return await axios.get(API_URL + 'unapproved').then((res) => {
+      return res.data
+    })
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -82,8 +88,11 @@ export const createPost = createAsyncThunk<
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/create', async (postData, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().user.user?.token
-    return await postService.createPost(postData, token)
+    return await axios
+      .post(API_URL + 'create', { data: postData })
+      .then((res) => {
+        return res.data
+      })
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -97,8 +106,9 @@ export const deletePost = createAsyncThunk<
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/delete', async (postId, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().user.user?.token
-    return await postService.deletePost(postId, token)
+    return await axios.delete(API_URL + `${postId}/delete`).then((res) => {
+      return res.data
+    })
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -112,8 +122,11 @@ export const updatePost = createAsyncThunk<
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/update', async (postData, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().user.user?.token
-    return await postService.updatePost(postData.postId, postData.data, token)
+    return await axios
+      .put(API_URL + `${postData.postId}/update`, { data: postData.data })
+      .then((res) => {
+        return res.data
+      })
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -127,8 +140,9 @@ export const approvePost = createAsyncThunk<
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/approve', async (postId, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().user.user?.token
-    return await postService.approvePost(postId, token)
+    return await axios.patch(API_URL + `${postId}/approve`).then((res) => {
+      return res.data
+    })
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -142,12 +156,13 @@ export const rejectPost = createAsyncThunk<
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/reject', async (postData, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().user.user?.token
-    return await postService.rejectPost(
-      postData.postId,
-      postData.message,
-      token
-    )
+    return await axios
+      .patch(API_URL + `${postData.postId}/reject`, {
+        message: postData.message,
+      })
+      .then((res) => {
+        return res.data
+      })
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -161,8 +176,9 @@ export const likePost = createAsyncThunk<
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/like', async (postId, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().user.user?.token
-    return await postService.likePost(postId, token)
+    return await axios.patch(API_URL + `${postId}/like`).then((res) => {
+      return res.data
+    })
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -172,10 +188,6 @@ export const postSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    reset: () => initialState,
-    alertReset: (state) => {
-      state.alert = null
-    },
     setPage: (state, action) => {
       state.pagination.page = action.payload
     },
@@ -301,5 +313,5 @@ export const postSlice = createSlice({
   },
 })
 
-export const { reset, alertReset, setPage } = postSlice.actions
+export const { setPage } = postSlice.actions
 export default postSlice.reducer

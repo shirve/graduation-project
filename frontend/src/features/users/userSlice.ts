@@ -1,10 +1,13 @@
+import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import authService from './userService'
 import { UserViewModel } from '../../models/Users/UserViewModel'
 import { UserLoginViewModel } from '../../models/Users/UserLoginViewModel'
 import { UserRegisterViewModel } from '../../models/Users/UserRegisterViewModel'
-import { RootState } from '../../app/store'
 import { AlertViewModel } from '../../models/Alert/AlertViewModel'
+import { jwtDecode } from '../../utils/jwtDecode'
+import { setAxiosAuthorizationHeaders } from '../../utils/setAxiosAuthorizationHeaders'
+
+const API_URL = '/api/users/'
 
 interface IAuthState {
   user: UserViewModel | null
@@ -21,12 +24,18 @@ const initialState: IAuthState = {
 // Register user
 // POST /api/users/register
 export const registerUser = createAsyncThunk<
-  UserViewModel,
+  UserViewModel | null,
   UserRegisterViewModel,
   { rejectValue: AlertViewModel }
 >('users/register', async (userData, thunkAPI) => {
   try {
-    return await authService.registerUser(userData)
+    const token = await axios
+      .post(API_URL + 'register', userData)
+      .then((res) => {
+        return res.data
+      })
+    setAxiosAuthorizationHeaders(token)
+    return jwtDecode(token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -35,12 +44,16 @@ export const registerUser = createAsyncThunk<
 // Login user
 // POST /api/users/login
 export const loginUser = createAsyncThunk<
-  UserViewModel,
+  UserViewModel | null,
   UserLoginViewModel,
   { rejectValue: AlertViewModel }
 >('users/login', async (userData, thunkAPI) => {
   try {
-    return await authService.loginUser(userData)
+    const token = await axios.post(API_URL + 'login', userData).then((res) => {
+      return res.data
+    })
+    setAxiosAuthorizationHeaders(token)
+    return jwtDecode(token)
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -49,7 +62,7 @@ export const loginUser = createAsyncThunk<
 // Logout user
 // POST /api/users/logout
 export const logoutUser = createAsyncThunk('users/logout', async () => {
-  await authService.logoutUser()
+  await axios.post(API_URL + 'logout')
 })
 
 // Update user
@@ -57,11 +70,14 @@ export const logoutUser = createAsyncThunk('users/logout', async () => {
 export const updateUser = createAsyncThunk<
   UserViewModel,
   UserViewModel,
-  { state: RootState; rejectValue: AlertViewModel }
+  { rejectValue: AlertViewModel }
 >('users/update', async (userData, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().user.user?.token
-    return await authService.updateUser(userData, token)
+    return await axios
+      .put(API_URL + `${userData._id}/update`, userData)
+      .then((res) => {
+        return res.data
+      })
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
   }
@@ -71,11 +87,7 @@ export const userSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    reset: () => initialState,
-    alertReset: (state) => {
-      state.alert = null
-    },
-    authenticateUser: (state, action) => {
+    setUser: (state, action) => {
       state.user = action.payload ? action.payload : null
     },
   },
@@ -110,10 +122,11 @@ export const userSlice = createSlice({
         state.user = null
       })
       .addCase(logoutUser.fulfilled, (state) => {
-        state.user = null
+        state.user = initialState.user
+        state.loading = initialState.loading
       })
   },
 })
 
-export const { reset, alertReset, authenticateUser } = userSlice.actions
+export const { setUser } = userSlice.actions
 export default userSlice.reducer

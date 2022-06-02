@@ -23,15 +23,14 @@ import UserPostsPage from './pages/DashboardPages/UserPostsPage/UserPostsPage'
 import UserProjectsPage from './pages/DashboardPages/UserProjectsPage/UserProjectsPage'
 import UnapprovedPostsPage from './pages/DashboardPages/UnapprovedPostsPage/UnapprovedPostsPage'
 import { HeaderProvider } from './context/header/HeaderContext'
-import useAuthentication from './hooks/useAuthentication'
-import Spinner from './components/common/Spinner/Spinner'
+import useAuth from './hooks/useAuth'
 
 const App = () => {
-  const { authenticated } = useAuthentication()
+  const { checkIfUserIsLoggedIn } = useAuth()
 
   return (
     <React.Fragment>
-      {authenticated ? (
+      {checkIfUserIsLoggedIn(
         <Router>
           <HeaderProvider>
             <Navbar />
@@ -67,8 +66,6 @@ const App = () => {
           </HeaderProvider>
           <ToastContainer position='top-center' />
         </Router>
-      ) : (
-        <Spinner centered />
       )}
     </React.Fragment>
   )

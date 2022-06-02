@@ -1,6 +1,8 @@
 import { ObjectId } from 'mongoose'
 
-export interface UserViewModel {
+export interface DecodedTokenViewModel {
+  exp: number
+  iat: number
   _id: ObjectId
   firstName: string
   lastName: string

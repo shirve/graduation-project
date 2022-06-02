@@ -2,11 +2,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import PostForm from '../../components/PostForm/PostForm'
-import {
-  alertReset,
-  getApprovedPosts,
-  setPage,
-} from '../../features/posts/postSlice'
+import { getApprovedPosts, setPage } from '../../features/posts/postSlice'
 import { RootState, useAppDispatch } from '../../app/store'
 import HeaderContext from '../../context/header/HeaderContext'
 import Select from 'react-select'
@@ -79,9 +75,6 @@ const PostsPage = () => {
     }
     if (alert?.type === 'error') {
       toast.error(alert.message)
-    }
-    return () => {
-      dispatch(alertReset())
     }
   }, [alert])
 

@@ -29,7 +29,13 @@ const registerUser = asyncHandler(async (req, res) => {
   })
 
   if (user) {
-    const token = generateToken(user._id)
+    const token = generateToken({
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      roles: user.roles,
+    })
 
     res.cookie('auth', token, {
       httpOnly: true,
@@ -37,14 +43,7 @@ const registerUser = asyncHandler(async (req, res) => {
       sameSite: 'none',
     })
 
-    res.status(201).json({
-      _id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      token: token,
-      roles: user.roles,
-    })
+    res.status(201).json(token)
   } else {
     res
       .status(400)
@@ -60,7 +59,13 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email })
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    const token = generateToken(user._id)
+    const token = generateToken({
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      roles: user.roles,
+    })
 
     res.cookie('auth', token, {
       httpOnly: true,
@@ -68,14 +73,7 @@ const loginUser = asyncHandler(async (req, res) => {
       sameSite: 'none',
     })
 
-    res.status(200).json({
-      _id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      token: token,
-      roles: user.roles,
-    })
+    res.status(200).json(token)
   } else {
     res.status(400).json({
       type: 'error',
@@ -147,29 +145,21 @@ const authenticateUser = asyncHandler(async (req, res) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-    const user = await User.findById(decoded.id).select('-password')
+    const user = await User.findById(decoded._id).select('-password')
 
-    if (!user) {
+    if (user) {
+      res.status(200).json(token)
+    } else {
       res.status(204).end()
-      return
     }
-
-    res.status(200).json({
-      _id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      token: token,
-      roles: user.roles,
-    })
   } catch (error) {
     res.status(204).end()
   }
 })
 
 // Generate JWT
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+const generateToken = (data) => {
+  return jwt.sign(data, process.env.JWT_SECRET, {
     expiresIn: '7d',
   })
 }

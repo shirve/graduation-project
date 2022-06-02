@@ -3,7 +3,7 @@ import { FaChevronDown } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { RootState } from '../../../app/store'
-import { logoutUser, reset } from '../../../features/users/userSlice'
+import { logoutUser } from '../../../features/users/userSlice'
 import './Navbar.scss'
 
 const Navbar = () => {
@@ -18,7 +18,6 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logoutUser())
-    dispatch(reset())
     navigate('/')
   }
 
