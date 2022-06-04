@@ -134,7 +134,7 @@ const PostItem = ({
               {displayedButtons?.includes('like') && (
                 <Button onClick={() => handlePostLike(post._id)}>
                   <FaGamepad style={{ fontSize: 24, marginRight: 10 }} />
-                  {post.liked.length}
+                  {post.likes.length}
                 </Button>
               )}
               {displayedButtons?.includes('edit') &&

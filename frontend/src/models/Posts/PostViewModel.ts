@@ -13,7 +13,7 @@ export interface PostViewModel {
     rejected: boolean
     message: string | null
   }
-  liked: ObjectId[]
+  likes: ObjectId[]
   createdAt: Date
   updatedAt: Date
 }
