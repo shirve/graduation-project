@@ -52,10 +52,6 @@ const projectSchema = mongoose.Schema(
         type: Boolean,
         default: false,
       },
-      message: {
-        type: String,
-        required: false,
-      },
     },
   },
   {
