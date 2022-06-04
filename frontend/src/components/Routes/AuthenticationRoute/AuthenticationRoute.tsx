@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
-import { usersClient } from '../../../api/AxiosClients'
+import {
+  setAxiosAuthorizationHeaders,
+  usersClient,
+} from '../../../api/AxiosClients'
 import { RootState, useAppDispatch } from '../../../app/store'
 import { useSelector } from 'react-redux'
 import { setUser } from '../../../features/users/userSlice'
 import { jwtDecode } from '../../../utils/jwtDecode'
-import { setAxiosAuthorizationHeaders } from '../../../utils/setAxiosAuthorizationHeaders'
 import Spinner from '../../common/Spinner/Spinner'
 
-const AuthenticatedRoute = ({
+const AuthenticationRoute = ({
   children,
 }: {
   children: JSX.Element
@@ -35,4 +37,4 @@ const AuthenticatedRoute = ({
   return isAuthenticated ? children : <Spinner centered />
 }
 
-export default AuthenticatedRoute
+export default AuthenticationRoute

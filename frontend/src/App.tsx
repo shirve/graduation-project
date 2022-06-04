@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import AuthenticatedRoute from './components/Routes/AuthenticatedRoute/AuthenticatedRoute'
+import AuthenticationRoute from './components/Routes/AuthenticationRoute/AuthenticationRoute'
 import ProtectedRoute from './components/Routes/ProtectedRoute/ProtectedRoute'
 import Navbar from './components/layout/Navbar/Navbar'
 import Header from './components/layout/Header/Header'
@@ -26,7 +26,7 @@ import { HeaderProvider } from './context/header/HeaderContext'
 
 const App = () => {
   return (
-    <AuthenticatedRoute>
+    <AuthenticationRoute>
       <Router>
         <HeaderProvider>
           <Navbar />
@@ -62,7 +62,7 @@ const App = () => {
         </HeaderProvider>
         <ToastContainer position='top-center' />
       </Router>
-    </AuthenticatedRoute>
+    </AuthenticationRoute>
   )
 }
 

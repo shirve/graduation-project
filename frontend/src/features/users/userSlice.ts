@@ -1,11 +1,13 @@
-import { usersClient } from '../../api/AxiosClients'
+import {
+  setAxiosAuthorizationHeaders,
+  usersClient,
+} from '../../api/AxiosClients'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { UserViewModel } from '../../models/Users/UserViewModel'
 import { UserLoginViewModel } from '../../models/Users/UserLoginViewModel'
 import { UserRegisterViewModel } from '../../models/Users/UserRegisterViewModel'
 import { AlertViewModel } from '../../models/Alert/AlertViewModel'
 import { jwtDecode } from '../../utils/jwtDecode'
-import { setAxiosAuthorizationHeaders } from '../../utils/setAxiosAuthorizationHeaders'
 
 interface IAuthState {
   user: UserViewModel | null
