@@ -73,30 +73,15 @@ export const getUnapprovedPosts = createAsyncThunk<
   }
 })
 
-// Create new post
-// POST /api/posts/create
+// Create post
+// POST /api/posts
 export const createPost = createAsyncThunk<
   AlertViewModel,
   PostDataViewModel,
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/create', async (postData, thunkAPI) => {
   try {
-    const { data } = await postsClient.post('/create', { data: postData })
-    return data
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue(error.response.data)
-  }
-})
-
-// Delete post
-// DELETE /api/posts/:id/delete
-export const deletePost = createAsyncThunk<
-  { _id: ObjectId },
-  ObjectId,
-  { state: RootState; rejectValue: AlertViewModel }
->('posts/delete', async (postId, thunkAPI) => {
-  try {
-    const { data } = await postsClient.delete(`/${postId}/delete`)
+    const { data } = await postsClient.post('/', { data: postData })
     return data
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
@@ -104,16 +89,31 @@ export const deletePost = createAsyncThunk<
 })
 
 // Update post
-// PUT /api/posts/:id/update
+// PUT /api/posts/:id
 export const updatePost = createAsyncThunk<
   PostViewModel,
   { postId: ObjectId; data: PostDataViewModel },
   { state: RootState; rejectValue: AlertViewModel }
 >('posts/update', async (postData, thunkAPI) => {
   try {
-    const { data } = await postsClient.put(`/${postData.postId}/update`, {
+    const { data } = await postsClient.put(`/${postData.postId}`, {
       data: postData.data,
     })
+    return data
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data)
+  }
+})
+
+// Delete post
+// DELETE /api/posts/:id
+export const deletePost = createAsyncThunk<
+  { _id: ObjectId },
+  ObjectId,
+  { state: RootState; rejectValue: AlertViewModel }
+>('posts/delete', async (postId, thunkAPI) => {
+  try {
+    const { data } = await postsClient.delete(`/${postId}`)
     return data
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)

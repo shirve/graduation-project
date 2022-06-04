@@ -27,10 +27,10 @@ router.get('/approved', getApprovedPosts)
 // GET /api/posts/unapproved
 router.get('/unapproved', protect, getUnapprovedPosts)
 
-// Add post
-// POST /api/posts/create
+// Create post
+// POST /api/posts
 router.post(
-  '/create',
+  '/',
   protect,
   validate([
     body('data.title').notEmpty().isString(),
@@ -46,14 +46,10 @@ router.post(
   createPost
 )
 
-// Delete post
-// DELETE /api/posts/:id/delete
-router.delete('/:id/delete', protect, deletePost)
-
 // Update post
-// PUT /api/posts/:id/update
+// PUT /api/posts/:id
 router.put(
-  '/:id/update',
+  '/:id',
   protect,
   validate([
     body('data.title').notEmpty().isString(),
@@ -68,6 +64,10 @@ router.put(
   ]),
   updatePost
 )
+
+// Delete post
+// DELETE /api/posts/:id
+router.delete('/:id', protect, deletePost)
 
 // Approve post
 // PATCH /api/posts/:id/approve

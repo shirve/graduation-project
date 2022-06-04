@@ -61,8 +61,8 @@ const getUnapprovedPosts = asyncHandler(async (req, res) => {
   res.status(200).json(posts)
 })
 
-// Add post
-// POST /api/posts/create
+// Create post
+// POST /api/posts
 const createPost = asyncHandler(async (req, res) => {
   if (!req.user) {
     res
@@ -79,7 +79,7 @@ const createPost = asyncHandler(async (req, res) => {
       message: null,
     },
     user: {
-      _id: req.user.id,
+      _id: req.user._id,
       name: req.user.firstName + ' ' + req.user.lastName,
     },
   })
@@ -92,7 +92,7 @@ const createPost = asyncHandler(async (req, res) => {
 })
 
 // Delete post
-// DELETE /api/posts/:id/delete
+// DELETE /api/posts/:id
 const deletePost = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id)
 
@@ -117,7 +117,7 @@ const deletePost = asyncHandler(async (req, res) => {
 })
 
 // Update post
-// PUT /api/posts/:id/update
+// PUT /api/posts/:id
 const updatePost = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id)
 
