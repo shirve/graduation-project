@@ -13,6 +13,14 @@ export interface PostViewModel {
     rejected: boolean
     message: string | null
   }
+  contributors: {
+    _id: ObjectId
+    name: string
+    status: {
+      approved: boolean
+      message: string
+    }
+  }[]
   likes: ObjectId[]
   createdAt: Date
   updatedAt: Date
