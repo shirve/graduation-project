@@ -1,0 +1,46 @@
+@import '../../../styles/CommonStyles.scss';
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+  font-weight: 700;
+  padding: 0;
+  .pageItem .pageLink {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $black-muted;
+    background-color: $white-muted;
+    border: 1px solid $gray;
+    padding: 0.375rem 1rem;
+    svg {
+      margin: 0.25rem -0.25rem;
+    }
+  }
+  .pageItem.active .pageLink {
+    z-index: 2;
+    color: $white-muted;
+    background-color: $blue;
+    border-color: $blue;
+  }
+  .pageItem.disabled .pageLink {
+    pointer-events: none;
+    color: $dark-gray;
+    background-color: $white-muted;
+    border-color: $gray;
+  }
+  .pageItem:first-child .pageLink {
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+  }
+  .pageItem:not(:first-child) .pageLink {
+    margin-left: -1px;
+  }
+  .pageItem:last-child .pageLink {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+  }
+}

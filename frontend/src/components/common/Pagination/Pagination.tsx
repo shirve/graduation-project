@@ -1,36 +1,38 @@
 import ReactPaginate from 'react-paginate'
-import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from '../../../app/store'
-import { setPage } from '../../../features/posts/postSlice'
-import { FaArrowRight, FaArrowLeft } from 'react-icons/fa'
-import './Pagination.scss'
+import { FaAngleRight, FaAngleLeft } from 'react-icons/fa'
+import styles from './Pagination.module.scss'
 
-const Pagination = () => {
-  const dispatch = useAppDispatch()
-  const { pagination } = useSelector((state: RootState) => state.posts)
+interface Props {
+  page: number
+  totalPages: number
+  onPageChange: (newPage: number) => void
+}
 
-  const { page, totalPages } = pagination
-
-  const handlePageChange = (event: { selected: number }) => {
-    if (page !== event.selected) {
-      dispatch(setPage(event.selected))
-    }
-  }
-
+const Pagination = ({ page, totalPages, onPageChange }: Props) => {
   if (totalPages === 1) return null
 
   return (
-    <div className='pagination'>
-      <ReactPaginate
-        breakLabel='...'
-        nextLabel={<FaArrowRight />}
-        previousLabel={<FaArrowLeft />}
-        onPageChange={(event) => handlePageChange(event)}
-        pageRangeDisplayed={3}
-        pageCount={totalPages}
-        initialPage={page}
-      />
-    </div>
+    <ReactPaginate
+      breakLabel='...'
+      nextLabel={<FaAngleRight />}
+      previousLabel={<FaAngleLeft />}
+      onPageChange={(event) => onPageChange(event.selected)}
+      pageRangeDisplayed={2}
+      marginPagesDisplayed={2}
+      pageCount={totalPages}
+      initialPage={page}
+      containerClassName={styles.pagination}
+      activeClassName={styles.active}
+      disabledClassName={styles.disabled}
+      pageClassName={styles.pageItem}
+      pageLinkClassName={styles.pageLink}
+      previousClassName={styles.pageItem}
+      previousLinkClassName={styles.pageLink}
+      nextClassName={styles.pageItem}
+      nextLinkClassName={styles.pageLink}
+      breakClassName={styles.pageItem}
+      breakLinkClassName={styles.pageLink}
+    />
   )
 }
 
