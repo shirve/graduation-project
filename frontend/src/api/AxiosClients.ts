@@ -1,13 +1,5 @@
 import axios from 'axios'
 
-const postsClient = axios.create({
-  baseURL: '/api/posts',
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  },
-})
-
 const usersClient = axios.create({
   baseURL: '/api/users',
   headers: {
@@ -16,9 +8,31 @@ const usersClient = axios.create({
   },
 })
 
+const postsClient = axios.create({
+  baseURL: '/api/posts',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  },
+})
+
+const projectsClient = axios.create({
+  baseURL: '/api/projects',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  },
+})
+
 const setAxiosAuthorizationHeaders = (token: string): void => {
-  postsClient.defaults.headers.common['Authorization'] = `Bearer ${token}`
   usersClient.defaults.headers.common['Authorization'] = `Bearer ${token}`
+  postsClient.defaults.headers.common['Authorization'] = `Bearer ${token}`
+  projectsClient.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }
 
-export { setAxiosAuthorizationHeaders, postsClient, usersClient }
+export {
+  setAxiosAuthorizationHeaders,
+  usersClient,
+  postsClient,
+  projectsClient,
+}

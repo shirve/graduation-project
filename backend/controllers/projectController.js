@@ -102,7 +102,7 @@ const deleteProject = asyncHandler(async (req, res) => {
 
   await project.remove()
 
-  res.status(200).json({ _id: req.params.id })
+  res.status(200).json(req.params.id)
 })
 
 // Update project
@@ -162,15 +162,11 @@ const approveProject = asyncHandler(async (req, res) => {
     approved: true,
   }
 
-  const approvedProject = await Project.findByIdAndUpdate(
-    req.params.id,
-    project,
-    {
-      new: true,
-    }
-  )
+  await Project.findByIdAndUpdate(req.params.id, project, {
+    new: true,
+  })
 
-  res.status(200).json(approvedProject)
+  res.status(200).json(req.params.id)
 })
 
 module.exports = {
