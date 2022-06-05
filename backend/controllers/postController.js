@@ -113,7 +113,7 @@ const deletePost = asyncHandler(async (req, res) => {
 
   await post.remove()
 
-  res.status(200).json({ _id: req.params.id })
+  res.status(200).json(req.params.id)
 })
 
 // Update post
@@ -173,11 +173,11 @@ const approvePost = asyncHandler(async (req, res) => {
     message: null,
   }
 
-  const approvedPost = await Post.findByIdAndUpdate(req.params.id, post, {
+  await Post.findByIdAndUpdate(req.params.id, post, {
     new: true,
   })
 
-  res.status(200).json(approvedPost)
+  res.status(200).json(req.params.id)
 })
 
 // Reject post
@@ -203,11 +203,11 @@ const rejectPost = asyncHandler(async (req, res) => {
     message: req.body.message,
   }
 
-  const rejectedPost = await Post.findByIdAndUpdate(req.params.id, post, {
+  await Post.findByIdAndUpdate(req.params.id, post, {
     new: true,
   })
 
-  res.status(200).json(rejectedPost)
+  res.status(200).json(req.params.id)
 })
 
 // Like post

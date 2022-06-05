@@ -1,6 +1,5 @@
 import { postsClient } from '../../api/AxiosClients'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { RootState } from '../../app/store'
 import { ObjectId } from 'mongoose'
 import { PostViewModel } from '../../models/Posts/PostViewModel'
 import { PostDataViewModel } from '../../models/Posts/PostDataViewModel'
@@ -31,7 +30,7 @@ const initialState: IPostsState = {
 export const getUserPosts = createAsyncThunk<
   PostViewModel[],
   void,
-  { state: RootState; rejectValue: AlertViewModel }
+  { rejectValue: AlertViewModel }
 >('posts/userPosts', async (_, thunkAPI) => {
   try {
     const { data } = await postsClient.get('/')
@@ -46,7 +45,7 @@ export const getUserPosts = createAsyncThunk<
 export const getApprovedPosts = createAsyncThunk<
   PaginatedPostsViewModel,
   { page?: number; limit?: number; genre?: string },
-  { state: RootState; rejectValue: AlertViewModel }
+  { rejectValue: AlertViewModel }
 >('posts/approved', async (pagination, thunkAPI) => {
   try {
     const { data } = await postsClient.get('/approved', {
@@ -63,7 +62,7 @@ export const getApprovedPosts = createAsyncThunk<
 export const getUnapprovedPosts = createAsyncThunk<
   PostViewModel[],
   void,
-  { state: RootState; rejectValue: AlertViewModel }
+  { rejectValue: AlertViewModel }
 >('posts/unapproved', async (_, thunkAPI) => {
   try {
     const { data } = await postsClient.get('/unapproved')
@@ -78,7 +77,7 @@ export const getUnapprovedPosts = createAsyncThunk<
 export const createPost = createAsyncThunk<
   AlertViewModel,
   PostDataViewModel,
-  { state: RootState; rejectValue: AlertViewModel }
+  { rejectValue: AlertViewModel }
 >('posts/create', async (postData, thunkAPI) => {
   try {
     const { data } = await postsClient.post('/', { data: postData })
@@ -93,7 +92,7 @@ export const createPost = createAsyncThunk<
 export const updatePost = createAsyncThunk<
   PostViewModel,
   { postId: ObjectId; data: PostDataViewModel },
-  { state: RootState; rejectValue: AlertViewModel }
+  { rejectValue: AlertViewModel }
 >('posts/update', async (postData, thunkAPI) => {
   try {
     const { data } = await postsClient.put(`/${postData.postId}`, {
@@ -108,9 +107,9 @@ export const updatePost = createAsyncThunk<
 // Delete post
 // DELETE /api/posts/:id
 export const deletePost = createAsyncThunk<
-  { _id: ObjectId },
   ObjectId,
-  { state: RootState; rejectValue: AlertViewModel }
+  ObjectId,
+  { rejectValue: AlertViewModel }
 >('posts/delete', async (postId, thunkAPI) => {
   try {
     const { data } = await postsClient.delete(`/${postId}`)
@@ -123,9 +122,9 @@ export const deletePost = createAsyncThunk<
 // Approve post
 // PATCH /api/posts/:id/approve
 export const approvePost = createAsyncThunk<
-  PostViewModel,
   ObjectId,
-  { state: RootState; rejectValue: AlertViewModel }
+  ObjectId,
+  { rejectValue: AlertViewModel }
 >('posts/approve', async (postId, thunkAPI) => {
   try {
     const { data } = await postsClient.patch(`/${postId}/approve`)
@@ -138,9 +137,9 @@ export const approvePost = createAsyncThunk<
 // Reject post
 // PATCH /api/posts/:id/reject
 export const rejectPost = createAsyncThunk<
-  PostViewModel,
+  ObjectId,
   { postId: ObjectId; message: string },
-  { state: RootState; rejectValue: AlertViewModel }
+  { rejectValue: AlertViewModel }
 >('posts/reject', async (postData, thunkAPI) => {
   try {
     const { data } = await postsClient.patch(`/${postData.postId}/reject`, {
@@ -157,7 +156,7 @@ export const rejectPost = createAsyncThunk<
 export const likePost = createAsyncThunk<
   PostViewModel,
   ObjectId,
-  { state: RootState; rejectValue: AlertViewModel }
+  { rejectValue: AlertViewModel }
 >('posts/like', async (postId, thunkAPI) => {
   try {
     const { data } = await postsClient.patch(`/${postId}/like`)
@@ -250,9 +249,7 @@ export const postSlice = createSlice({
       .addCase(deletePost.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
         state.alert = null
-        state.posts = state.posts.filter(
-          (post) => post._id !== action.payload._id
-        )
+        state.posts = state.posts.filter((post) => post._id !== action.payload)
       })
       .addCase(deletePost.rejected, (state, action) => {
         state.loading = 'failed'
@@ -265,9 +262,7 @@ export const postSlice = createSlice({
       .addCase(approvePost.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
         state.alert = null
-        state.posts = state.posts.filter(
-          (post) => post._id !== action.payload._id
-        )
+        state.posts = state.posts.filter((post) => post._id !== action.payload)
       })
       .addCase(approvePost.rejected, (state, action) => {
         state.loading = 'failed'
@@ -280,9 +275,7 @@ export const postSlice = createSlice({
       .addCase(rejectPost.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
         state.alert = null
-        state.posts = state.posts.filter(
-          (post) => post._id !== action.payload._id
-        )
+        state.posts = state.posts.filter((post) => post._id !== action.payload)
       })
       .addCase(rejectPost.rejected, (state, action) => {
         state.loading = 'failed'
