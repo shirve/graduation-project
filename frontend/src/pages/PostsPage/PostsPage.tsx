@@ -13,8 +13,8 @@ import PostsWrapper from '../../components/PostsWrapper/PostsWrapper'
 import Button from '../../components/common/Buttons/Button/Button'
 import CloseButton from '../../components/common/Buttons/CloseButton/CloseButton'
 import styles from './PostsPage.module.scss'
-import { toast } from 'react-toastify'
 import { CustomSelectFieldStyles } from '../../styles/SelectField/CustomSelectFieldStyles'
+import displayAlert from '../../utils/displayAlert'
 
 const PostsPage = () => {
   const [genre, setGenre] = useState<SelectFieldOptionViewModel | null>(null)
@@ -69,12 +69,8 @@ const PostsPage = () => {
   }, [genre])
 
   useEffect(() => {
-    if (alert?.type === 'info') {
-      handleShowPostFormModal()
-      toast.info(alert.message)
-    }
-    if (alert?.type === 'error') {
-      toast.error(alert.message)
+    if (alert) {
+      displayAlert(alert)
     }
   }, [alert])
 

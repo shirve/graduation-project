@@ -7,7 +7,6 @@ import { registerUser } from '../../features/users/userSlice'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { toast } from 'react-toastify'
 import HeaderContext from '../../context/header/HeaderContext'
 import InputField from '../../components/common/Forms/InputField/InputField'
 import Spinner from '../../components/common/Spinner/Spinner'
@@ -15,6 +14,7 @@ import Button from '../../components/common/Buttons/Button/Button'
 import { RegisterFormFields } from '../../constants/Auth/RegisterFormFields'
 import { UserRegisterViewModel } from '../../models/Users/UserRegisterViewModel'
 import styles from './RegisterPage.module.scss'
+import displayAlert from '../../utils/displayAlert'
 
 const RegisterPage = () => {
   const navigate = useNavigate()
@@ -38,8 +38,8 @@ const RegisterPage = () => {
   }, [user, loading])
 
   useEffect(() => {
-    if (alert?.type === 'error') {
-      toast.error(alert.message)
+    if (alert) {
+      displayAlert(alert)
     }
   }, [alert])
 
