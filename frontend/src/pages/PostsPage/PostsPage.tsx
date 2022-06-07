@@ -15,6 +15,7 @@ import CloseButton from '../../components/common/Buttons/CloseButton/CloseButton
 import styles from './PostsPage.module.scss'
 import { CustomSelectFieldStyles } from '../../styles/SelectField/CustomSelectFieldStyles'
 import displayAlert from '../../utils/displayAlert'
+import Pagination from '../../components/common/Pagination/Pagination'
 
 const PostsPage = () => {
   const [genre, setGenre] = useState<SelectFieldOptionViewModel | null>(null)
@@ -29,7 +30,7 @@ const PostsPage = () => {
     (state: RootState) => state.posts
   )
 
-  const { page, limit } = pagination
+  const { page, limit, totalPages } = pagination
 
   useEffect(() => {
     setHeader('PROPOZYCJE GIER')
@@ -88,6 +89,10 @@ const PostsPage = () => {
     window.scrollTo(0, 0)
   }
 
+  const handlePageChange = (newPage: number) => {
+    dispatch(setPage(newPage))
+  }
+
   return (
     <React.Fragment>
       <div className={styles.description}>
@@ -138,6 +143,11 @@ const PostsPage = () => {
         loading={loading}
         onGenreChange={handleGenreChange}
         displayedButtons={['like', 'readMore', 'delete']}
+      />
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
       />
     </React.Fragment>
   )

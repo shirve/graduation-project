@@ -11,7 +11,7 @@ interface IPostsState {
   posts: PostViewModel[]
   pagination: PaginationViewModel
   loading: 'idle' | 'pending' | 'fulfilled' | 'failed'
-  alert: AlertViewModel | undefined | null
+  alert: AlertViewModel | undefined
 }
 
 const initialState: IPostsState = {
@@ -22,7 +22,7 @@ const initialState: IPostsState = {
     totalPages: 1,
   },
   loading: 'idle',
-  alert: null,
+  alert: undefined,
 }
 
 // Get user posts
@@ -178,11 +178,11 @@ export const postSlice = createSlice({
     builder
       .addCase(getUserPosts.pending, (state) => {
         state.loading = 'pending'
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(getUserPosts.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = null
+        state.alert = initialState.alert
         state.posts = action.payload
         state.pagination = initialState.pagination
       })
@@ -192,11 +192,11 @@ export const postSlice = createSlice({
       })
       .addCase(getApprovedPosts.pending, (state) => {
         state.loading = 'pending'
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(getApprovedPosts.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = null
+        state.alert = initialState.alert
         state.posts = action.payload.posts
         state.pagination = action.payload.pagination
       })
@@ -206,11 +206,11 @@ export const postSlice = createSlice({
       })
       .addCase(getUnapprovedPosts.pending, (state) => {
         state.loading = 'pending'
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(getUnapprovedPosts.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = null
+        state.alert = initialState.alert
         state.posts = action.payload
         state.pagination = initialState.pagination
       })
@@ -219,7 +219,7 @@ export const postSlice = createSlice({
         state.alert = action.payload
       })
       .addCase(createPost.pending, (state) => {
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(createPost.fulfilled, (state, action) => {
         state.alert = action.payload
@@ -229,11 +229,11 @@ export const postSlice = createSlice({
       })
       .addCase(updatePost.pending, (state) => {
         state.loading = 'pending'
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(updatePost.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = null
+        state.alert = initialState.alert
         state.posts = state.posts.map((post) =>
           action.payload._id === post._id ? action.payload : post
         )
@@ -244,11 +244,11 @@ export const postSlice = createSlice({
       })
       .addCase(deletePost.pending, (state) => {
         state.loading = 'pending'
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(deletePost.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = null
+        state.alert = initialState.alert
         state.posts = state.posts.filter((post) => post._id !== action.payload)
       })
       .addCase(deletePost.rejected, (state, action) => {
@@ -257,11 +257,11 @@ export const postSlice = createSlice({
       })
       .addCase(approvePost.pending, (state) => {
         state.loading = 'pending'
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(approvePost.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = null
+        state.alert = initialState.alert
         state.posts = state.posts.filter((post) => post._id !== action.payload)
       })
       .addCase(approvePost.rejected, (state, action) => {
@@ -270,11 +270,11 @@ export const postSlice = createSlice({
       })
       .addCase(rejectPost.pending, (state) => {
         state.loading = 'pending'
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(rejectPost.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = null
+        state.alert = initialState.alert
         state.posts = state.posts.filter((post) => post._id !== action.payload)
       })
       .addCase(rejectPost.rejected, (state, action) => {

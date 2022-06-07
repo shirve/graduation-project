@@ -11,7 +11,7 @@ interface IProjectState {
   projects: ProjectViewModel[]
   pagination: PaginationViewModel
   loading: 'idle' | 'pending' | 'fulfilled' | 'failed'
-  alert: AlertViewModel | undefined | null
+  alert: AlertViewModel | undefined
 }
 
 const initialState: IProjectState = {
@@ -22,7 +22,7 @@ const initialState: IProjectState = {
     totalPages: 1,
   },
   loading: 'idle',
-  alert: null,
+  alert: undefined,
 }
 
 // Get user projects
@@ -146,11 +146,11 @@ export const projectSlice = createSlice({
     builder
       .addCase(getUserProjects.pending, (state) => {
         state.loading = 'pending'
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(getUserProjects.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = null
+        state.alert = initialState.alert
         state.projects = action.payload
         state.pagination = initialState.pagination
       })
@@ -160,11 +160,11 @@ export const projectSlice = createSlice({
       })
       .addCase(getApprovedProjects.pending, (state) => {
         state.loading = 'pending'
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(getApprovedProjects.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = null
+        state.alert = initialState.alert
         state.projects = action.payload.projects
         state.pagination = action.payload.pagination
       })
@@ -174,11 +174,11 @@ export const projectSlice = createSlice({
       })
       .addCase(getUnapprovedProjects.pending, (state) => {
         state.loading = 'pending'
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(getUnapprovedProjects.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = null
+        state.alert = initialState.alert
         state.projects = action.payload
         state.pagination = initialState.pagination
       })
@@ -187,7 +187,7 @@ export const projectSlice = createSlice({
         state.alert = action.payload
       })
       .addCase(createProject.pending, (state) => {
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(createProject.fulfilled, (state, action) => {
         state.alert = action.payload
@@ -197,11 +197,11 @@ export const projectSlice = createSlice({
       })
       .addCase(updateProject.pending, (state) => {
         state.loading = 'pending'
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(updateProject.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = null
+        state.alert = initialState.alert
         state.projects = state.projects.map((project) =>
           action.payload._id === project._id ? action.payload : project
         )
@@ -212,11 +212,11 @@ export const projectSlice = createSlice({
       })
       .addCase(deleteProject.pending, (state) => {
         state.loading = 'pending'
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(deleteProject.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = null
+        state.alert = initialState.alert
         state.projects = state.projects.filter(
           (project) => project._id !== action.payload
         )
@@ -227,11 +227,11 @@ export const projectSlice = createSlice({
       })
       .addCase(approveProject.pending, (state) => {
         state.loading = 'pending'
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(approveProject.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = null
+        state.alert = initialState.alert
         state.projects = state.projects.filter(
           (project) => project._id !== action.payload
         )

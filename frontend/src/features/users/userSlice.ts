@@ -12,13 +12,13 @@ import { jwtDecode } from '../../utils/jwtDecode'
 interface IAuthState {
   user: UserViewModel | null
   loading: 'idle' | 'pending' | 'fulfilled' | 'failed'
-  alert: AlertViewModel | undefined | null
+  alert: AlertViewModel | undefined
 }
 
 const initialState: IAuthState = {
   user: null,
   loading: 'idle',
-  alert: null,
+  alert: undefined,
 }
 
 // Register user
@@ -79,38 +79,38 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      state.user = action.payload ? action.payload : null
+      state.user = action.payload ? action.payload : initialState.user
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
         state.loading = 'pending'
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = null
+        state.alert = initialState.alert
         state.user = action.payload
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = 'failed'
         state.alert = action.payload
-        state.user = null
+        state.user = initialState.user
       })
       .addCase(loginUser.pending, (state) => {
         state.loading = 'pending'
-        state.alert = null
+        state.alert = initialState.alert
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = null
+        state.alert = initialState.alert
         state.user = action.payload
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = 'failed'
         state.alert = action.payload
-        state.user = null
+        state.user = initialState.user
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = initialState.user
