@@ -60,7 +60,7 @@ const App = () => {
           </main>
           <Footer />
         </HeaderProvider>
-        <ToastContainer position='top-center' />
+        <ToastContainer />
       </Router>
     </AuthenticationRoute>
   )

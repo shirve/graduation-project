@@ -72,6 +72,7 @@ const PostsPage = () => {
   useEffect(() => {
     if (alert) {
       displayAlert(alert)
+      setShowPostFormModal(false)
     }
   }, [alert])
 

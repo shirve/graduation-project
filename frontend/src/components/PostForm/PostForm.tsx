@@ -89,6 +89,7 @@ const PostForm = ({ post }: Props) => {
         onClick={handleSubmit(onSubmit)}
         disabled={isSubmitting}
         width={'100%'}
+        height={'40px'}
         marginTop={'1rem'}
       >
         {post ? 'Edytuj propozycję gry' : 'Dodaj nową propozycję gry'}

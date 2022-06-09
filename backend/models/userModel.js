@@ -15,6 +15,14 @@ const userSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
+    github: {
+      type: String,
+      required: false,
+    },
+    technologies: {
+      type: String,
+      required: false,
+    },
     password: {
       type: String,
       required: true,

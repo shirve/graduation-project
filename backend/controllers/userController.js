@@ -34,6 +34,8 @@ const registerUser = asyncHandler(async (req, res) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      github: user.github,
+      technologies: user.technologies,
       roles: user.roles,
     })
 
@@ -64,6 +66,8 @@ const loginUser = asyncHandler(async (req, res) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      github: user.github,
+      technologies: user.technologies,
       roles: user.roles,
     })
 
@@ -134,6 +138,8 @@ const getUser = asyncHandler(async (req, res) => {
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
+    github: user.github,
+    technologies: user.technologies,
   })
 })
 

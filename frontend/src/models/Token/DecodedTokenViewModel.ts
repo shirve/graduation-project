@@ -7,5 +7,7 @@ export interface DecodedTokenViewModel {
   firstName: string
   lastName: string
   email: string
+  github: string
+  technologies: string
   roles: string[]
 }
