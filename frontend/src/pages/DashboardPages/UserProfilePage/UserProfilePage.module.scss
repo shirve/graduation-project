@@ -1,0 +1,29 @@
+@import '../../../styles/CommonStyles.scss';
+
+.wrapper {
+  max-width: 600px;
+  margin: auto;
+  .card {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    &:first-child {
+      flex-direction: row;
+      :nth-child(n+2):nth-child(-n+3) {
+        min-width: 250px;
+        flex: 1 0 40%;
+      }
+      :nth-child(n) {
+        flex: 100%;
+      }
+    }
+    &:not(:first-child) {
+      margin-top: 1rem;
+    }
+    .header {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+  }
+}
