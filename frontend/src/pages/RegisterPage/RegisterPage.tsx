@@ -46,11 +46,25 @@ const RegisterPage = () => {
   const registerSchema = yup.object().shape({
     firstName: yup
       .string()
-      .matches(/[a-zA-Z]+/g, 'Imię zawiera niedozwolone znaki')
+      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ]/, 'Imię musi zaczynać się z dużej litery')
+      .matches(/^\S+$/, 'Imię nie może zawierać przerw')
+      .matches(
+        /^.[a-ząćęłńóśźż]*$/,
+        'Imię nie może zawierać dużych liter w środku'
+      )
+      .min(3, 'Imię musi mieć minimum 3 znaki')
+      .max(50, 'Imię może mieć maksimum 50 znaków')
       .required('To pole jest wymagane'),
     lastName: yup
       .string()
-      .matches(/[a-zA-Z]+/g, 'Nazwisko zawiera niedozwolone znaki')
+      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ]/, 'Nazwisko musi zaczynać się z dużej litery')
+      .matches(/^\S+$/, 'Nazwisko nie może zawierać przerw')
+      .matches(
+        /^.[a-ząćęłńóśźż]*$/,
+        'Nazwisko nie może zawierać dużych liter w środku'
+      )
+      .min(3, 'Nazwisko musi mieć minimum 3 znaki')
+      .max(50, 'Nazwisko może mieć maksimum 50 znaków')
       .required('To pole jest wymagane'),
     email: yup
       .string()
@@ -59,7 +73,12 @@ const RegisterPage = () => {
       .required('To pole jest wymagane'),
     password: yup
       .string()
-      .min(6, 'Hasło musi zawierać co najmniej 6 znaków')
+      .matches(/(?=.*[A-ZĄĆĘŁŃÓŚŹŻ])/, 'Hasło musi mieć jedną dużą literę')
+      .matches(/(?=.*[a-ząćęłńóśźż])/, 'Hasło musi mieć jedną małą literę')
+      .matches(/(?=.*\d)/, 'Hasło musi mieć jedną liczbę')
+      .matches(/(?=.*?[!@#$%^&*?])/, 'Hasło musi mieć jeden znak specjalny')
+      .min(6, 'Hasło musi mieć minimum 6 znaków')
+      .max(50, 'Hasło może mieć maksimum 50 znaków')
       .required('To pole jest wymagane'),
     password2: yup
       .string()
@@ -100,6 +119,7 @@ const RegisterPage = () => {
           onClick={handleSubmit(onSubmit)}
           disabled={isSubmitting}
           width={'100%'}
+          height={'40px'}
         >
           Zarejestruj
         </Button>

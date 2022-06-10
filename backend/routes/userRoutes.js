@@ -17,10 +17,24 @@ const { validate } = require('../middleware/validateMiddleware')
 router.post(
   '/register',
   validate([
-    body('firstName').notEmpty().isString(),
-    body('lastName').notEmpty().isString(),
-    body('email').notEmpty().isEmail(),
-    body('password').notEmpty().isString().isLength({ min: 6 }),
+    body('firstName')
+      .notEmpty()
+      .isString()
+      .isLength({ min: 3, max: 50 })
+      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*$/),
+    body('lastName')
+      .notEmpty()
+      .isString()
+      .isLength({ min: 3, max: 50 })
+      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*$/),
+    body('email').notEmpty().isEmail().isLength({ max: 255 }),
+    body('password')
+      .notEmpty()
+      .isString()
+      .isLength({ min: 6, max: 50 })
+      .matches(
+        /^(?=.*[a-ząćęłńóśźż])(?=.*[A-ZĄĆĘŁŃÓŚŹŻ])(?=.*\d)(?=.*[!@#$%^&*?])[A-ZĄĆĘŁŃÓŚŹŻa-ząćęłńóśźż\d!@#$%^&*?]{6,50}$/
+      ),
   ]),
   registerUser
 )
@@ -42,7 +56,28 @@ router.post('/logout', logoutUser)
 
 // Update user
 // PUT /api/users
-router.put('/', protect, updateUser)
+router.put(
+  '/',
+  validate([
+    body('firstName')
+      .notEmpty()
+      .isString()
+      .isLength({ min: 3, max: 50 })
+      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*$/g),
+    body('lastName')
+      .notEmpty()
+      .isString()
+      .isLength({ min: 3, max: 50 })
+      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*$/),
+    body('email').notEmpty().isEmail().isLength({ max: 255 }),
+    body('github')
+      .isString()
+      .matches(/^https:\/\/github.com\/.+/g),
+    body('technologies').isString().isLength({ max: 255 }),
+  ]),
+  protect,
+  updateUser
+)
 
 // Authenticate user from cookies
 // GET /api/users
