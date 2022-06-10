@@ -19,11 +19,10 @@ const AuthenticationRoute = ({
   const { user } = useSelector((state: RootState) => state.user)
 
   const setUserAndAxiosAuthorizationHeaders = async () => {
-    const { data } = await usersClient.get('/whoami')
+    const { data } = await usersClient.get('/')
     if (data !== '') {
-      const user = jwtDecode(data)
-      dispatch(setUser(user))
-      setAxiosAuthorizationHeaders(data)
+      dispatch(setUser(data.user))
+      setAxiosAuthorizationHeaders(data.token)
     }
     setIsAuthenticated(true)
   }

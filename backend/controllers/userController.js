@@ -93,9 +93,9 @@ const logoutUser = asyncHandler(async (req, res) => {
 })
 
 // Update user
-// PUT /api/users/:id/update
+// PUT /api/users
 const updateUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id)
+  const user = await User.findById(req.user._id)
 
   if (!user) {
     res
@@ -104,16 +104,16 @@ const updateUser = asyncHandler(async (req, res) => {
     return
   }
 
-  const data = { ...req.body, roles: [] }
+  const data = { ...req.body, roles: req.user.roles }
 
-  const updatedUser = await User.findByIdAndUpdate(req.params.id, data, {
+  const updatedUser = await User.findByIdAndUpdate(req.user._id, data, {
     new: true,
   })
 
   res.status(200).json(updatedUser)
 })
 
-// Get user
+// Get user details
 // GET /api/users/:id
 const getUser = asyncHandler(async (req, res) => {
   let user
@@ -143,8 +143,8 @@ const getUser = asyncHandler(async (req, res) => {
   })
 })
 
-// Authenticate user from cookies
-// GET /api/users/whoami
+// Authenticate user from cookie
+// GET /api/users
 const authenticateUser = asyncHandler(async (req, res) => {
   try {
     const token = req.cookies['auth']
@@ -154,7 +154,7 @@ const authenticateUser = asyncHandler(async (req, res) => {
     const user = await User.findById(decoded._id).select('-password')
 
     if (user) {
-      res.status(200).json(token)
+      res.status(200).json({ user, token })
     } else {
       res.status(204).end()
     }

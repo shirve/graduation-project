@@ -4,6 +4,7 @@ import {
 } from '../../api/AxiosClients'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { UserViewModel } from '../../models/Users/UserViewModel'
+import { UserDetailsViewModel } from '../../models/Users/UserDetailsViewModel'
 import { UserLoginViewModel } from '../../models/Users/UserLoginViewModel'
 import { UserRegisterViewModel } from '../../models/Users/UserRegisterViewModel'
 import { AlertViewModel } from '../../models/Alert/AlertViewModel'
@@ -60,14 +61,14 @@ export const logoutUser = createAsyncThunk('users/logout', async () => {
 })
 
 // Update user
-// PUT /api/users/:id/update
+// PUT /api/users
 export const updateUser = createAsyncThunk<
   UserViewModel,
-  UserViewModel,
+  UserDetailsViewModel,
   { rejectValue: AlertViewModel }
 >('users/update', async (userData, thunkAPI) => {
   try {
-    const { data } = await usersClient.put(`/${userData._id}/update`, userData)
+    const { data } = await usersClient.put('/', userData)
     return data
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
@@ -115,6 +116,19 @@ export const userSlice = createSlice({
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = initialState.user
         state.loading = initialState.loading
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.user = action.payload
+        state.alert = {
+          type: 'info',
+          message: 'Profil zaktualizowano pomyślnie',
+        }
+      })
+      .addCase(updateUser.rejected, (state) => {
+        state.alert = {
+          type: 'error',
+          message: 'Oops! Coś poszło nie tak',
+        }
       })
   },
 })

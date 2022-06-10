@@ -41,12 +41,12 @@ router.post(
 router.post('/logout', logoutUser)
 
 // Update user
-// PUT /api/users/:id/update
-router.put('/:id/update', protect, updateUser)
+// PUT /api/users
+router.put('/', protect, updateUser)
 
 // Authenticate user from cookies
-// GET /api/users/whoami
-router.get('/whoami', authenticateUser)
+// GET /api/users
+router.get('/', authenticateUser)
 
 // Get user
 // GET /api/users/:id
