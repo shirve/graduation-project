@@ -17,21 +17,30 @@ const { validate } = require('../middleware/validateMiddleware')
 router.post(
   '/register',
   validate([
-    body('firstName')
+    body(
+      'firstName',
+      'Imię musi zaczynać się z dużej litery, nie posiadać przerw ani dużych liter w środku oraz mieć długość od 3 do 50 znaków'
+    )
       .notEmpty()
       .isString()
-      .isLength({ min: 3, max: 50 })
-      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*$/),
-    body('lastName')
+      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]{2,50}$/),
+    body(
+      'lastName',
+      'Nazwisko musi zaczynać się z dużej litery, nie posiadać przerw ani dużych liter w środku oraz mieć długość od 3 do 50 znaków'
+    )
       .notEmpty()
       .isString()
-      .isLength({ min: 3, max: 50 })
-      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*$/),
-    body('email').notEmpty().isEmail().isLength({ max: 255 }),
-    body('password')
+      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]{2,50}$/),
+    body('email', 'Podany adres e-mail jest niepoprawny')
+      .notEmpty()
+      .isEmail()
+      .isLength({ max: 255 }),
+    body(
+      'password',
+      'Hasło musi zawierać przynajmniej jedną dużą literę, jedną małą literę, jedną cyfrę, jeden znak specjalny oraz mieć długość od 6 do 50 znaków'
+    )
       .notEmpty()
       .isString()
-      .isLength({ min: 6, max: 50 })
       .matches(
         /^(?=.*[a-ząćęłńóśźż])(?=.*[A-ZĄĆĘŁŃÓŚŹŻ])(?=.*\d)(?=.*[!@#$%^&*?])[A-ZĄĆĘŁŃÓŚŹŻa-ząćęłńóśźż\d!@#$%^&*?]{6,50}$/
       ),
@@ -62,13 +71,11 @@ router.put(
     body('firstName')
       .notEmpty()
       .isString()
-      .isLength({ min: 3, max: 50 })
-      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*$/g),
+      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]{2,50}$/g),
     body('lastName')
       .notEmpty()
       .isString()
-      .isLength({ min: 3, max: 50 })
-      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*$/),
+      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]{2,50}$/),
     body('email').notEmpty().isEmail().isLength({ max: 255 }),
     body('github')
       .isString()

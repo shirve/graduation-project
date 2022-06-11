@@ -22,7 +22,9 @@ const RegisterPage = () => {
 
   const { setHeader } = useContext(HeaderContext)
 
-  const { user, loading, alert } = useSelector((state: RootState) => state.user)
+  const { user, loading, alert, serverErrors } = useSelector(
+    (state: RootState) => state.user
+  )
 
   useEffect(() => {
     setHeader('ZAREJESTRUJ SIĘ')
@@ -108,6 +110,9 @@ const RegisterPage = () => {
             key={field.name}
             register={register}
             errors={errors}
+            serverError={
+              serverErrors?.find((error) => error.param === field.name)?.msg
+            }
             name={field.name}
             label={field.label}
             type={field.type}

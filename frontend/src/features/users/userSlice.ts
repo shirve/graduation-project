@@ -8,18 +8,21 @@ import { UserDetailsViewModel } from '../../models/Users/UserDetailsViewModel'
 import { UserLoginViewModel } from '../../models/Users/UserLoginViewModel'
 import { UserRegisterViewModel } from '../../models/Users/UserRegisterViewModel'
 import { AlertViewModel } from '../../models/Alert/AlertViewModel'
+import { ServerValidationErrorViewModel } from '../../models/Errors/ServerValidationErrorViewModel'
 import { jwtDecode } from '../../utils/jwtDecode'
 
 interface IAuthState {
   user: UserViewModel | null
   loading: 'idle' | 'pending' | 'fulfilled' | 'failed'
   alert: AlertViewModel | undefined
+  serverErrors: ServerValidationErrorViewModel[] | undefined
 }
 
 const initialState: IAuthState = {
   user: null,
   loading: 'idle',
   alert: undefined,
+  serverErrors: undefined,
 }
 
 // Register user
@@ -27,14 +30,14 @@ const initialState: IAuthState = {
 export const registerUser = createAsyncThunk<
   UserViewModel | null,
   UserRegisterViewModel,
-  { rejectValue: AlertViewModel }
+  { rejectValue: ServerValidationErrorViewModel[] }
 >('users/register', async (userData, thunkAPI) => {
   try {
     const { data } = await usersClient.post('/register', userData)
     setAxiosAuthorizationHeaders(data)
     return jwtDecode(data)
   } catch (error: any) {
-    return thunkAPI.rejectWithValue(error.response.data)
+    return thunkAPI.rejectWithValue(error.response.data.errors)
   }
 })
 
@@ -88,6 +91,7 @@ export const userSlice = createSlice({
       .addCase(registerUser.pending, (state) => {
         state.loading = 'pending'
         state.alert = initialState.alert
+        state.serverErrors = initialState.serverErrors
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
@@ -96,7 +100,7 @@ export const userSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = 'failed'
-        state.alert = action.payload
+        state.serverErrors = action.payload
         state.user = initialState.user
       })
       .addCase(loginUser.pending, (state) => {

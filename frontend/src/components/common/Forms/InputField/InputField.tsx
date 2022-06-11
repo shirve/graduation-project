@@ -4,6 +4,7 @@ import styles from './InputField.module.scss'
 interface Props {
   register: UseFormRegister<any>
   errors: any
+  serverError?: string
   name: string
   label: string
   type?: string
@@ -16,6 +17,7 @@ interface Props {
 const InputField = ({
   register,
   errors,
+  serverError,
   name,
   label,
   type,
@@ -37,6 +39,7 @@ const InputField = ({
       {errors[name] && (
         <span className={styles.error}>{errors[name].message}</span>
       )}
+      {serverError && <span className={styles.error}>{serverError}</span>}
     </div>
   )
 }
