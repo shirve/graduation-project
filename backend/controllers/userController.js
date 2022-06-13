@@ -108,7 +108,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
   const updatedUser = await User.findByIdAndUpdate(req.user._id, data, {
     new: true,
-  }).select('-password')
+  }).select('-password -__v')
 
   res.status(200).json(updatedUser)
 })
@@ -151,7 +151,7 @@ const authenticateUser = asyncHandler(async (req, res) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-    const user = await User.findById(decoded._id).select('-password')
+    const user = await User.findById(decoded._id).select('-password -__v')
 
     if (user) {
       res.status(200).json({ user, token })
