@@ -10,7 +10,6 @@ const validate = (validations) => {
     }
 
     res.status(400).json({ errors: errors.array() })
-    // res.status(400).json({ type: 'error', message: 'Niepoprawne dane użytkownika' })
   }
 }
 

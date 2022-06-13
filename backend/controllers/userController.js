@@ -108,7 +108,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
   const updatedUser = await User.findByIdAndUpdate(req.user._id, data, {
     new: true,
-  })
+  }).select('-password')
 
   res.status(200).json(updatedUser)
 })

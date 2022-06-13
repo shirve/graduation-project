@@ -26,33 +26,6 @@ const UserProfilePage = () => {
   }, [])
 
   const userProfileSchema = yup.object().shape({
-    firstName: yup
-      .string()
-      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ]/, 'Imię musi zaczynać się z dużej litery')
-      .matches(/^\S+$/, 'Imię nie może zawierać przerw')
-      .matches(
-        /^.[a-ząćęłńóśźż]*$/,
-        'Imię nie może zawierać dużych liter w środku'
-      )
-      .min(3, 'Imię musi mieć minimum 3 znaki')
-      .max(50, 'Imię może mieć maksimum 50 znaków')
-      .required('To pole jest wymagane'),
-    lastName: yup
-      .string()
-      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ]/, 'Nazwisko musi zaczynać się z dużej litery')
-      .matches(/^\S+$/, 'Nazwisko nie może zawierać przerw')
-      .matches(
-        /^.[a-ząćęłńóśźż]*$/,
-        'Nazwisko nie może zawierać dużych liter w środku'
-      )
-      .min(3, 'Nazwisko musi mieć minimum 3 znaki')
-      .max(50, 'Nazwisko może mieć maksimum 50 znaków')
-      .required('To pole jest wymagane'),
-    email: yup
-      .string()
-      .email('Podany adres e-mail jest niepoprawny')
-      .max(255)
-      .required('To pole jest wymagane'),
     github: yup
       .string()
       .matches(
@@ -73,7 +46,10 @@ const UserProfilePage = () => {
   })
 
   useEffect(() => {
-    reset({ ...user })
+    if (user) {
+      const { _id, roles, ...userData } = user
+      reset({ ...userData })
+    }
   }, [user])
 
   useEffect(() => {
@@ -81,7 +57,8 @@ const UserProfilePage = () => {
   }, [alert])
 
   const onSubmit = (data: UserDetailsViewModel) => {
-    dispatch(updateUser(data))
+    const { firstName, lastName, email, ...userData } = data
+    dispatch(updateUser(userData))
   }
 
   return (
@@ -94,18 +71,21 @@ const UserProfilePage = () => {
             errors={errors}
             name={'firstName'}
             label={'Imię'}
+            disabled
           />
           <InputField
             register={register}
             errors={errors}
             name={'lastName'}
             label={'Nazwisko'}
+            disabled
           />
           <InputField
             register={register}
             errors={errors}
             name={'email'}
             label={'Email'}
+            disabled
           />
         </div>
         <div className={styles.card}>

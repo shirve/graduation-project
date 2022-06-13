@@ -68,18 +68,9 @@ router.post('/logout', logoutUser)
 router.put(
   '/',
   validate([
-    body('firstName')
-      .notEmpty()
-      .isString()
-      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]{2,50}$/g),
-    body('lastName')
-      .notEmpty()
-      .isString()
-      .matches(/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]{2,50}$/),
-    body('email').notEmpty().isEmail().isLength({ max: 255 }),
     body('github')
       .isString()
-      .matches(/^https:\/\/github.com\/.+/g),
+      .matches(/^https:\/\/github\.com\/.+/),
     body('technologies').isString().isLength({ max: 255 }),
   ]),
   protect,

@@ -4,9 +4,9 @@ import {
 } from '../../api/AxiosClients'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { UserViewModel } from '../../models/Users/UserViewModel'
-import { UserDetailsViewModel } from '../../models/Users/UserDetailsViewModel'
 import { UserLoginViewModel } from '../../models/Users/UserLoginViewModel'
 import { UserRegisterViewModel } from '../../models/Users/UserRegisterViewModel'
+import { UserUpdateViewModel } from '../../models/Users/UserUpdateViewModel'
 import { AlertViewModel } from '../../models/Alert/AlertViewModel'
 import { ServerValidationErrorViewModel } from '../../models/Errors/ServerValidationErrorViewModel'
 import { jwtDecode } from '../../utils/jwtDecode'
@@ -67,7 +67,7 @@ export const logoutUser = createAsyncThunk('users/logout', async () => {
 // PUT /api/users
 export const updateUser = createAsyncThunk<
   UserViewModel,
-  UserDetailsViewModel,
+  UserUpdateViewModel,
   { rejectValue: AlertViewModel }
 >('users/update', async (userData, thunkAPI) => {
   try {
