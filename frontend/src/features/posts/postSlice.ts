@@ -173,6 +173,9 @@ export const postSlice = createSlice({
     setPage: (state, action) => {
       state.pagination.page = action.payload
     },
+    resetPagination: (state) => {
+      state.pagination = initialState.pagination
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -289,5 +292,5 @@ export const postSlice = createSlice({
   },
 })
 
-export const { setPage } = postSlice.actions
+export const { setPage, resetPagination } = postSlice.actions
 export default postSlice.reducer

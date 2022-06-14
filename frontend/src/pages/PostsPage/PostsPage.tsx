@@ -2,7 +2,11 @@ import React, { useEffect, useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import PostForm from '../../components/PostForm/PostForm'
-import { getApprovedPosts, setPage } from '../../features/posts/postSlice'
+import {
+  getApprovedPosts,
+  resetPagination,
+  setPage,
+} from '../../features/posts/postSlice'
 import { RootState, useAppDispatch } from '../../app/store'
 import HeaderContext from '../../context/header/HeaderContext'
 import Select from 'react-select'
@@ -36,6 +40,7 @@ const PostsPage = () => {
     setHeader('PROPOZYCJE GIER')
     return () => {
       setHeader('')
+      dispatch(resetPagination())
     }
   }, [])
 
@@ -91,7 +96,9 @@ const PostsPage = () => {
   }
 
   const handlePageChange = (newPage: number) => {
-    dispatch(setPage(newPage))
+    if (page !== newPage) {
+      dispatch(setPage(newPage))
+    }
   }
 
   return (
