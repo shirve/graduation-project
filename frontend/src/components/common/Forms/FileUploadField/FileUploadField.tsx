@@ -27,7 +27,7 @@ const FileUploadField = ({
   marginBottom,
 }: Props) => {
   return (
-    <div style={{ marginTop, marginBottom }}>
+    <div className={styles.wrapper} style={{ marginTop, marginBottom }}>
       <label>{label}</label>
       <input
         {...register(name)}

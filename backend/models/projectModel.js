@@ -28,18 +28,6 @@ const projectSchema = mongoose.Schema(
         type: String,
         required: true,
       },
-      contributors: [
-        {
-          _id: {
-            type: mongoose.Schema.Types.ObjectId,
-            required: true,
-          },
-          name: {
-            type: String,
-            required: true,
-          },
-        },
-      ],
       images: [
         {
           type: String,
