@@ -166,6 +166,58 @@ export const likePost = createAsyncThunk<
   }
 })
 
+// Apply to contribute
+// PATCH /api/posts/:id/contributors
+export const applyToContribute = createAsyncThunk<
+  PostViewModel,
+  { postId: ObjectId; message: string },
+  { rejectValue: AlertViewModel }
+>('posts/contributors', async (postData, thunkAPI) => {
+  try {
+    const { data } = await postsClient.patch(
+      `/${postData.postId}/contributors`,
+      { message: postData.message }
+    )
+    return data
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data)
+  }
+})
+
+// Approve contributor
+// PATCH /api/posts/:postId/contributors/:contributorId/approve
+export const approveContributor = createAsyncThunk<
+  PostViewModel,
+  { postId: ObjectId; contributorId: ObjectId },
+  { rejectValue: AlertViewModel }
+>('posts/contributors/approve', async (postData, thunkAPI) => {
+  try {
+    const { data } = await postsClient.patch(
+      `/${postData.postId}/contributors/${postData.contributorId}/approve`
+    )
+    return data
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data)
+  }
+})
+
+// Reject contributor
+// PATCH /api/posts/:postId/contributors/:contributorId/reject
+export const rejectContributor = createAsyncThunk<
+  PostViewModel,
+  { postId: ObjectId; contributorId: ObjectId },
+  { rejectValue: AlertViewModel }
+>('posts/contributors/reject', async (postData, thunkAPI) => {
+  try {
+    const { data } = await postsClient.patch(
+      `/${postData.postId}/contributors/${postData.contributorId}/reject`
+    )
+    return data
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data)
+  }
+})
+
 export const postSlice = createSlice({
   name: 'posts',
   initialState,
@@ -285,6 +337,21 @@ export const postSlice = createSlice({
         state.alert = action.payload
       })
       .addCase(likePost.fulfilled, (state, action) => {
+        state.posts = state.posts.map((post) =>
+          action.payload._id === post._id ? action.payload : post
+        )
+      })
+      .addCase(applyToContribute.fulfilled, (state, action) => {
+        state.posts = state.posts.map((post) =>
+          action.payload._id === post._id ? action.payload : post
+        )
+      })
+      .addCase(approveContributor.fulfilled, (state, action) => {
+        state.posts = state.posts.map((post) =>
+          action.payload._id === post._id ? action.payload : post
+        )
+      })
+      .addCase(rejectContributor.fulfilled, (state, action) => {
         state.posts = state.posts.map((post) =>
           action.payload._id === post._id ? action.payload : post
         )
