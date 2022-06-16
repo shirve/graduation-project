@@ -10,6 +10,9 @@ const {
   approvePost,
   rejectPost,
   likePost,
+  applyToContribute,
+  approveContributor,
+  rejectContributor,
 } = require('../controllers/postController')
 const { protect } = require('../middleware/authMiddleware')
 const { body } = require('express-validator')
@@ -80,5 +83,25 @@ router.patch('/:id/reject', protect, rejectPost)
 // Like post
 // PATCH /api/posts/:id/like
 router.patch('/:id/like', protect, likePost)
+
+// Apply to contribute
+// PATCH /api/posts/:id/contributors
+router.patch('/:id/contributors', protect, applyToContribute)
+
+// Approve contributor
+// PATCH /api/posts/:postId/contributors/:contributorId/approve
+router.patch(
+  '/:postId/contributors/:contributorId/approve',
+  protect,
+  approveContributor
+)
+
+// Reject contributor
+// PATCH /api/posts/:postId/contributors/:contributorId/reject
+router.patch(
+  '/:postId/contributors/:contributorId/reject',
+  protect,
+  rejectContributor
+)
 
 module.exports = router

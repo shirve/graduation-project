@@ -240,6 +240,141 @@ const likePost = asyncHandler(async (req, res) => {
   res.status(200).json(updatedPost)
 })
 
+// Apply to contribute
+// PATCH /api/posts/:id/contributors
+const applyToContribute = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id)
+
+  if (!post) {
+    res.status(400).json({ type: 'error', message: 'Post nie istnieje!' })
+    return
+  }
+
+  if (!req.user) {
+    res
+      .status(401)
+      .json({ type: 'error', message: 'Użytkownik nie zalogowany!' })
+    return
+  }
+
+  if (
+    post.contributors.find(
+      (contributor) => contributor._id.toString() === req.user._id.toString()
+    )
+  ) {
+    res.status(400).end()
+    return
+  } else {
+    post.contributors.push({
+      _id: req.user._id,
+      name: req.user.firstName + ' ' + req.user.lastName,
+      status: {
+        approved: false,
+        message: req.body.message,
+      },
+    })
+  }
+
+  const updatedPost = await Post.findByIdAndUpdate(req.params.id, post, {
+    new: true,
+  })
+
+  res.status(200).json(updatedPost)
+})
+
+// Approve contributor
+// PATCH /api/posts/:postId/contributors/:contributorId/approve
+const approveContributor = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.postId)
+
+  if (!post) {
+    res.status(400).json({ type: 'error', message: 'Post nie istnieje!' })
+    return
+  }
+
+  if (!req.user) {
+    res
+      .status(401)
+      .json({ type: 'error', message: 'Użytkownik nie zalogowany!' })
+    return
+  }
+
+  if (post.user._id.toString() !== req.user._id.toString()) {
+    res
+      .status(401)
+      .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
+    return
+  }
+
+  if (
+    !post.contributors.find(
+      (contributor) =>
+        contributor._id.toString() === req.params.contributorId.toString()
+    )
+  ) {
+    res.status(400).json({ type: 'error', message: 'Użytkownik nie istnieje!' })
+    return
+  } else {
+    post.contributors.map((contributor) =>
+      contributor._id.toString() === req.params.contributorId.toString()
+        ? (contributor.status = { approved: true, message: null })
+        : contributor
+    )
+  }
+
+  const updatedPost = await Post.findByIdAndUpdate(req.params.id, post, {
+    new: true,
+  })
+
+  res.status(200).json(updatedPost)
+})
+
+// Reject contributor
+// PATCH /api/posts/:postId/contributors/:contributorId/reject
+const rejectContributor = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.postId)
+
+  if (!post) {
+    res.status(400).json({ type: 'error', message: 'Post nie istnieje!' })
+    return
+  }
+
+  if (!req.user) {
+    res
+      .status(401)
+      .json({ type: 'error', message: 'Użytkownik nie zalogowany!' })
+    return
+  }
+
+  if (post.user._id.toString() !== req.user._id.toString()) {
+    res
+      .status(401)
+      .json({ type: 'error', message: 'Brak autoryzacji użytkownika!' })
+    return
+  }
+
+  if (
+    !post.contributors.find(
+      (contributor) =>
+        contributor._id.toString() === req.params.contributorId.toString()
+    )
+  ) {
+    res.status(400).json({ type: 'error', message: 'Użytkownik nie istnieje!' })
+    return
+  } else {
+    post.contributors.filter(
+      (contributor) =>
+        contributor._id.toString() !== req.params.contributorId.toString()
+    )
+  }
+
+  const updatedPost = await Post.findByIdAndUpdate(req.params.id, post, {
+    new: true,
+  })
+
+  res.status(200).json(updatedPost)
+})
+
 module.exports = {
   getUserPosts,
   getApprovedPosts,
@@ -250,4 +385,7 @@ module.exports = {
   approvePost,
   rejectPost,
   likePost,
+  applyToContribute,
+  approveContributor,
+  rejectContributor,
 }
