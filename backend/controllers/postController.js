@@ -78,6 +78,16 @@ const createPost = asyncHandler(async (req, res) => {
       rejected: false,
       message: null,
     },
+    contributors: [
+      {
+        _id: req.user._id,
+        name: req.user.firstName + ' ' + req.user.lastName,
+        status: {
+          approved: true,
+          message: null,
+        },
+      },
+    ],
     user: {
       _id: req.user._id,
       name: req.user.firstName + ' ' + req.user.lastName,
