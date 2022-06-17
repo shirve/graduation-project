@@ -150,7 +150,7 @@ const PostsPage = () => {
         posts={posts}
         loading={loading}
         onGenreChange={handleGenreChange}
-        displayedButtons={['like', 'readMore', 'delete']}
+        displayedButtons={['like', 'contribute', 'readMore', 'delete']}
       />
       <Pagination
         page={page}
