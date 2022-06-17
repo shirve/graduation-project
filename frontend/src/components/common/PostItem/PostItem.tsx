@@ -2,21 +2,17 @@ import React, { ReactElement, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../../app/store'
-import {
-  deletePost,
-  approvePost,
-  rejectPost,
-  likePost,
-} from '../../../features/posts/postSlice'
-import Modal from 'react-modal'
+import { approvePost, likePost } from '../../../features/posts/postSlice'
 import { ObjectId } from 'mongoose'
 import { FaGamepad } from 'react-icons/fa'
 import { PostViewModel } from '../../../models/Posts/PostViewModel'
 import { PostButtonTypes } from '../../../models/Posts/PostButtonTypes'
-import PostForm from '../../PostForm/PostForm'
 import Button from '../Buttons/Button/Button'
-import CloseButton from '../Buttons/CloseButton/CloseButton'
 import styles from './PostItem.module.scss'
+import PostDeleteModal from '../../Modals/PostDeleteModal/PostDeleteModal'
+import PostEditModal from '../../Modals/PostEditModal/PostEditModal'
+import PostRejectModal from '../../Modals/PostRejectModal/PostRejectModal'
+import PostApplyToContributeModal from '../../Modals/PostApplyToContributeModal/PostApplyToContributeModal'
 
 interface Props {
   post: PostViewModel
@@ -30,10 +26,11 @@ const PostItem = ({
   displayedButtons,
 }: Props): ReactElement => {
   const [readMore, setReadMore] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [showEditModal, setShowEditModal] = useState(false)
-  const [showRejectModal, setShowRejectModal] = useState(false)
-  const [rejectMessage, setRejectMessage] = useState('')
+  const [showPostDeleteModal, setShowPostDeleteModal] = useState(false)
+  const [showPostEditModal, setShowPostEditModal] = useState(false)
+  const [showPostRejectModal, setShowPostRejectModal] = useState(false)
+  const [showPostApplyToContributeModal, setShowPostApplyToContributeModal] =
+    useState(false)
 
   const { user } = useSelector((state: RootState) => state.user)
 
@@ -45,18 +42,8 @@ const PostItem = ({
     }
   }, [])
 
-  const handlePostDelete = (postId: ObjectId) => {
-    dispatch(deletePost(postId))
-    handleShowDeleteModal()
-  }
-
   const handlePostApprove = (postId: ObjectId) => {
     dispatch(approvePost(postId))
-  }
-
-  const handlePostReject = (postId: ObjectId, message: string) => {
-    dispatch(rejectPost({ postId, message }))
-    handleShowRejectModal()
   }
 
   const handlePostLike = (postId: ObjectId) => {
@@ -65,16 +52,25 @@ const PostItem = ({
     }
   }
 
-  const handleShowDeleteModal = () => {
-    setShowDeleteModal((prevState) => !prevState)
+  const handleShowPostDeleteModal = () => {
+    setShowPostDeleteModal((prevState) => !prevState)
   }
 
-  const handleShowRejectModal = () => {
-    setShowRejectModal((prevState) => !prevState)
+  const handleShowPostRejectModal = () => {
+    setShowPostRejectModal((prevState) => !prevState)
   }
 
-  const handleShowEditModal = () => {
-    setShowEditModal((prevState) => !prevState)
+  const handleShowPostEditModal = () => {
+    setShowPostEditModal((prevState) => !prevState)
+  }
+
+  const handleShowPostApplyToContributeModal = () => {
+    if (
+      !post.contributors.find((contributor) => contributor._id === user?._id) &&
+      user?._id !== post.user._id
+    ) {
+      setShowPostApplyToContributeModal((prevState) => !prevState)
+    }
   }
 
   return (
@@ -89,12 +85,7 @@ const PostItem = ({
         <ul className={styles.tags}>
           {post.data.genres &&
             post.data.genres.map((genre) => (
-              <li
-                key={genre}
-                onClick={() => {
-                  if (onGenreChange) onGenreChange(genre)
-                }}
-              >
+              <li key={genre} onClick={() => onGenreChange?.(genre)}>
                 #{genre}
               </li>
             ))}
@@ -137,20 +128,25 @@ const PostItem = ({
                   {post.likes.length}
                 </Button>
               )}
+              {displayedButtons?.includes('contribute') && user && (
+                <Button onClick={handleShowPostApplyToContributeModal}>
+                  Aplikuj
+                </Button>
+              )}
               {displayedButtons?.includes('edit') &&
                 user?._id === post.user._id && (
-                  <Button onClick={handleShowEditModal}>Edytuj</Button>
+                  <Button onClick={handleShowPostEditModal}>Edytuj</Button>
                 )}
               {displayedButtons?.includes('delete') &&
                 (user?.roles.includes('admin') ||
                   user?._id === post.user._id) && (
-                  <Button onClick={handleShowDeleteModal}>Usuń</Button>
+                  <Button onClick={handleShowPostDeleteModal}>Usuń</Button>
                 )}
               {displayedButtons?.includes('reject') &&
                 user?.roles.includes('admin') &&
                 post.status.approved === false &&
                 post.status.rejected === false && (
-                  <Button onClick={handleShowRejectModal}>Odrzuć</Button>
+                  <Button onClick={handleShowPostRejectModal}>Odrzuć</Button>
                 )}
               {displayedButtons?.includes('approve') &&
                 user?.roles.includes('admin') &&
@@ -167,60 +163,26 @@ const PostItem = ({
           <div className={styles.status}>{post.status.message}</div>
         )}
       </div>
-
-      <Modal
-        appElement={document.getElementById('root') || undefined}
-        isOpen={showDeleteModal}
-        overlayClassName={styles.modalOverlay}
-        className={`${styles.modalContent} ${styles.deleteModalContent}`}
-      >
-        <div>Na pewno chcesz usunąć ten post?</div>
-        <div className={styles.modalButtons}>
-          <Button onClick={handleShowDeleteModal} width={'100%'}>
-            Anuluj
-          </Button>
-          <Button onClick={() => handlePostDelete(post._id)} width={'100%'}>
-            Usuń
-          </Button>
-        </div>
-      </Modal>
-
-      <Modal
-        appElement={document.getElementById('root') || undefined}
-        isOpen={showRejectModal}
-        overlayClassName={styles.modalOverlay}
-        className={`${styles.modalContent} ${styles.rejectModalContent}`}
-      >
-        <div className={styles.modalHeader}>
-          <h4>Wiadomość</h4>
-          <CloseButton onClick={handleShowRejectModal} />
-        </div>
-        <textarea
-          value={rejectMessage}
-          onChange={(e) => setRejectMessage(e.target.value)}
-        />
-        <div className={styles.modalButtons}>
-          <Button
-            onClick={() => handlePostReject(post._id, rejectMessage)}
-            width={'100%'}
-          >
-            Odrzuć
-          </Button>
-        </div>
-      </Modal>
-
-      <Modal
-        appElement={document.getElementById('root') || undefined}
-        isOpen={showEditModal}
-        overlayClassName={styles.modalOverlay}
-        className={`${styles.modalContent} ${styles.editModalContent}`}
-      >
-        <div className={styles.modalHeader}>
-          <h4>Edytuj propozycje gry</h4>
-          <CloseButton onClick={handleShowEditModal} />
-        </div>
-        <PostForm post={post} />
-      </Modal>
+      <PostDeleteModal
+        post={post}
+        showModal={showPostDeleteModal}
+        handleShowModal={handleShowPostDeleteModal}
+      />
+      <PostEditModal
+        post={post}
+        showModal={showPostEditModal}
+        handleShowModal={handleShowPostEditModal}
+      />
+      <PostRejectModal
+        post={post}
+        showModal={showPostRejectModal}
+        handleShowModal={handleShowPostRejectModal}
+      />
+      <PostApplyToContributeModal
+        post={post}
+        showModal={showPostApplyToContributeModal}
+        handleShowModal={handleShowPostApplyToContributeModal}
+      />
     </React.Fragment>
   )
 }
