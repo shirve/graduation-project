@@ -8,6 +8,9 @@
   justify-content: center;
   align-items: center;
   border-bottom: 1px $gray solid;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   li {
     border-bottom: 2px transparent solid;
     white-space: nowrap;
