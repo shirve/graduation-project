@@ -91,6 +91,14 @@ const Navbar = () => {
                             NIEZATWIERDZONE POSTY
                           </NavLink>
                         </li>
+                        <li>
+                          <NavLink
+                            className='nav-link'
+                            to='/dashboard/unapproved-projects'
+                          >
+                            NIEZATWIERDZONE PROJEKTY
+                          </NavLink>
+                        </li>
                       </>
                     )}
                     <hr className='m-0' />

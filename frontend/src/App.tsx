@@ -22,6 +22,7 @@ import UserProfilePage from './pages/DashboardPages/UserProfilePage/UserProfileP
 import UserPostsPage from './pages/DashboardPages/UserPostsPage/UserPostsPage'
 import UserProjectsPage from './pages/DashboardPages/UserProjectsPage/UserProjectsPage'
 import UnapprovedPostsPage from './pages/DashboardPages/UnapprovedPostsPage/UnapprovedPostsPage'
+import UnapprovedProjectsPage from './pages/DashboardPages/UnapprovedProjectsPage/UnapprovedProjectsPage'
 import { HeaderProvider } from './context/header/HeaderContext'
 
 const App = () => {
@@ -45,6 +46,10 @@ const App = () => {
                   <Route
                     path='unapproved-posts'
                     element={<UnapprovedPostsPage />}
+                  />
+                  <Route
+                    path='unapproved-projects'
+                    element={<UnapprovedProjectsPage />}
                   />
                 </Route>
               </Route>
