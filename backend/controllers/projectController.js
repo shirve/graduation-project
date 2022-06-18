@@ -14,16 +14,20 @@ const getUserProjects = asyncHandler(async (req, res) => {
 })
 
 // Get approved projects
-// GET /api/projects/approved?page=number&limit=number
+// GET /api/projects/approved?page=number&limit=number&user=string
 const getApprovedProjects = asyncHandler(async (req, res) => {
-  const { page, limit } = req.query
+  const { page, limit, user } = req.query
 
   const offset = page ? page * limit : 0
-
+  const amount = limit ? limit : undefined
   const query = { 'status.approved': { $eq: true } }
   const sort = { createdAt: 'desc' }
 
-  Project.paginate(query, { sort, limit, offset }).then((data) => {
+  if (user) {
+    query['user._id'] = { $eq: user }
+  }
+
+  Project.paginate(query, { sort, amount, offset }).then((data) => {
     res.status(200).json({
       projects: data.docs,
       pagination: {

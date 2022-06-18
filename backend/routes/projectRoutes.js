@@ -16,7 +16,7 @@ const { protect } = require('../middleware/authMiddleware')
 router.get('/', protect, getUserProjects)
 
 // Get approved projects
-// GET /api/projects/approved?page=number&limit=number
+// GET /api/projects/approved?page=number&limit=number&user=string
 router.get('/approved', getApprovedProjects)
 
 // Get unapproved projects

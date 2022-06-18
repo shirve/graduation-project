@@ -104,7 +104,10 @@ const updateUser = asyncHandler(async (req, res) => {
     return
   }
 
-  const data = { ...req.body, roles: req.user.roles }
+  const data = {
+    github: req.body.github,
+    technologies: req.body.technologies,
+  }
 
   const updatedUser = await User.findByIdAndUpdate(req.user._id, data, {
     new: true,

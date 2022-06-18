@@ -23,7 +23,7 @@ const { validate } = require('../middleware/validateMiddleware')
 router.get('/', protect, getUserPosts)
 
 // Get approved posts
-// GET /api/posts/approved?page=number&limit=number&genre=string
+// GET /api/posts/approved?page=number&limit=number&genre=string&user=string
 router.get('/approved', getApprovedPosts)
 
 // Get unapproved posts
