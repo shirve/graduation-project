@@ -41,10 +41,10 @@ export const getUserProjects = createAsyncThunk<
 })
 
 // Get approved projects
-// GET /api/projects/approved?page=number&limit=number
+// GET /api/projects/approved?page=number&limit=number&user=string
 export const getApprovedProjects = createAsyncThunk<
   PaginatedProjectsViewModel,
-  { page?: number; limit?: number },
+  { page?: number; limit?: number; user?: string } | undefined,
   { rejectValue: AlertViewModel }
 >('projects/approved', async (pagination, thunkAPI) => {
   try {

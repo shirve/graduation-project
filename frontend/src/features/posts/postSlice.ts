@@ -41,10 +41,10 @@ export const getUserPosts = createAsyncThunk<
 })
 
 // Get approved posts
-// GET /api/posts/approved?page=number&limit=number&genre=string
+// GET /api/posts/approved?page=number&limit=number&genre=string&user=string
 export const getApprovedPosts = createAsyncThunk<
   PaginatedPostsViewModel,
-  { page?: number; limit?: number; genre?: string },
+  { page?: number; limit?: number; genre?: string; user?: string } | undefined,
   { rejectValue: AlertViewModel }
 >('posts/approved', async (pagination, thunkAPI) => {
   try {
