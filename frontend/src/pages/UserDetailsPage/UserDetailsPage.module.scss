@@ -1,0 +1,25 @@
+.wrapper {
+  .user {
+    table {
+      tbody {
+        tr {
+          display: flex;
+          th {
+            min-width: 100px;
+          }
+        }
+      }
+    }
+  }
+  .posts, .projects {
+    .header {
+      margin-top: 1rem;
+      h4 {
+        margin: 0;
+      }
+    }
+  }
+  .notFound {
+    text-align: center;
+  }
+}
