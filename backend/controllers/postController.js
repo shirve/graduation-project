@@ -328,17 +328,26 @@ const approveContributor = asyncHandler(async (req, res) => {
   ) {
     res.status(400).json({ type: 'error', message: 'Użytkownik nie istnieje!' })
     return
-  } else {
-    post.contributors.map((contributor) =>
-      contributor._id.toString() === req.params.contributorId.toString()
-        ? (contributor.status = { approved: true, message: null })
-        : contributor
-    )
   }
 
-  const updatedPost = await Post.findByIdAndUpdate(req.params.id, post, {
-    new: true,
-  })
+  let postToUpdate = { ...post._doc }
+
+  postToUpdate.contributors = post.contributors.map((contributor) =>
+    contributor._id.toString() === req.params.contributorId.toString()
+      ? {
+          ...contributor._doc,
+          status: { approved: true, message: null },
+        }
+      : contributor
+  )
+
+  const updatedPost = await Post.findByIdAndUpdate(
+    req.params.postId,
+    postToUpdate,
+    {
+      new: true,
+    }
+  )
 
   res.status(200).json(updatedPost)
 })
@@ -375,16 +384,22 @@ const rejectContributor = asyncHandler(async (req, res) => {
   ) {
     res.status(400).json({ type: 'error', message: 'Użytkownik nie istnieje!' })
     return
-  } else {
-    post.contributors.filter(
-      (contributor) =>
-        contributor._id.toString() !== req.params.contributorId.toString()
-    )
   }
 
-  const updatedPost = await Post.findByIdAndUpdate(req.params.id, post, {
-    new: true,
-  })
+  let postToUpdate = { ...post._doc }
+
+  postToUpdate.contributors = post.contributors.filter(
+    (contributor) =>
+      contributor._id.toString() !== req.params.contributorId.toString()
+  )
+
+  const updatedPost = await Post.findByIdAndUpdate(
+    req.params.postId,
+    postToUpdate,
+    {
+      new: true,
+    }
+  )
 
   res.status(200).json(updatedPost)
 })
