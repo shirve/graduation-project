@@ -48,6 +48,12 @@
       margin: auto;
       cursor: pointer;
     }
+    button {
+      svg {
+        font-size: 1.6rem;
+        margin-right: 0.675rem;
+      }
+    }
   }
   .status {
     border-top: 1px $gray solid;

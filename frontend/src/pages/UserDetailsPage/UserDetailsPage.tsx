@@ -15,7 +15,7 @@ import styles from './UserDetailsPage.module.scss'
 
 const UserDetailsPage = () => {
   const [user, setUser] = useState<UserDetailsViewModel>()
-  const [loading, setLoading] = useState(true)
+  const [userLoading, setUserLoading] = useState(true)
 
   const { userId } = useParams()
   const { setHeader } = useContext(HeaderContext)
@@ -49,15 +49,17 @@ const UserDetailsPage = () => {
       .get(`/${userId}`)
       .then((res) => {
         setUser(res.data)
-        setLoading(false)
+        setUserLoading(false)
       })
       .catch((error) => {
         displayAlert(error.response.data)
-        setLoading(false)
+        setUserLoading(false)
       })
   }
 
-  if (loading) return <Spinner />
+  if (userLoading || (postsLoading || projectsLoading) === 'pending') {
+    return <Spinner />
+  }
 
   return (
     <div className={styles.wrapper}>

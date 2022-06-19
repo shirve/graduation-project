@@ -40,7 +40,6 @@ const PostRejectModal = ({ post, showModal, handleShowModal }: Props) => {
         <Button
           onClick={() => handlePostReject(post._id, message)}
           width={'100%'}
-          height={'40px'}
         >
           Aplikuj
         </Button>

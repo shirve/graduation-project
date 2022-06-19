@@ -65,7 +65,6 @@ const UserProfilePage = () => {
     <div className={styles.wrapper}>
       <form>
         <div className={styles.card}>
-          <div className={styles.header}>Dane personalne</div>
           <InputField
             register={register}
             errors={errors}
@@ -87,9 +86,6 @@ const UserProfilePage = () => {
             label={'Email'}
             disabled
           />
-        </div>
-        <div className={styles.card}>
-          <div className={styles.header}>Dane dodatkowe</div>
           <InputField
             register={register}
             errors={errors}
@@ -107,7 +103,6 @@ const UserProfilePage = () => {
           type={'submit'}
           onClick={handleSubmit(onSubmit)}
           width={'100%'}
-          height={'40px'}
           marginTop={'1rem'}
           disabled={isSubmitting}
         >

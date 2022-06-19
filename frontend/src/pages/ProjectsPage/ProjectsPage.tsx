@@ -75,11 +75,7 @@ const ProjectsPage = () => {
       </div>
       {user && (
         <React.Fragment>
-          <Button
-            onClick={handleShowProjectFormModal}
-            width={'100%'}
-            height={'40px'}
-          >
+          <Button onClick={handleShowProjectFormModal} width={'100%'}>
             Nowy projekt gry
           </Button>
           <Modal
@@ -100,7 +96,11 @@ const ProjectsPage = () => {
         <h3>Najnowsze projekty</h3>
       </div>
       {projects.length === 0 && <div>Nie znaleziono projektów</div>}
-      <ProjectsWrapper projects={projects} loading={loading} />
+      <ProjectsWrapper
+        projects={projects}
+        loading={loading}
+        displayedButtons={['delete']}
+      />
       <Pagination
         page={page}
         totalPages={totalPages}

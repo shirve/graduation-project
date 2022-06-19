@@ -113,11 +113,7 @@ const PostsPage = () => {
       </div>
       {user && (
         <React.Fragment>
-          <Button
-            onClick={handleShowPostFormModal}
-            width={'100%'}
-            height={'40px'}
-          >
+          <Button onClick={handleShowPostFormModal} width={'100%'}>
             Nowa propozycja gry
           </Button>
           <Modal

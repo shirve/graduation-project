@@ -29,14 +29,10 @@ const PostDeleteModal = ({ post, showModal, handleShowModal }: Props) => {
     >
       <div>Na pewno chcesz usunąć ten post?</div>
       <div className={styles.modalButtons}>
-        <Button onClick={handleShowModal} width={'100%'} height={'40px'}>
+        <Button onClick={handleShowModal} width={'100%'}>
           Anuluj
         </Button>
-        <Button
-          onClick={() => handlePostDelete(post._id)}
-          width={'100%'}
-          height={'40px'}
-        >
+        <Button onClick={() => handlePostDelete(post._id)} width={'100%'}>
           Usuń
         </Button>
       </div>

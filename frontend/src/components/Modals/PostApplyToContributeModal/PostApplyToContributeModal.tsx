@@ -53,7 +53,6 @@ const PostApplyToContributeModal = ({
         <Button
           onClick={() => handlePostApplyToContribute(post._id, message)}
           width={'100%'}
-          height={'40px'}
         >
           Aplikuj
         </Button>

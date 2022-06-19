@@ -124,7 +124,6 @@ const RegisterPage = () => {
           onClick={handleSubmit(onSubmit)}
           disabled={isSubmitting}
           width={'100%'}
-          height={'40px'}
         >
           Zarejestruj
         </Button>

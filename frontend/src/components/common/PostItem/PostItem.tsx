@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../../app/store'
 import { approvePost, likePost } from '../../../features/posts/postSlice'
 import { ObjectId } from 'mongoose'
-import { FaGamepad } from 'react-icons/fa'
+import { IoGameControllerOutline, IoGameController } from 'react-icons/io5'
 import { PostViewModel } from '../../../models/Posts/PostViewModel'
 import { PostButtonTypes } from '../../../models/Posts/PostButtonTypes'
 import Button from '../Buttons/Button/Button'
@@ -124,7 +124,11 @@ const PostItem = ({
             <React.Fragment>
               {displayedButtons?.includes('like') && (
                 <Button onClick={() => handlePostLike(post._id)}>
-                  <FaGamepad style={{ fontSize: 24, marginRight: 10 }} />
+                  {user && post.likes.includes(user?._id) ? (
+                    <IoGameController />
+                  ) : (
+                    <IoGameControllerOutline />
+                  )}
                   {post.likes.length}
                 </Button>
               )}

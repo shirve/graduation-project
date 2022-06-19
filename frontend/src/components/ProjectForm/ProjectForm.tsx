@@ -85,7 +85,6 @@ const ProjectForm = ({ project }: Props) => {
         onClick={handleSubmit(onSubmit)}
         disabled={isSubmitting}
         width={'100%'}
-        height={'40px'}
         marginTop={'1rem'}
       >
         {project ? 'Edytuj projekt gry' : 'Dodaj nowy projekt gry'}

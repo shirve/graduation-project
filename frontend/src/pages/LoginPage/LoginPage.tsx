@@ -85,7 +85,6 @@ const LoginPage = () => {
           onClick={handleSubmit(onSubmit)}
           disabled={isSubmitting}
           width={'100%'}
-          height={'40px'}
         >
           Zaloguj
         </Button>
