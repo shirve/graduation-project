@@ -9,6 +9,7 @@ interface Props {
   loading?: string
   onGenreChange?: (genre: string) => void
   displayedButtons?: PostButtonTypes[]
+  postContributors?: boolean
 }
 
 const PostsWrapper = ({
@@ -16,6 +17,7 @@ const PostsWrapper = ({
   loading,
   onGenreChange,
   displayedButtons,
+  postContributors,
 }: Props) => {
   if (loading === 'pending') return <Spinner />
 
@@ -27,6 +29,7 @@ const PostsWrapper = ({
           post={post}
           onGenreChange={onGenreChange}
           displayedButtons={displayedButtons}
+          postContributors={postContributors}
         />
       ))}
     </React.Fragment>

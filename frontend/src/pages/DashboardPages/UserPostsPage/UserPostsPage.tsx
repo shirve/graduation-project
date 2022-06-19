@@ -106,6 +106,7 @@ const UserPostsPage = () => {
         posts={filteredPosts}
         loading={loading}
         displayedButtons={['edit', 'delete']}
+        postContributors
       />
     </React.Fragment>
   )

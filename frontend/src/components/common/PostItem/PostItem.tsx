@@ -13,17 +13,20 @@ import PostDeleteModal from '../../Modals/PostDeleteModal/PostDeleteModal'
 import PostEditModal from '../../Modals/PostEditModal/PostEditModal'
 import PostRejectModal from '../../Modals/PostRejectModal/PostRejectModal'
 import PostApplyToContributeModal from '../../Modals/PostApplyToContributeModal/PostApplyToContributeModal'
+import PostContributors from '../../PostContributors/PostContributors'
 
 interface Props {
   post: PostViewModel
   onGenreChange?: (genre: string) => void
   displayedButtons?: PostButtonTypes[]
+  postContributors?: boolean
 }
 
 const PostItem = ({
   post,
   onGenreChange,
   displayedButtons,
+  postContributors,
 }: Props): ReactElement => {
   const [readMore, setReadMore] = useState(false)
   const [showPostDeleteModal, setShowPostDeleteModal] = useState(false)
@@ -163,8 +166,12 @@ const PostItem = ({
             </React.Fragment>
           )}
         </div>
+        {postContributors && <PostContributors post={post} />}
         {post.status.rejected && (
-          <div className={styles.status}>{post.status.message}</div>
+          <div className={styles.status}>
+            <h4>Powód odrzucenia</h4>
+            {post.status.message}
+          </div>
         )}
       </div>
       <PostDeleteModal
