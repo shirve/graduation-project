@@ -57,7 +57,7 @@ const UserDetailsPage = () => {
       })
   }
 
-  if (userLoading || (postsLoading || projectsLoading) === 'pending') {
+  if (userLoading || (postsLoading && projectsLoading) === 'pending') {
     return <Spinner />
   }
 

@@ -32,7 +32,7 @@ const PostRejectModal = ({ post, showModal, handleShowModal }: Props) => {
       className={styles.modalContent}
     >
       <div className={styles.modalHeader}>
-        <h4>Wiadomość</h4>
+        <h4>Powód odrzucenia</h4>
         <CloseButton onClick={handleShowModal} />
       </div>
       <textarea value={message} onChange={(e) => setMessage(e.target.value)} />
@@ -41,7 +41,7 @@ const PostRejectModal = ({ post, showModal, handleShowModal }: Props) => {
           onClick={() => handlePostReject(post._id, message)}
           width={'100%'}
         >
-          Aplikuj
+          Odrzuć
         </Button>
       </div>
     </Modal>
