@@ -376,6 +376,14 @@ const rejectContributor = asyncHandler(async (req, res) => {
     return
   }
 
+  if (post.user._id.toString() === req.params.contributorId.toString()) {
+    res.status(400).json({
+      type: 'error',
+      message: 'Nie możesz modyfikować statusu autora!',
+    })
+    return
+  }
+
   if (
     !post.contributors.find(
       (contributor) =>

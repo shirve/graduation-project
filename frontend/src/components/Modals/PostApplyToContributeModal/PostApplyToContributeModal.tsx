@@ -8,6 +8,7 @@ import CloseButton from '../../common/Buttons/CloseButton/CloseButton'
 import { PostViewModel } from '../../../models/Posts/PostViewModel'
 import { ObjectId } from 'mongoose'
 import styles from './PostApplyToContributeModal.module.scss'
+import displayAlert from '../../../utils/displayAlert'
 
 interface Props {
   post: PostViewModel
@@ -32,6 +33,7 @@ const PostApplyToContributeModal = ({
       user?._id !== post.user._id
     ) {
       dispatch(applyToContribute({ postId, message }))
+      displayAlert({ type: 'info', message: 'Aplikacja została wysłana' })
       handleShowModal()
       setMessage('')
     }
@@ -45,7 +47,7 @@ const PostApplyToContributeModal = ({
       className={styles.modalContent}
     >
       <div className={styles.modalHeader}>
-        <h4>Wiadomość</h4>
+        <h4>Wiadomość aplikacyjna</h4>
         <CloseButton onClick={handleShowModal} />
       </div>
       <textarea value={message} onChange={(e) => setMessage(e.target.value)} />
@@ -54,7 +56,7 @@ const PostApplyToContributeModal = ({
           onClick={() => handlePostApplyToContribute(post._id, message)}
           width={'100%'}
         >
-          Aplikuj
+          Wyślij
         </Button>
       </div>
     </Modal>
