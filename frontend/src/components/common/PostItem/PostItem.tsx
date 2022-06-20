@@ -14,6 +14,7 @@ import PostEditModal from '../../Modals/PostEditModal/PostEditModal'
 import PostRejectModal from '../../Modals/PostRejectModal/PostRejectModal'
 import PostApplyToContributeModal from '../../Modals/PostApplyToContributeModal/PostApplyToContributeModal'
 import PostContributors from '../../PostContributors/PostContributors'
+import displayAlert from '../../../utils/displayAlert'
 
 interface Props {
   post: PostViewModel
@@ -68,10 +69,19 @@ const PostItem = ({
   }
 
   const handleShowPostApplyToContributeModal = () => {
-    if (
-      !post.contributors.find((contributor) => contributor._id === user?._id) &&
-      user?._id !== post.user._id
-    ) {
+    const isUserContributor = post.contributors.find(
+      (contributor) => contributor._id === user?._id
+    )?.status.approved
+
+    if (isUserContributor === true) {
+      displayAlert({ type: 'info', message: 'Należysz już do zespołu!' })
+    }
+
+    if (isUserContributor === false) {
+      displayAlert({ type: 'info', message: 'Wysłałeś już swoją aplikacje!' })
+    }
+
+    if (isUserContributor === undefined) {
       setShowPostApplyToContributeModal((prevState) => !prevState)
     }
   }
