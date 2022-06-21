@@ -11,6 +11,7 @@ import SelectField from '../common/Forms/SelectField/SelectField'
 import { PostFormFields } from '../../constants/Posts/PostFormFields'
 import { PostViewModel } from '../../models/Posts/PostViewModel'
 import { PostDataViewModel } from '../../models/Posts/PostDataViewModel'
+import styles from './PostForm.module.scss'
 
 interface Props {
   post?: PostViewModel
@@ -50,7 +51,7 @@ const PostForm = ({ post }: Props) => {
   }
 
   return (
-    <form>
+    <form className={styles.form}>
       {PostFormFields.map((field) => (
         <React.Fragment key={field.name}>
           {field.component === 'input' && (
@@ -59,7 +60,6 @@ const PostForm = ({ post }: Props) => {
               errors={errors}
               name={field.name}
               label={field.label}
-              marginTop={'1rem'}
             />
           )}
           {field.component === 'textarea' && (
@@ -68,7 +68,6 @@ const PostForm = ({ post }: Props) => {
               errors={errors}
               name={field.name}
               label={field.label}
-              marginTop={'0.5rem'}
             />
           )}
           {field.component === 'select' && field.options && (
@@ -79,7 +78,6 @@ const PostForm = ({ post }: Props) => {
               label={field.label}
               options={field.options}
               isMulti={field.isMulti}
-              marginTop={'0.5rem'}
             />
           )}
         </React.Fragment>

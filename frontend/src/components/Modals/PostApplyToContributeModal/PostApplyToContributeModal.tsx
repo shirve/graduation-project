@@ -33,7 +33,7 @@ const PostApplyToContributeModal = ({
       user?._id !== post.user._id
     ) {
       dispatch(applyToContribute({ postId, message }))
-      displayAlert({ type: 'info', message: 'Aplikacja została wysłana' })
+      displayAlert({ type: 'info', message: 'Twoja aplikacja została wysłana' })
       handleShowModal()
       setMessage('')
     }

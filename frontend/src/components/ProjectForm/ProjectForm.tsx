@@ -1,3 +1,4 @@
+import React from 'react'
 import { useAppDispatch } from '../../app/store'
 import {
   createProject,
@@ -12,6 +13,8 @@ import TextareaField from '../common/Forms/TextareaField/TextareaField'
 import FileUploadField from '../common/Forms/FileUploadField/FileUploadField'
 import { ProjectViewModel } from '../../models/Projects/ProjectViewModel'
 import { ProjectDataViewModel } from '../../models/Projects/ProjectDataViewModel'
+import { ProjectFormFields } from '../../constants/Projects/ProjectFormFields'
+import styles from './ProjectForm.module.scss'
 
 interface Props {
   project?: ProjectViewModel
@@ -49,37 +52,37 @@ const ProjectForm = ({ project }: Props) => {
   }
 
   return (
-    <form>
-      <InputField
-        register={register}
-        errors={errors}
-        name={'title'}
-        label={'Tytuł'}
-        marginTop={'1rem'}
-      />
-      <TextareaField
-        register={register}
-        errors={errors}
-        name={'description'}
-        label={'Opis'}
-        marginTop={'0.5rem'}
-      />
-      <InputField
-        register={register}
-        errors={errors}
-        name={'github'}
-        label={'Github'}
-        marginTop={'0.5rem'}
-      />
-      <FileUploadField
-        register={register}
-        errors={errors}
-        name={'images'}
-        label={'Zdjęcia'}
-        accept={'image/*'}
-        multiple
-        marginTop={'0.5rem'}
-      />
+    <form className={styles.form}>
+      {ProjectFormFields.map((field) => (
+        <React.Fragment key={field.name}>
+          {field.component === 'input' && (
+            <InputField
+              register={register}
+              errors={errors}
+              name={field.name}
+              label={field.label}
+            />
+          )}
+          {field.component === 'textarea' && (
+            <TextareaField
+              register={register}
+              errors={errors}
+              name={field.name}
+              label={field.label}
+            />
+          )}
+          {field.component === 'file' && (
+            <FileUploadField
+              register={register}
+              errors={errors}
+              name={field.name}
+              label={field.label}
+              accept={field.accept}
+              multiple={field.multiple}
+            />
+          )}
+        </React.Fragment>
+      ))}
       <Button
         type={'submit'}
         onClick={handleSubmit(onSubmit)}

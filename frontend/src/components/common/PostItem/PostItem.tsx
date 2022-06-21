@@ -74,11 +74,14 @@ const PostItem = ({
     )?.status.approved
 
     if (isUserContributor === true) {
-      displayAlert({ type: 'info', message: 'Należysz już do zespołu!' })
+      displayAlert({ type: 'info', message: 'Należysz już do zespołu!' }, 2000)
     }
 
     if (isUserContributor === false) {
-      displayAlert({ type: 'info', message: 'Wysłałeś już swoją aplikacje!' })
+      displayAlert(
+        { type: 'info', message: 'Wysłałeś już swoją aplikacje!' },
+        2000
+      )
     }
 
     if (isUserContributor === undefined) {

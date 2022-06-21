@@ -1,6 +1,6 @@
-import { TypeOptions } from "react-toastify";
+import { TypeOptions } from 'react-toastify'
 
 export interface AlertViewModel {
-  type: TypeOptions;
-  message: string;
+  type: TypeOptions
+  message: string
 }
