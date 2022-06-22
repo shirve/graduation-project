@@ -10,6 +10,7 @@ const {
   approveProject,
 } = require('../controllers/projectController')
 const { protect } = require('../middleware/authMiddleware')
+const { upload } = require('../middleware/uploadMiddleware')
 
 // Get user projects
 // GET /api/projects
@@ -25,7 +26,7 @@ router.get('/unapproved', protect, getUnapprovedProjects)
 
 // Create project
 // POST /api/projects
-router.post('/', protect, createProject)
+router.post('/', protect, upload.array('images', 5), createProject) // TODO validation
 
 // Update project
 // PUT /api/projects/:id

@@ -66,8 +66,10 @@ const createProject = asyncHandler(async (req, res) => {
     return
   }
 
+  const images = req.files.map((file) => file.filename)
+
   await Project.create({
-    data: req.body.data,
+    data: { ...req.body, images },
     status: {
       approved: false,
     },
