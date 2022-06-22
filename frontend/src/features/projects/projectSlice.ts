@@ -76,11 +76,11 @@ export const getUnapprovedProjects = createAsyncThunk<
 // POST /api/projects
 export const createProject = createAsyncThunk<
   AlertViewModel,
-  ProjectDataViewModel,
+  FormData,
   { rejectValue: AlertViewModel }
 >('projects/create', async (projectData, thunkAPI) => {
   try {
-    const { data } = await projectsClient.post('/', { data: projectData })
+    const { data } = await projectsClient.post('/', projectData)
     return data
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)
@@ -95,6 +95,7 @@ export const updateProject = createAsyncThunk<
   { rejectValue: AlertViewModel }
 >('projects/update', async (projectData, thunkAPI) => {
   try {
+    // TODO formData
     const { data } = await projectsClient.put(`/${projectData.projectId}`, {
       data: projectData.data,
     })

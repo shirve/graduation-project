@@ -47,8 +47,16 @@ const ProjectForm = ({ project }: Props) => {
   })
 
   const onSubmit = (data: ProjectDataViewModel) => {
-    if (project) dispatch(updateProject({ projectId: project._id, data }))
-    if (!project) dispatch(createProject(data))
+    const formData = new FormData()
+    formData.append('title', data.title)
+    formData.append('description', data.description)
+    formData.append('github', data.github)
+    Array.from(data.images).forEach((image) => {
+      formData.append('images', image)
+    })
+
+    if (project) dispatch(updateProject({ projectId: project._id, data })) // TODO formData
+    if (!project) dispatch(createProject(formData))
   }
 
   return (
