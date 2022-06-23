@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const Project = require('../models/projectModel')
+const fs = require('fs')
 
 // Get user projects
 // GET /api/projects/
@@ -106,6 +107,15 @@ const deleteProject = asyncHandler(async (req, res) => {
     return
   }
 
+  await project.data.images.forEach((image) => {
+    fs.unlink(`backend/uploads/${image}`, (err) => {
+      if (err) {
+        res.status(400).json({ type: 'error', message: 'Coś poszło nie tak' })
+        return
+      }
+    })
+  })
+
   await project.remove()
 
   res.status(200).json(req.params.id)
@@ -131,9 +141,19 @@ const updateProject = asyncHandler(async (req, res) => {
     return
   }
 
-  const images = req.files.map((file) => file.filename)
+  let images = project.data.images
 
-  // TODO delete old images from files
+  if (req.files.length > 0) {
+    await project.data.images.forEach((image) => {
+      fs.unlink(`backend/uploads/${image}`, (err) => {
+        if (err) {
+          res.status(400).json({ type: 'error', message: 'Coś poszło nie tak' })
+          return
+        }
+      })
+    })
+    images = req.files.map((file) => file.filename)
+  }
 
   project.data = { ...req.body, images }
   project.status = {
