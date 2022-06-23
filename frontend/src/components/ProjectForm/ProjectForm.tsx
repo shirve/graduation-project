@@ -12,8 +12,8 @@ import InputField from '../common/Forms/InputField/InputField'
 import TextareaField from '../common/Forms/TextareaField/TextareaField'
 import FileUploadField from '../common/Forms/FileUploadField/FileUploadField'
 import { ProjectViewModel } from '../../models/Projects/ProjectViewModel'
-import { ProjectDataViewModel } from '../../models/Projects/ProjectDataViewModel'
 import { ProjectFormFields } from '../../constants/Projects/ProjectFormFields'
+import { ProjectFormDataViewModel } from '../../models/Projects/ProjectFormDataViewModel'
 import styles from './ProjectForm.module.scss'
 
 interface Props {
@@ -39,14 +39,16 @@ const ProjectForm = ({ project }: Props) => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<ProjectDataViewModel>({
+  } = useForm<ProjectFormDataViewModel>({
     resolver: yupResolver(projectSchema),
     defaultValues: {
-      ...project?.data,
+      title: project?.data.title,
+      description: project?.data.description,
+      github: project?.data.github,
     },
   })
 
-  const onSubmit = (data: ProjectDataViewModel) => {
+  const onSubmit = (data: ProjectFormDataViewModel) => {
     const formData = new FormData()
     formData.append('title', data.title)
     formData.append('description', data.description)
@@ -55,7 +57,8 @@ const ProjectForm = ({ project }: Props) => {
       formData.append('images', image)
     })
 
-    if (project) dispatch(updateProject({ projectId: project._id, data })) // TODO formData
+    if (project)
+      dispatch(updateProject({ projectId: project._id, data: formData }))
     if (!project) dispatch(createProject(formData))
   }
 

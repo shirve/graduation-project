@@ -2,7 +2,6 @@ import { projectsClient } from '../../api/AxiosClients'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { ObjectId } from 'mongoose'
 import { ProjectViewModel } from '../../models/Projects/ProjectViewModel'
-import { ProjectDataViewModel } from '../../models/Projects/ProjectDataViewModel'
 import { PaginatedProjectsViewModel } from '../../models/Projects/PaginatedProjectsViewModel'
 import { PaginationViewModel } from '../../models/Pagination/PaginationViewModel'
 import { AlertViewModel } from '../../models/Alert/AlertViewModel'
@@ -91,14 +90,14 @@ export const createProject = createAsyncThunk<
 // PUT /api/projects/:id
 export const updateProject = createAsyncThunk<
   ProjectViewModel,
-  { projectId: ObjectId; data: ProjectDataViewModel },
+  { projectId: ObjectId; data: FormData },
   { rejectValue: AlertViewModel }
 >('projects/update', async (projectData, thunkAPI) => {
   try {
-    // TODO formData
-    const { data } = await projectsClient.put(`/${projectData.projectId}`, {
-      data: projectData.data,
-    })
+    const { data } = await projectsClient.put(
+      `/${projectData.projectId}`,
+      projectData.data
+    )
     return data
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data)

@@ -6,7 +6,7 @@ export const ProjectFormFields = [
     name: 'images',
     component: 'file',
     label: 'Zdjęcia',
-    accept: 'image/.png,.jpg,.jpeg',
+    accept: 'image/png, image/jpg, image/jpeg',
     multiple: true,
   },
 ]
