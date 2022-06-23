@@ -30,7 +30,7 @@ router.post('/', protect, upload.array('images', 5), createProject) // TODO vali
 
 // Update project
 // PUT /api/projects/:id
-router.put('/:id', protect, updateProject)
+router.put('/:id', protect, upload.array('images', 5), updateProject) // TODO validation
 
 // Delete project
 // DELETE /api/projects/:id

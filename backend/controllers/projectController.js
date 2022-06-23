@@ -131,7 +131,11 @@ const updateProject = asyncHandler(async (req, res) => {
     return
   }
 
-  project.data = req.body.data
+  const images = req.files.map((file) => file.filename)
+
+  // TODO delete old images from files
+
+  project.data = { ...req.body, images }
   project.status = {
     approved: false,
   }
