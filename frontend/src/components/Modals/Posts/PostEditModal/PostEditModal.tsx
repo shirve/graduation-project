@@ -1,7 +1,7 @@
 import Modal from 'react-modal'
-import PostForm from '../../PostForm/PostForm'
-import CloseButton from '../../common/Buttons/CloseButton/CloseButton'
-import { PostViewModel } from '../../../models/Posts/PostViewModel'
+import PostForm from '../../../PostForm/PostForm'
+import CloseButton from '../../../common/Buttons/CloseButton/CloseButton'
+import { PostViewModel } from '../../../../models/Posts/PostViewModel'
 import styles from './PostEditModal.module.scss'
 
 interface Props {

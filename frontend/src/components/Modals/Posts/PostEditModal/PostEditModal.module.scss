@@ -1,4 +1,4 @@
-@import '../../../styles/CommonStyles.scss';
+@import '../../../../styles/CommonStyles.scss';
 
 .modalOverlay {
   z-index: 9999;
@@ -21,23 +21,13 @@
   .modalContent {
     position: absolute;
     inset: 2rem;
-    width: fit-content;
-    height: fit-content;
+    width: 800px;
     margin: auto;
     padding: 1rem;
     background: $white;
     border: 1px $gray solid;
     border-radius: 0.25rem;
     overflow: auto;
-    textarea {
-      padding: 0.375rem 0.75rem;
-      color: $black-muted;
-      background-color: $white;
-      border: 1px solid $gray;
-      border-radius: 0.25rem;
-      width: 800px;
-      height: 100px;
-    }
   }
   .modalButtons {
     margin-top: 1rem;
@@ -51,9 +41,6 @@
   .modalOverlay {
     .modalContent {
       width: 80%;
-      textarea {
-        width: 100%;
-      }
     }
   }
 }

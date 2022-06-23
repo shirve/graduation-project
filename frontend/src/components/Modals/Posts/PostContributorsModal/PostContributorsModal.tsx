@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from '../../../app/store'
-import { applyToContribute } from '../../../features/posts/postSlice'
+import { RootState, useAppDispatch } from '../../../../app/store'
+import { applyToContribute } from '../../../../features/posts/postSlice'
 import Modal from 'react-modal'
-import Button from '../../common/Buttons/Button/Button'
-import CloseButton from '../../common/Buttons/CloseButton/CloseButton'
-import { PostViewModel } from '../../../models/Posts/PostViewModel'
+import Button from '../../../common/Buttons/Button/Button'
+import CloseButton from '../../../common/Buttons/CloseButton/CloseButton'
+import { PostViewModel } from '../../../../models/Posts/PostViewModel'
 import { ObjectId } from 'mongoose'
-import styles from './PostApplyToContributeModal.module.scss'
-import displayAlert from '../../../utils/displayAlert'
+import styles from './PostContributorsModal.module.scss'
+import displayAlert from '../../../../utils/displayAlert'
 
 interface Props {
   post: PostViewModel
@@ -16,11 +16,7 @@ interface Props {
   handleShowModal: () => void
 }
 
-const PostApplyToContributeModal = ({
-  post,
-  showModal,
-  handleShowModal,
-}: Props) => {
+const PostContributorsModal = ({ post, showModal, handleShowModal }: Props) => {
   const [message, setMessage] = useState('')
 
   const { user } = useSelector((state: RootState) => state.user)
@@ -63,4 +59,4 @@ const PostApplyToContributeModal = ({
   )
 }
 
-export default PostApplyToContributeModal
+export default PostContributorsModal

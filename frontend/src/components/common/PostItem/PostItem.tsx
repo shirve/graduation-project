@@ -9,10 +9,10 @@ import { PostViewModel } from '../../../models/Posts/PostViewModel'
 import { PostButtonTypes } from '../../../models/Posts/PostButtonTypes'
 import Button from '../Buttons/Button/Button'
 import styles from './PostItem.module.scss'
-import PostDeleteModal from '../../Modals/PostDeleteModal/PostDeleteModal'
-import PostEditModal from '../../Modals/PostEditModal/PostEditModal'
-import PostRejectModal from '../../Modals/PostRejectModal/PostRejectModal'
-import PostApplyToContributeModal from '../../Modals/PostApplyToContributeModal/PostApplyToContributeModal'
+import PostDeleteModal from '../../Modals/Posts/PostDeleteModal/PostDeleteModal'
+import PostEditModal from '../../Modals/Posts/PostEditModal/PostEditModal'
+import PostRejectModal from '../../Modals/Posts/PostRejectModal/PostRejectModal'
+import PostContributorsModal from '../../Modals/Posts/PostContributorsModal/PostContributorsModal'
 import PostContributors from '../../PostContributors/PostContributors'
 import displayAlert from '../../../utils/displayAlert'
 
@@ -33,7 +33,7 @@ const PostItem = ({
   const [showPostDeleteModal, setShowPostDeleteModal] = useState(false)
   const [showPostEditModal, setShowPostEditModal] = useState(false)
   const [showPostRejectModal, setShowPostRejectModal] = useState(false)
-  const [showPostApplyToContributeModal, setShowPostApplyToContributeModal] =
+  const [showPostContributorsModal, setShowPostContributorsModal] =
     useState(false)
 
   const { user } = useSelector((state: RootState) => state.user)
@@ -68,7 +68,7 @@ const PostItem = ({
     setShowPostEditModal((prevState) => !prevState)
   }
 
-  const handleShowPostApplyToContributeModal = () => {
+  const handleShowPostContributorsModal = () => {
     const isUserContributor = post.contributors.find(
       (contributor) => contributor._id === user?._id
     )?.status.approved
@@ -85,7 +85,7 @@ const PostItem = ({
     }
 
     if (isUserContributor === undefined) {
-      setShowPostApplyToContributeModal((prevState) => !prevState)
+      setShowPostContributorsModal((prevState) => !prevState)
     }
   }
 
@@ -149,7 +149,7 @@ const PostItem = ({
                 </Button>
               )}
               {displayedButtons?.includes('contribute') && user && (
-                <Button onClick={handleShowPostApplyToContributeModal}>
+                <Button onClick={handleShowPostContributorsModal}>
                   Aplikuj
                 </Button>
               )}
@@ -202,10 +202,10 @@ const PostItem = ({
         showModal={showPostRejectModal}
         handleShowModal={handleShowPostRejectModal}
       />
-      <PostApplyToContributeModal
+      <PostContributorsModal
         post={post}
-        showModal={showPostApplyToContributeModal}
-        handleShowModal={handleShowPostApplyToContributeModal}
+        showModal={showPostContributorsModal}
+        handleShowModal={handleShowPostContributorsModal}
       />
     </React.Fragment>
   )
