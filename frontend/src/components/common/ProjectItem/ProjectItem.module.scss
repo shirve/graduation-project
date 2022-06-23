@@ -1,0 +1,38 @@
+@import '../../../styles/CommonStyles.scss';
+
+.wrapper {
+  margin-top: 1rem;
+  color: $black-muted;
+  background-color: $white;
+  border: 1px $gray solid;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  white-space: pre-line;
+  .info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    a {
+      color: $black-muted;
+    }
+  }
+  .content {
+    h3 {
+      margin-top: 0.5rem;
+      font-weight: 700;
+    }
+    h4 {
+      margin-bottom: 0;
+    }
+    p {
+      margin-bottom: 0.5rem;
+    }
+  }
+  .manage {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+}

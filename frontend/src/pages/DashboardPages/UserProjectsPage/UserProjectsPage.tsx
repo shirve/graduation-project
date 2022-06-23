@@ -96,7 +96,11 @@ const UserProjectsPage = () => {
           )}
         </div>
       )}
-      <ProjectsWrapper projects={filteredProjects} loading={loading} />
+      <ProjectsWrapper
+        projects={filteredProjects}
+        loading={loading}
+        displayedButtons={['edit', 'delete']}
+      />
     </React.Fragment>
   )
 }

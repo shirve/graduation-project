@@ -1,13 +1,13 @@
 import React from 'react'
 import { ProjectViewModel } from '../../models/Projects/ProjectViewModel'
-import { PostButtonTypes } from '../../models/Posts/PostButtonTypes'
+import { ProjectButtonTypes } from '../../models/Projects/ProjectButtonTypes'
 import ProjectItem from '../common/ProjectItem/ProjectItem'
 import Spinner from '../common/Spinner/Spinner'
 
 interface Props {
   projects: ProjectViewModel[]
   loading?: string
-  displayedButtons?: PostButtonTypes[]
+  displayedButtons?: ProjectButtonTypes[]
 }
 
 const ProjectsWrapper = ({ projects, loading, displayedButtons }: Props) => {

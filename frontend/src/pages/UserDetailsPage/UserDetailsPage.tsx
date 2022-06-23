@@ -118,7 +118,7 @@ const UserDetailsPage = () => {
             <ProjectsWrapper
               projects={projects}
               loading={projectsLoading}
-              displayedButtons={['like', 'delete']}
+              displayedButtons={['delete']}
             />
           </div>
         </React.Fragment>

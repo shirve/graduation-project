@@ -36,7 +36,7 @@ const UnapprovedProjectsPage = () => {
       <ProjectsWrapper
         projects={projects}
         loading={loading}
-        displayedButtons={['reject', 'approve']}
+        displayedButtons={['delete', 'approve']}
       />
     </React.Fragment>
   )
