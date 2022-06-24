@@ -50,7 +50,9 @@ const ProjectsPage = () => {
   useEffect(() => {
     if (alert) {
       displayAlert(alert)
-      setShowProjectFormModal(false)
+      if (alert.type === 'info') {
+        setShowProjectFormModal(false)
+      }
     }
   }, [alert])
 

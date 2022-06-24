@@ -8,6 +8,7 @@
   justify-content: center;
   align-items: center;
   border-bottom: 1px $gray solid;
+  overflow: auto;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -39,11 +40,4 @@
   justify-content: center;
   align-items: center;
   padding: 1rem;
-}
-
-@media (max-width: 675px) {
-  .navigation {
-    justify-content: flex-start;
-    overflow: scroll;
-  }
 }

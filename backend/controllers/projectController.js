@@ -108,12 +108,7 @@ const deleteProject = asyncHandler(async (req, res) => {
   }
 
   await project.data.images.forEach((image) => {
-    fs.unlink(`backend/uploads/${image}`, (err) => {
-      if (err) {
-        res.status(400).json({ type: 'error', message: 'Coś poszło nie tak' })
-        return
-      }
-    })
+    fs.unlink(`backend/uploads/${image}`, () => {})
   })
 
   await project.remove()

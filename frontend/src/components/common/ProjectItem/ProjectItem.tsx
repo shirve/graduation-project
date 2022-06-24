@@ -50,7 +50,9 @@ const ProjectItem = ({ project, displayedButtons }: Props) => {
           <h4>Opis</h4>
           <p>{project.data.description}</p>
           <h4>Repozytorium</h4>
-          <Link to={project.data.github}>{project.data.github}</Link>
+          <a href={project.data.github} target={'_blank'}>
+            {project.data.github}
+          </a>
         </div>
         <div className={styles.manage}>
           {displayedButtons?.includes('edit') &&
