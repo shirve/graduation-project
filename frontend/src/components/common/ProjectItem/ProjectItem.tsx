@@ -10,6 +10,7 @@ import Button from '../Buttons/Button/Button'
 import styles from './ProjectItem.module.scss'
 import ProjectDeleteModal from '../../Modals/Projects/ProjectDeleteModal/ProjectDeleteModal'
 import ProjectEditModal from '../../Modals/Projects/ProjectEditModal/ProjectEditModal'
+import ImageSwiper from '../ImageSwiper/ImageSwiper'
 
 interface Props {
   project: ProjectViewModel
@@ -46,7 +47,7 @@ const ProjectItem = ({ project, displayedButtons }: Props) => {
         </div>
         <div className={styles.content}>
           <h3>{project.data.title}</h3>
-          {/* TODO image slider */}
+          <ImageSwiper images={project.data.images} />
           <h4>Opis</h4>
           <p>{project.data.description}</p>
           <h4>Repozytorium</h4>

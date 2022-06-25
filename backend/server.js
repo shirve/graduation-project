@@ -1,5 +1,6 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
+const path = require('path')
 const cors = require('cors')
 const colors = require('colors')
 const dotenv = require('dotenv').config()
@@ -15,6 +16,8 @@ app.use(cors())
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+
+app.use('/uploads', express.static(path.join(__dirname, './uploads')))
 
 app.use('/api/users', require('./routes/userRoutes'))
 app.use('/api/posts', require('./routes/postRoutes'))
