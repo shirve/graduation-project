@@ -22,7 +22,7 @@ const upload = multer({
   storage,
   fileFilter,
   limits: {
-    fileSize: 3145728, // 3 MB
+    fileSize: 2097152, // 2 MB
     files: 5,
   },
 }).array('images')

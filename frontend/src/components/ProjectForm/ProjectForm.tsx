@@ -32,7 +32,6 @@ const ProjectForm = ({ project }: Props) => {
         'Link musi być w formacie https://github.com/[nazwa-użytkownika]/[repozytorium-projektu]'
       )
       .required('To pole jest wymagane'),
-    // TODO - image files validation
   })
 
   const {
@@ -83,14 +82,17 @@ const ProjectForm = ({ project }: Props) => {
             />
           )}
           {field.component === 'file' && (
-            <FileUploadField
-              register={register}
-              errors={errors}
-              name={field.name}
-              label={field.label}
-              accept={field.accept}
-              multiple={field.multiple}
-            />
+            <>
+              <FileUploadField
+                register={register}
+                errors={errors}
+                name={field.name}
+                label={field.label}
+                accept={field.accept}
+                multiple={field.multiple}
+              />
+              <small>*Maksymalnie 5 zdjęć o rozmiarze 2 MB</small>
+            </>
           )}
         </React.Fragment>
       ))}

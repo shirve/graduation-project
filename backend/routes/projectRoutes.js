@@ -11,6 +11,8 @@ const {
 } = require('../controllers/projectController')
 const { protect } = require('../middleware/authMiddleware')
 const { uploadImages } = require('../middleware/uploadImagesMiddleware')
+const { body } = require('express-validator')
+const { validate } = require('../middleware/validateMiddleware')
 
 // Get user projects
 // GET /api/projects
@@ -26,11 +28,37 @@ router.get('/unapproved', protect, getUnapprovedProjects)
 
 // Create project
 // POST /api/projects
-router.post('/', protect, uploadImages, createProject) // TODO validation
+router.post(
+  '/',
+  protect,
+  uploadImages,
+  validate([
+    body('title').notEmpty().isString(),
+    body('description').notEmpty().isString(),
+    body('github')
+      .notEmpty()
+      .isString()
+      .matches(/^https:\/\/github.com\/.+\/.+/),
+  ]),
+  createProject
+)
 
 // Update project
 // PUT /api/projects/:id
-router.put('/:id', protect, uploadImages, updateProject) // TODO validation
+router.put(
+  '/:id',
+  protect,
+  uploadImages,
+  validate([
+    body('title').notEmpty().isString(),
+    body('description').notEmpty().isString(),
+    body('github')
+      .notEmpty()
+      .isString()
+      .matches(/^https:\/\/github.com\/.+\/.+/),
+  ]),
+  updateProject
+)
 
 // Delete project
 // DELETE /api/projects/:id

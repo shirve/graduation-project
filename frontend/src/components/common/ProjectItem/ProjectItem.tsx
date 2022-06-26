@@ -48,7 +48,6 @@ const ProjectItem = ({ project, displayedButtons }: Props) => {
         <div className={styles.content}>
           <h3>{project.data.title}</h3>
           <ImageSwiper images={project.data.images} />
-          <h4>Opis</h4>
           <p>{project.data.description}</p>
           <h4>Repozytorium</h4>
           <a href={project.data.github} target={'_blank'}>
