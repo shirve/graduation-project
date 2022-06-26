@@ -194,6 +194,40 @@ const approveProject = asyncHandler(async (req, res) => {
   res.status(200).json(req.params.id)
 })
 
+// Like project
+// PATCH /api/projects/:id/like
+const likeProject = asyncHandler(async (req, res) => {
+  const project = await Project.findById(req.params.id)
+
+  if (!project) {
+    res.status(400).json({ type: 'error', message: 'Projekt nie istnieje!' })
+    return
+  }
+
+  if (!req.user) {
+    res
+      .status(401)
+      .json({ type: 'error', message: 'Użytkownik nie zalogowany!' })
+    return
+  }
+
+  if (project.likes.includes(req.user._id)) {
+    project.likes.remove(req.user._id)
+  } else {
+    project.likes.push(req.user._id)
+  }
+
+  const updatedProject = await Project.findByIdAndUpdate(
+    req.params.id,
+    project,
+    {
+      new: true,
+    }
+  )
+
+  res.status(200).json(updatedProject)
+})
+
 module.exports = {
   getUserProjects,
   getApprovedProjects,
@@ -202,4 +236,5 @@ module.exports = {
   deleteProject,
   updateProject,
   approveProject,
+  likeProject,
 }

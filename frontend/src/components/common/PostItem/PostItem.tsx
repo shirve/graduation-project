@@ -140,7 +140,7 @@ const PostItem = ({
             <React.Fragment>
               {displayedButtons?.includes('like') && (
                 <Button onClick={() => handlePostLike(post._id)}>
-                  {user && post.likes.includes(user?._id) ? (
+                  {user && post.likes.includes(user._id) ? (
                     <IoGameController />
                   ) : (
                     <IoGameControllerOutline />

@@ -8,6 +8,7 @@ const {
   deleteProject,
   updateProject,
   approveProject,
+  likeProject,
 } = require('../controllers/projectController')
 const { protect } = require('../middleware/authMiddleware')
 const { uploadImages } = require('../middleware/uploadImagesMiddleware')
@@ -67,5 +68,9 @@ router.delete('/:id', protect, deleteProject)
 // Approve project
 // PATCH /api/projects/:id/approve
 router.patch('/:id/approve', protect, approveProject)
+
+// Like project
+// PATCH /api/projects/:id/like
+router.patch('/:id/like', protect, likeProject)
 
 module.exports = router

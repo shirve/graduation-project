@@ -1,1 +1,1 @@
-export type ProjectButtonTypes = 'delete' | 'edit' | 'approve'
+export type ProjectButtonTypes = 'like' | 'delete' | 'edit' | 'approve'

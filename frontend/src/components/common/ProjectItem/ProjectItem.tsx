@@ -2,10 +2,14 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState, useAppDispatch } from '../../../app/store'
-import { approveProject } from '../../../features/projects/projectSlice'
+import {
+  approveProject,
+  likeProject,
+} from '../../../features/projects/projectSlice'
 import { ProjectViewModel } from '../../../models/Projects/ProjectViewModel'
 import { ProjectButtonTypes } from '../../../models/Projects/ProjectButtonTypes'
 import { ObjectId } from 'mongoose'
+import { IoGameControllerOutline, IoGameController } from 'react-icons/io5'
 import Button from '../Buttons/Button/Button'
 import styles from './ProjectItem.module.scss'
 import ProjectDeleteModal from '../../Modals/Projects/ProjectDeleteModal/ProjectDeleteModal'
@@ -26,6 +30,12 @@ const ProjectItem = ({ project, displayedButtons }: Props) => {
 
   const handleProjectApprove = (projectId: ObjectId) => {
     dispatch(approveProject(projectId))
+  }
+
+  const handleProjectLike = (projectId: ObjectId) => {
+    if (user) {
+      dispatch(likeProject(projectId))
+    }
   }
 
   const handleShowProjectEditModal = () => {
@@ -55,6 +65,16 @@ const ProjectItem = ({ project, displayedButtons }: Props) => {
           </a>
         </div>
         <div className={styles.manage}>
+          {displayedButtons?.includes('like') && (
+            <Button onClick={() => handleProjectLike(project._id)}>
+              {user && project.likes.includes(user._id) ? (
+                <IoGameController />
+              ) : (
+                <IoGameControllerOutline />
+              )}
+              {project.likes.length}
+            </Button>
+          )}
           {displayedButtons?.includes('edit') &&
             user?._id === project.user._id && (
               <Button onClick={handleShowProjectEditModal}>Edytuj</Button>

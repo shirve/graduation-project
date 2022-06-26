@@ -41,6 +41,12 @@ const projectSchema = mongoose.Schema(
         default: false,
       },
     },
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+      },
+    ],
   },
   {
     timestamps: true,

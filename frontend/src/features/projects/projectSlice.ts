@@ -134,6 +134,21 @@ export const approveProject = createAsyncThunk<
   }
 })
 
+// Like project
+// PATCH /api/projects/:id/like
+export const likeProject = createAsyncThunk<
+  ProjectViewModel,
+  ObjectId,
+  { rejectValue: AlertViewModel }
+>('projects/like', async (projectId, thunkAPI) => {
+  try {
+    const { data } = await projectsClient.patch(`/${projectId}/like`)
+    return data
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data)
+  }
+})
+
 export const projectSlice = createSlice({
   name: 'projects',
   initialState,
@@ -239,6 +254,11 @@ export const projectSlice = createSlice({
       .addCase(approveProject.rejected, (state, action) => {
         state.loading = 'failed'
         state.alert = action.payload
+      })
+      .addCase(likeProject.fulfilled, (state, action) => {
+        state.projects = state.projects.map((project) =>
+          action.payload._id === project._id ? action.payload : project
+        )
       })
   },
 })

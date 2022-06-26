@@ -101,7 +101,7 @@ const ProjectsPage = () => {
       <ProjectsWrapper
         projects={projects}
         loading={loading}
-        displayedButtons={['delete']}
+        displayedButtons={['like', 'delete']}
       />
       <Pagination
         page={page}

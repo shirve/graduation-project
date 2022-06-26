@@ -11,6 +11,7 @@ export interface ProjectViewModel {
   status: {
     approved: boolean
   }
+  likes: ObjectId[]
   createdAt: Date
   updatedAt: Date
 }
