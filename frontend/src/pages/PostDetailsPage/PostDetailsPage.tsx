@@ -1,17 +1,19 @@
-import { useState, useEffect, useContext } from 'react'
+import { useEffect, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { postsClient } from '../../api/AxiosClients'
+import { useSelector } from 'react-redux'
+import { RootState, useAppDispatch } from '../../app/store'
+import { getPostDetails } from '../../features/posts/postSlice'
 import HeaderContext from '../../context/header/HeaderContext'
 import PostItem from '../../components/common/PostItem/PostItem'
 import Spinner from '../../components/common/Spinner/Spinner'
-import { PostViewModel } from '../../models/Posts/PostViewModel'
 
 const PostDetailsPage = () => {
-  const [post, setPost] = useState<PostViewModel | null>(null)
-
   const { postId } = useParams()
   const { setHeader } = useContext(HeaderContext)
 
+  const { posts, loading } = useSelector((state: RootState) => state.posts)
+
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -23,23 +25,19 @@ const PostDetailsPage = () => {
 
   useEffect(() => {
     if (postId !== undefined) {
-      getPost(postId)
+      dispatch(getPostDetails(postId))
     }
   }, [postId])
 
-  const getPost = async (postId: string) => {
-    await postsClient
-      .get(`/${postId}`)
-      .then((res) => {
-        setPost(res.data)
-      })
-      .catch(() => {
-        navigate('/not-found')
-      })
-  }
+  useEffect(() => {
+    if (loading === 'failed') navigate('/not-found')
+  }, [loading])
 
-  return post ? (
-    <PostItem post={post} displayedButtons={['like', 'contribute', 'delete']} />
+  return posts.length > 0 ? (
+    <PostItem
+      post={posts[0]}
+      displayedButtons={['like', 'contribute', 'delete']}
+    />
   ) : (
     <Spinner />
   )

@@ -71,6 +71,23 @@ export const getUnapprovedProjects = createAsyncThunk<
   }
 })
 
+// Get project details
+// GET /api/projects/:id
+export const getProjectDetails = createAsyncThunk<
+  ProjectViewModel[],
+  string,
+  { rejectValue: AlertViewModel }
+>('projects/details', async (projectId, thunkAPI) => {
+  try {
+    const { data } = await projectsClient.get(`/${projectId}`)
+    const arr = []
+    arr.push(data)
+    return arr
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data)
+  }
+})
+
 // Create project
 // POST /api/projects
 export const createProject = createAsyncThunk<
@@ -200,6 +217,16 @@ export const projectSlice = createSlice({
       .addCase(getUnapprovedProjects.rejected, (state, action) => {
         state.loading = 'failed'
         state.alert = action.payload
+      })
+      .addCase(getProjectDetails.pending, (state) => {
+        state.loading = 'pending'
+      })
+      .addCase(getProjectDetails.fulfilled, (state, action) => {
+        state.loading = 'fulfilled'
+        state.projects = action.payload
+      })
+      .addCase(getProjectDetails.rejected, (state) => {
+        state.loading = 'failed'
       })
       .addCase(createProject.pending, (state) => {
         state.alert = initialState.alert

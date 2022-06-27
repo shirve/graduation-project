@@ -72,6 +72,23 @@ export const getUnapprovedPosts = createAsyncThunk<
   }
 })
 
+// Get post details
+// GET /api/posts/:id
+export const getPostDetails = createAsyncThunk<
+  PostViewModel[],
+  string,
+  { rejectValue: AlertViewModel }
+>('posts/details', async (postId, thunkAPI) => {
+  try {
+    const { data } = await postsClient.get(`/${postId}`)
+    const arr = []
+    arr.push(data)
+    return arr
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data)
+  }
+})
+
 // Create post
 // POST /api/posts
 export const createPost = createAsyncThunk<
@@ -272,6 +289,16 @@ export const postSlice = createSlice({
       .addCase(getUnapprovedPosts.rejected, (state, action) => {
         state.loading = 'failed'
         state.alert = action.payload
+      })
+      .addCase(getPostDetails.pending, (state) => {
+        state.loading = 'pending'
+      })
+      .addCase(getPostDetails.fulfilled, (state, action) => {
+        state.loading = 'fulfilled'
+        state.posts = action.payload
+      })
+      .addCase(getPostDetails.rejected, (state) => {
+        state.loading = 'failed'
       })
       .addCase(createPost.pending, (state) => {
         state.alert = initialState.alert

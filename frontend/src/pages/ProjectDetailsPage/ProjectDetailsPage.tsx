@@ -1,17 +1,21 @@
-import { useState, useEffect, useContext } from 'react'
+import { useEffect, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { projectsClient } from '../../api/AxiosClients'
+import { useSelector } from 'react-redux'
+import { RootState, useAppDispatch } from '../../app/store'
+import { getProjectDetails } from '../../features/projects/projectSlice'
 import HeaderContext from '../../context/header/HeaderContext'
 import ProjectItem from '../../components/common/ProjectItem/ProjectItem'
 import Spinner from '../../components/common/Spinner/Spinner'
-import { ProjectViewModel } from '../../models/Projects/ProjectViewModel'
 
 const ProjectDetailsPage = () => {
-  const [project, setProject] = useState<ProjectViewModel | null>(null)
-
   const { projectId } = useParams()
   const { setHeader } = useContext(HeaderContext)
 
+  const { projects, loading } = useSelector(
+    (state: RootState) => state.projects
+  )
+
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -23,23 +27,16 @@ const ProjectDetailsPage = () => {
 
   useEffect(() => {
     if (projectId !== undefined) {
-      getProject(projectId)
+      dispatch(getProjectDetails(projectId))
     }
   }, [projectId])
 
-  const getProject = async (projectId: string) => {
-    await projectsClient
-      .get(`/${projectId}`)
-      .then((res) => {
-        setProject(res.data)
-      })
-      .catch(() => {
-        navigate('/not-found')
-      })
-  }
+  useEffect(() => {
+    if (loading === 'failed') navigate('/not-found')
+  }, [loading])
 
-  return project ? (
-    <ProjectItem project={project} displayedButtons={['like', 'delete']} />
+  return projects.length > 0 ? (
+    <ProjectItem project={projects[0]} displayedButtons={['like', 'delete']} />
   ) : (
     <Spinner />
   )
