@@ -4,6 +4,7 @@ const {
   getUserProjects,
   getApprovedProjects,
   getUnapprovedProjects,
+  getProjectDetails,
   createProject,
   deleteProject,
   updateProject,
@@ -26,6 +27,10 @@ router.get('/approved', getApprovedProjects)
 // Get unapproved projects
 // GET /api/projects/unapproved
 router.get('/unapproved', protect, getUnapprovedProjects)
+
+// Get project details
+// GET /api/projects/:id
+router.get('/:id', getProjectDetails)
 
 // Create project
 // POST /api/projects

@@ -57,6 +57,26 @@ const getUnapprovedProjects = asyncHandler(async (req, res) => {
   res.status(200).json(projects)
 })
 
+// Get project details
+// GET /api/projects/:id
+const getProjectDetails = asyncHandler(async (req, res) => {
+  let project
+
+  try {
+    project = await Project.findById(req.params.id)
+  } catch {
+    res.status(404).end()
+    return
+  }
+
+  if (project.status.approved === false) {
+    res.status(404).end()
+    return
+  }
+
+  res.status(200).json(project)
+})
+
 // Create project
 // POST /api/projects
 const createProject = asyncHandler(async (req, res) => {
@@ -232,6 +252,7 @@ module.exports = {
   getUserProjects,
   getApprovedProjects,
   getUnapprovedProjects,
+  getProjectDetails,
   createProject,
   deleteProject,
   updateProject,

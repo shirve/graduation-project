@@ -56,7 +56,16 @@ const ProjectItem = ({ project, displayedButtons }: Props) => {
           <div>{new Date(project.createdAt).toLocaleString('pl-PL')}</div>
         </div>
         <div className={styles.content}>
-          <h3>{project.data.title}</h3>
+          {project.status.approved ? (
+            <Link
+              to={`/projects/${project._id}`}
+              className={styles.projectDetailsLink}
+            >
+              <h3>{project.data.title}</h3>
+            </Link>
+          ) : (
+            <h3>{project.data.title}</h3>
+          )}
           <ImageSwiper images={project.data.images} />
           <p>{project.data.description}</p>
           <h4>Repozytorium</h4>

@@ -23,8 +23,9 @@ import UserPostsPage from './pages/DashboardPages/UserPostsPage/UserPostsPage'
 import UserProjectsPage from './pages/DashboardPages/UserProjectsPage/UserProjectsPage'
 import UnapprovedPostsPage from './pages/DashboardPages/UnapprovedPostsPage/UnapprovedPostsPage'
 import UnapprovedProjectsPage from './pages/DashboardPages/UnapprovedProjectsPage/UnapprovedProjectsPage'
-import { HeaderProvider } from './context/header/HeaderContext'
 import PostDetailsPage from './pages/PostDetailsPage/PostDetailsPage'
+import ProjectDetailsPage from './pages/ProjectDetailsPage/ProjectDetailsPage'
+import { HeaderProvider } from './context/header/HeaderContext'
 
 const App = () => {
   return (
@@ -58,6 +59,10 @@ const App = () => {
               <Route path='posts' element={<PostsPage />} />
               <Route path='posts/:postId' element={<PostDetailsPage />} />
               <Route path='projects' element={<ProjectsPage />} />
+              <Route
+                path='projects/:projectId'
+                element={<ProjectDetailsPage />}
+              />
               <Route path='register' element={<RegisterPage />} />
               <Route path='login' element={<LoginPage />} />
               <Route path='not-found' element={<NotFoundPage />} />
