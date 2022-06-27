@@ -24,6 +24,7 @@ import UserProjectsPage from './pages/DashboardPages/UserProjectsPage/UserProjec
 import UnapprovedPostsPage from './pages/DashboardPages/UnapprovedPostsPage/UnapprovedPostsPage'
 import UnapprovedProjectsPage from './pages/DashboardPages/UnapprovedProjectsPage/UnapprovedProjectsPage'
 import { HeaderProvider } from './context/header/HeaderContext'
+import PostDetailsPage from './pages/PostDetailsPage/PostDetailsPage'
 
 const App = () => {
   return (
@@ -55,6 +56,7 @@ const App = () => {
               </Route>
               <Route path='users/:userId' element={<UserDetailsPage />} />
               <Route path='posts' element={<PostsPage />} />
+              <Route path='posts/:postId' element={<PostDetailsPage />} />
               <Route path='projects' element={<ProjectsPage />} />
               <Route path='register' element={<RegisterPage />} />
               <Route path='login' element={<LoginPage />} />

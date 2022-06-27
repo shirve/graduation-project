@@ -4,6 +4,7 @@ const {
   getUserPosts,
   getApprovedPosts,
   getUnapprovedPosts,
+  getPostDetails,
   createPost,
   updatePost,
   deletePost,
@@ -29,6 +30,10 @@ router.get('/approved', getApprovedPosts)
 // Get unapproved posts
 // GET /api/posts/unapproved
 router.get('/unapproved', protect, getUnapprovedPosts)
+
+// Get post details
+// GET /api/posts/:id
+router.get('/:id', getPostDetails)
 
 // Create post
 // POST /api/posts

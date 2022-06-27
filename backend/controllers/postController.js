@@ -65,6 +65,26 @@ const getUnapprovedPosts = asyncHandler(async (req, res) => {
   res.status(200).json(posts)
 })
 
+// Get post details
+// GET /api/posts/:id
+const getPostDetails = asyncHandler(async (req, res) => {
+  let post
+
+  try {
+    post = await Post.findById(req.params.id)
+  } catch {
+    res.status(404).end()
+    return
+  }
+
+  if (post.status.approved === false) {
+    res.status(404).end()
+    return
+  }
+
+  res.status(200).json(post)
+})
+
 // Create post
 // POST /api/posts
 const createPost = asyncHandler(async (req, res) => {
@@ -416,6 +436,7 @@ module.exports = {
   getUserPosts,
   getApprovedPosts,
   getUnapprovedPosts,
+  getPostDetails,
   createPost,
   updatePost,
   deletePost,

@@ -107,7 +107,13 @@ const PostItem = ({
             ))}
         </ul>
         <div className={styles.content}>
-          <h3>{post.data.title}</h3>
+          {post.status.approved ? (
+            <Link to={`/posts/${post._id}`} className={styles.postDetailsLink}>
+              <h3>{post.data.title}</h3>
+            </Link>
+          ) : (
+            <h3>{post.data.title}</h3>
+          )}
           <h4>Fabuła</h4>
           <p>{post.data.story}</p>
           {readMore && (
