@@ -2,6 +2,7 @@ export const ProjectFormFields = [
   { name: 'title', component: 'input', label: 'Tytuł' },
   { name: 'description', component: 'textarea', label: 'Opis' },
   { name: 'github', component: 'input', label: 'GitHub' },
+  { name: 'gdd', component: 'select', label: 'Dokument projektowy gry' },
   {
     name: 'images',
     component: 'file',

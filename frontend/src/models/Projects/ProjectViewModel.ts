@@ -8,6 +8,7 @@ export interface ProjectViewModel {
     name: string
   }
   data: ProjectDataViewModel
+  gdd: ObjectId
   status: {
     approved: boolean
   }

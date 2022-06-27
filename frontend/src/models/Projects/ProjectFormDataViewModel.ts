@@ -3,4 +3,5 @@ export interface ProjectFormDataViewModel {
   description: string
   github: string
   images: FileList
+  gdd: string
 }

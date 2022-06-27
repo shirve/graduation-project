@@ -66,12 +66,20 @@ const ProjectItem = ({ project, displayedButtons }: Props) => {
           ) : (
             <h3>{project.data.title}</h3>
           )}
-          <ImageSwiper images={project.data.images} />
+          {project.data.images.length > 0 && (
+            <ImageSwiper images={project.data.images} />
+          )}
           <p>{project.data.description}</p>
-          <h4>Repozytorium</h4>
+          <h4>Załączniki</h4>
           <a href={project.data.github} target={'_blank'}>
-            {project.data.github}
+            Repozytorium projektu
           </a>
+          {project.gdd && (
+            <Link to={`/posts/${project.gdd}`}>
+              <br />
+              Dokument projektowy gry
+            </Link>
+          )}
         </div>
         <div className={styles.manage}>
           {displayedButtons?.includes('like') && (

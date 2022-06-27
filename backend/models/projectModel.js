@@ -35,6 +35,11 @@ const projectSchema = mongoose.Schema(
         },
       ],
     },
+    gdd: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
+      ref: 'Post',
+    },
     status: {
       approved: {
         type: Boolean,

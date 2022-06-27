@@ -87,10 +87,12 @@ const createProject = asyncHandler(async (req, res) => {
     return
   }
 
+  const { gdd, ...data } = req.body
   const images = req.files.map((file) => file.filename)
 
   await Project.create({
-    data: { ...req.body, images },
+    data: { ...data, images },
+    gdd: gdd,
     status: {
       approved: false,
     },
@@ -170,7 +172,10 @@ const updateProject = asyncHandler(async (req, res) => {
     images = req.files.map((file) => file.filename)
   }
 
-  project.data = { ...req.body, images }
+  const { gdd, ...data } = req.body
+
+  project.data = { ...data, images }
+  project.gdd = gdd
   project.status = {
     approved: false,
   }
