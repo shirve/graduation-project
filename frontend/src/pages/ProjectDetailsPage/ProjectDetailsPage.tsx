@@ -1,11 +1,13 @@
 import { useEffect, useContext } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState, useAppDispatch } from '../../app/store'
 import { getProjectDetails } from '../../features/projects/projectSlice'
 import HeaderContext from '../../context/header/HeaderContext'
 import ProjectItem from '../../components/common/ProjectItem/ProjectItem'
 import Spinner from '../../components/common/Spinner/Spinner'
+import styles from './ProjectDetailsPage.module.scss'
+import { IoArrowUndo } from 'react-icons/io5'
 
 const ProjectDetailsPage = () => {
   const { projectId } = useParams()
@@ -36,7 +38,18 @@ const ProjectDetailsPage = () => {
   }, [loading])
 
   return projects.length > 0 ? (
-    <ProjectItem project={projects[0]} displayedButtons={['like', 'delete']} />
+    <>
+      <ProjectItem
+        project={projects[0]}
+        displayedButtons={['like', 'delete']}
+      />
+      <div className={styles.return}>
+        <Link to={'/projects'}>
+          <IoArrowUndo />
+          Wróć do wszystkich projektów
+        </Link>
+      </div>
+    </>
   ) : (
     <Spinner />
   )

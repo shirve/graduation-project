@@ -1,0 +1,16 @@
+@import '../../styles/CommonStyles.scss';
+
+.return {
+  margin-top: 1rem;
+  a {
+    display: flex;
+    align-items: center;
+    color: $black-muted;
+    &:hover {
+      color: inherit;
+    }
+    svg {
+      margin-right: 0.25rem;
+    }
+  }
+}
