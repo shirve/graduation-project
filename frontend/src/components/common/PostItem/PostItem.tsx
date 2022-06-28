@@ -7,6 +7,7 @@ import { ObjectId } from 'mongoose'
 import { IoGameControllerOutline, IoGameController } from 'react-icons/io5'
 import { PostViewModel } from '../../../models/Posts/PostViewModel'
 import { PostButtonTypes } from '../../../models/Posts/PostButtonTypes'
+import { PostContributorStatusTypes } from '../../../models/Posts/PostContributorStatusTypes'
 import Button from '../Buttons/Button/Button'
 import styles from './PostItem.module.scss'
 import PostDeleteModal from '../../Modals/Posts/PostDeleteModal/PostDeleteModal'
@@ -20,7 +21,7 @@ interface Props {
   post: PostViewModel
   onGenreChange?: (genre: string) => void
   displayedButtons?: PostButtonTypes[]
-  postContributors?: boolean
+  postContributors?: PostContributorStatusTypes[]
 }
 
 const PostItem = ({
@@ -185,7 +186,9 @@ const PostItem = ({
             </React.Fragment>
           )}
         </div>
-        {postContributors && <PostContributors post={post} />}
+        {readMore && postContributors && (
+          <PostContributors post={post} postContributors={postContributors} />
+        )}
         {post.status.rejected && (
           <div className={styles.status}>
             <h4>Powód odrzucenia</h4>

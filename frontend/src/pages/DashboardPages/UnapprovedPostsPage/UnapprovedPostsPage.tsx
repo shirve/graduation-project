@@ -33,6 +33,7 @@ const UnapprovedPostsPage = () => {
         posts={posts}
         loading={loading}
         displayedButtons={['delete', 'reject', 'approve']}
+        postContributors={['approved']}
       />
     </React.Fragment>
   )

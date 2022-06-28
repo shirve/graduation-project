@@ -147,6 +147,7 @@ const PostsPage = () => {
         loading={loading}
         onGenreChange={handleGenreChange}
         displayedButtons={['like', 'contribute', 'readMore', 'delete']}
+        postContributors={['approved']}
       />
       <Pagination
         page={page}

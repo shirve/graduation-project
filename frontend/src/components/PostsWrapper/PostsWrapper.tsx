@@ -1,6 +1,7 @@
 import React from 'react'
 import { PostViewModel } from '../../models/Posts/PostViewModel'
 import { PostButtonTypes } from '../../models/Posts/PostButtonTypes'
+import { PostContributorStatusTypes } from '../../models/Posts/PostContributorStatusTypes'
 import PostItem from '../common/PostItem/PostItem'
 import Spinner from '../common/Spinner/Spinner'
 
@@ -9,7 +10,7 @@ interface Props {
   loading?: string
   onGenreChange?: (genre: string) => void
   displayedButtons?: PostButtonTypes[]
-  postContributors?: boolean
+  postContributors?: PostContributorStatusTypes[]
 }
 
 const PostsWrapper = ({

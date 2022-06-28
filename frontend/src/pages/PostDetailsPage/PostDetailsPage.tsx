@@ -37,6 +37,7 @@ const PostDetailsPage = () => {
     <PostItem
       post={posts[0]}
       displayedButtons={['like', 'contribute', 'delete']}
+      postContributors={['approved']}
     />
   ) : (
     <Spinner />

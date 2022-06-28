@@ -108,6 +108,7 @@ const UserDetailsPage = () => {
               posts={posts}
               loading={postsLoading}
               displayedButtons={['like', 'contribute', 'delete']}
+              postContributors={['approved']}
             />
           </div>
           <div className={styles.projects}>
