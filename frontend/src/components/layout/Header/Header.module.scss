@@ -9,7 +9,7 @@
   border-bottom: 1px $gray solid;
 }
 
-@media (max-width: 475px) {
+@include breakpoint(small) {
   .header {
     font-size: 1.6rem;
   }

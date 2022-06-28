@@ -38,7 +38,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@include breakpoint(medium) {
   .notFound {
     div {
       &:nth-child(1) {

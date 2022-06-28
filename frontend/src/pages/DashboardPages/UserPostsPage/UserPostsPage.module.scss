@@ -42,7 +42,7 @@
   padding: 1rem;
 }
 
-@media (max-width: 675px) {
+@include breakpoint(medium) {
   .navigation {
     justify-content: flex-start;
   }

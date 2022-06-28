@@ -49,7 +49,7 @@
   }
 }
 
-@media (max-width: 675px) {
+@include breakpoint(medium) {
   .contributors {
     table.unapproved {
       width: 100%;

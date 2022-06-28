@@ -37,7 +37,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@include breakpoint(large) {
   .modalOverlay {
     .modalContent {
       width: 80%;
@@ -45,7 +45,7 @@
   }
 }
 
-@media (max-width: 465px) {
+@include breakpoint(small) {
   .modalOverlay {
     .modalContent {
       inset: 1rem;
