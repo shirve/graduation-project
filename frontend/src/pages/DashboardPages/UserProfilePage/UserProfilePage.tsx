@@ -50,7 +50,9 @@ const UserProfilePage = () => {
           className={filterType === 'editProfile' ? styles.active : undefined}
           onClick={() => handleFilterChange('editProfile')}
         >
-          <FaUserEdit />
+          <span className={styles.badge}>
+            <FaUserEdit />
+          </span>
           Edycja profilu
         </li>
         <li
@@ -59,7 +61,9 @@ const UserProfilePage = () => {
           }
           onClick={() => handleFilterChange('changePassword')}
         >
-          <FaUserLock />
+          <span className={styles.badge}>
+            <FaUserLock />
+          </span>
           Edycja hasła
         </li>
       </ul>

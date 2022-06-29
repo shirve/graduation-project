@@ -19,19 +19,15 @@
     white-space: nowrap;
     cursor: pointer;
     padding: 0 1rem 1rem 1rem;
-    svg {
-      font-size: 1.4rem;
-      margin-right: 0.5rem;
-    }
   }
   .active {
     border-bottom: 2px $blue solid;
   }
   .badge {
     display: inline-block;
-    margin-left: 0.5rem;
+    margin-right: 0.5rem;
     padding: 0.25rem 0.5rem;
-    font-size: 0.75rem;
+    font-size: 1rem;
     font-weight: 700;
     line-height: 1;
     color: $white-muted;
