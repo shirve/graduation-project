@@ -95,6 +95,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 // Update user
 // PUT /api/users
 const updateUser = asyncHandler(async (req, res) => {
+  const { github, technologies } = req.body
   const user = await User.findById(req.user._id)
 
   if (!user) {
@@ -104,16 +105,21 @@ const updateUser = asyncHandler(async (req, res) => {
     return
   }
 
-  const data = {
-    github: req.body.github,
-    technologies: req.body.technologies,
-  }
+  const updatedUser = await User.findByIdAndUpdate(
+    req.user._id,
+    { github, technologies },
+    {
+      new: true,
+    }
+  )
 
-  const updatedUser = await User.findByIdAndUpdate(req.user._id, data, {
-    new: true,
-  }).select('-password -__v')
-
-  res.status(200).json(updatedUser)
+  res.status(200).json({
+    user: updatedUser,
+    alert: {
+      type: 'info',
+      message: 'Profil zaktualizowano pomyślnie',
+    },
+  })
 })
 
 // Get user details
@@ -197,7 +203,7 @@ const changePassword = asyncHandler(async (req, res) => {
     }
   )
 
-  res.status(200).json({ type: 'success', message: 'Hasło zostało zmienione!' })
+  res.status(200).json({ type: 'info', message: 'Hasło zostało zmienione!' })
 })
 
 // Generate JWT

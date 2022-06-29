@@ -6,7 +6,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { UserViewModel } from '../../models/Users/UserViewModel'
 import { UserLoginViewModel } from '../../models/Users/UserLoginViewModel'
 import { UserRegisterViewModel } from '../../models/Users/UserRegisterViewModel'
-import { UserUpdateViewModel } from '../../models/Users/UserUpdateViewModel'
+import { UserDetailsViewModel } from '../../models/Users/UserDetailsViewModel'
 import { UserPasswordChangeViewModel } from '../../models/Users/UserPasswordChangeViewModel'
 import { AlertViewModel } from '../../models/Alert/AlertViewModel'
 import { ServerValidationErrorViewModel } from '../../models/Errors/ServerValidationErrorViewModel'
@@ -67,8 +67,8 @@ export const logoutUser = createAsyncThunk('users/logout', async () => {
 // Update user
 // PUT /api/users
 export const updateUser = createAsyncThunk<
-  UserViewModel,
-  UserUpdateViewModel,
+  { user: UserViewModel; alert: AlertViewModel },
+  UserDetailsViewModel,
   { rejectValue: AlertViewModel }
 >('users/update', async (userData, thunkAPI) => {
   try {
@@ -138,17 +138,11 @@ export const userSlice = createSlice({
         state.loading = initialState.loading
       })
       .addCase(updateUser.fulfilled, (state, action) => {
-        state.user = action.payload
-        state.alert = {
-          type: 'success',
-          message: 'Profil zaktualizowano pomyślnie',
-        }
+        state.user = action.payload.user
+        state.alert = action.payload.alert
       })
-      .addCase(updateUser.rejected, (state) => {
-        state.alert = {
-          type: 'error',
-          message: 'Oops! Coś poszło nie tak',
-        }
+      .addCase(updateUser.rejected, (state, action) => {
+        state.alert = action.payload
       })
       .addCase(changePassword.fulfilled, (state, action) => {
         state.alert = action.payload

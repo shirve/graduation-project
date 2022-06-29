@@ -44,8 +44,7 @@ const UserProfileEditForm = () => {
   }, [user])
 
   const onSubmit = (data: UserDetailsViewModel) => {
-    const { firstName, lastName, email, ...userData } = data
-    dispatch(updateUser(userData))
+    dispatch(updateUser(data))
   }
 
   return (
