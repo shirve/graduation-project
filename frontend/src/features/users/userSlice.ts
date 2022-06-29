@@ -7,6 +7,7 @@ import { UserViewModel } from '../../models/Users/UserViewModel'
 import { UserLoginViewModel } from '../../models/Users/UserLoginViewModel'
 import { UserRegisterViewModel } from '../../models/Users/UserRegisterViewModel'
 import { UserUpdateViewModel } from '../../models/Users/UserUpdateViewModel'
+import { UserPasswordChangeViewModel } from '../../models/Users/UserPasswordChangeViewModel'
 import { AlertViewModel } from '../../models/Alert/AlertViewModel'
 import { ServerValidationErrorViewModel } from '../../models/Errors/ServerValidationErrorViewModel'
 import { jwtDecode } from '../../utils/jwtDecode'
@@ -78,6 +79,21 @@ export const updateUser = createAsyncThunk<
   }
 })
 
+// Change password
+// PATCH /api/users/chpasswd
+export const changePassword = createAsyncThunk<
+  AlertViewModel,
+  UserPasswordChangeViewModel,
+  { rejectValue: AlertViewModel }
+>('users/chpasswd', async (userData, thunkAPI) => {
+  try {
+    const { data } = await usersClient.patch('/chpasswd', userData)
+    return data
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data)
+  }
+})
+
 export const userSlice = createSlice({
   name: 'users',
   initialState,
@@ -124,7 +140,7 @@ export const userSlice = createSlice({
       .addCase(updateUser.fulfilled, (state, action) => {
         state.user = action.payload
         state.alert = {
-          type: 'info',
+          type: 'success',
           message: 'Profil zaktualizowano pomyślnie',
         }
       })
@@ -133,6 +149,12 @@ export const userSlice = createSlice({
           type: 'error',
           message: 'Oops! Coś poszło nie tak',
         }
+      })
+      .addCase(changePassword.fulfilled, (state, action) => {
+        state.alert = action.payload
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        state.alert = action.payload
       })
   },
 })

@@ -166,6 +166,40 @@ const authenticateUser = asyncHandler(async (req, res) => {
   }
 })
 
+// Change password
+// PATCH /api/users/chpasswd
+const changePassword = asyncHandler(async (req, res) => {
+  const { oldPassword, newPassword } = req.body
+  const user = await User.findById(req.user._id)
+
+  if (!user) {
+    res
+      .status(400)
+      .json({ type: 'error', message: 'Nie znaleziono użytkownika!' })
+    return
+  }
+
+  if ((await bcrypt.compare(oldPassword, user.password)) === false) {
+    res
+      .status(400)
+      .json({ type: 'error', message: 'Podane stare hasło jest niepoprawne!' })
+    return
+  }
+
+  const salt = await bcrypt.genSalt(10)
+  const hashedPassword = await bcrypt.hash(newPassword, salt)
+
+  await User.findByIdAndUpdate(
+    req.user._id,
+    { password: hashedPassword },
+    {
+      new: true,
+    }
+  )
+
+  res.status(200).json({ type: 'success', message: 'Hasło zostało zmienione!' })
+})
+
 // Generate JWT
 const generateToken = (data) => {
   return jwt.sign(data, process.env.JWT_SECRET, {
@@ -180,4 +214,5 @@ module.exports = {
   updateUser,
   getUser,
   authenticateUser,
+  changePassword,
 }

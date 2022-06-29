@@ -7,6 +7,7 @@ const {
   updateUser,
   getUser,
   authenticateUser,
+  changePassword,
 } = require('../controllers/userController')
 const { protect } = require('../middleware/authMiddleware')
 const { body } = require('express-validator')
@@ -80,6 +81,26 @@ router.put(
 // Authenticate user from cookies
 // GET /api/users
 router.get('/', authenticateUser)
+
+// Change password
+// PATCH /api/users/chpasswd
+router.patch(
+  '/chpasswd',
+  protect,
+  validate([
+    body('oldPassword').notEmpty().isString(),
+    body(
+      'newPassword',
+      'Hasło musi zawierać przynajmniej jedną dużą literę, jedną małą literę, jedną cyfrę, jeden znak specjalny oraz mieć długość od 6 do 50 znaków'
+    )
+      .notEmpty()
+      .isString()
+      .matches(
+        /^(?=.*[a-ząćęłńóśźż])(?=.*[A-ZĄĆĘŁŃÓŚŹŻ])(?=.*\d)(?=.*[!@#$%^&*?])[A-ZĄĆĘŁŃÓŚŹŻa-ząćęłńóśźż\d!@#$%^&*?]{6,50}$/
+      ),
+  ]),
+  changePassword
+)
 
 // Get user
 // GET /api/users/:id
