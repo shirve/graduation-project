@@ -1,22 +1,20 @@
-import { useContext, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from '../../../app/store'
-import { updateUser } from '../../../features/users/userSlice'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { RootState } from '../../../app/store'
 import HeaderContext from '../../../context/header/HeaderContext'
-import InputField from '../../../components/common/Forms/InputField/InputField'
-import TextareaField from '../../../components/common/Forms/TextareaField/TextareaField'
-import Button from '../../../components/common/Buttons/Button/Button'
 import displayAlert from '../../../utils/displayAlert'
-import { UserDetailsViewModel } from '../../../models/Users/UserDetailsViewModel'
 import styles from './UserProfilePage.module.scss'
+import UserProfileEditForm from '../../../components/Forms/UserProfileEditForm/UserProfileEditForm'
+import UserPasswordChangeForm from '../../../components/Forms/UserPasswordChangeForm/UserPasswordChangeForm'
+import { FaUserEdit, FaUserLock } from 'react-icons/fa'
+
+type FilterType = 'editProfile' | 'changePassword'
 
 const UserProfilePage = () => {
+  const [filterType, setFilterType] = useState<FilterType>('editProfile')
+
   const { setHeader } = useContext(HeaderContext)
-  const { user, alert } = useSelector((state: RootState) => state.user)
-  const dispatch = useAppDispatch()
+  const { alert } = useSelector((state: RootState) => state.user)
 
   useEffect(() => {
     setHeader('TWÓJ PROFIL')
@@ -25,91 +23,46 @@ const UserProfilePage = () => {
     }
   }, [])
 
-  const userProfileSchema = yup.object().shape({
-    github: yup
-      .string()
-      .matches(
-        /^https:\/\/github.com\/.+/g,
-        'Link musi być w formacie https://github.com/[nazwa-użytkownika]'
-      )
-      .nullable(),
-    technologies: yup.string().max(255).nullable(),
-  })
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<UserDetailsViewModel>({
-    resolver: yupResolver(userProfileSchema),
-  })
-
-  useEffect(() => {
-    if (user) {
-      const { _id, roles, ...userData } = user
-      reset({ ...userData })
-    }
-  }, [user])
-
   useEffect(() => {
     if (alert) displayAlert(alert)
   }, [alert])
 
-  const onSubmit = (data: UserDetailsViewModel) => {
-    const { firstName, lastName, email, ...userData } = data
-    dispatch(updateUser(userData))
+  const handleFilterChange = (type: FilterType) => {
+    switch (type) {
+      case 'editProfile':
+        setFilterType('editProfile')
+        break
+      case 'changePassword':
+        setFilterType('changePassword')
+        break
+    }
   }
 
   return (
-    <div className={styles.wrapper}>
-      <form>
-        <div className={styles.card}>
-          <InputField
-            register={register}
-            errors={errors}
-            name={'firstName'}
-            label={'Imię'}
-            disabled
-          />
-          <InputField
-            register={register}
-            errors={errors}
-            name={'lastName'}
-            label={'Nazwisko'}
-            disabled
-          />
-          <InputField
-            register={register}
-            errors={errors}
-            name={'email'}
-            label={'Email'}
-            disabled
-          />
-          <InputField
-            register={register}
-            errors={errors}
-            name={'github'}
-            label={'Github'}
-          />
-          <TextareaField
-            register={register}
-            errors={errors}
-            name={'technologies'}
-            label={'Technologie'}
-          />
-        </div>
-        <Button
-          type={'submit'}
-          onClick={handleSubmit(onSubmit)}
-          width={'100%'}
-          marginTop={'1rem'}
-          disabled={isSubmitting}
+    <React.Fragment>
+      <ul className={styles.navigation}>
+        <li
+          className={filterType === 'editProfile' ? styles.active : undefined}
+          onClick={() => handleFilterChange('editProfile')}
         >
-          Aktualizuj
-        </Button>
-      </form>
-    </div>
+          <FaUserEdit />
+          Edycja profilu
+        </li>
+        <li
+          className={
+            filterType === 'changePassword' ? styles.active : undefined
+          }
+          onClick={() => handleFilterChange('changePassword')}
+        >
+          <FaUserLock />
+          Edycja hasła
+        </li>
+      </ul>
+      <div className={styles.content}>
+        {filterType === 'editProfile' && <UserProfileEditForm />}
+        {filterType === 'changePassword' && <UserPasswordChangeForm />}
+      </div>
+    </React.Fragment>
   )
 }
 
