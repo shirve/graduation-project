@@ -7,7 +7,7 @@ import {
   setPage,
 } from '../../features/projects/projectSlice'
 import Modal from 'react-modal'
-import ProjectForm from '../../components/ProjectForm/ProjectForm'
+import ProjectForm from '../../components/Forms/ProjectForm/ProjectForm'
 import ProjectsWrapper from '../../components/ProjectsWrapper/ProjectsWrapper'
 import Pagination from '../../components/common/Pagination/Pagination'
 import Button from '../../components/common/Buttons/Button/Button'

@@ -1,5 +1,5 @@
 import Modal from 'react-modal'
-import ProjectForm from '../../../ProjectForm/ProjectForm'
+import ProjectForm from '../../../Forms/ProjectForm/ProjectForm'
 import CloseButton from '../../../common/Buttons/CloseButton/CloseButton'
 import { ProjectViewModel } from '../../../../models/Projects/ProjectViewModel'
 import styles from './ProjectEditModal.module.scss'

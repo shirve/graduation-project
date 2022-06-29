@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import PostForm from '../../components/PostForm/PostForm'
+import PostForm from '../../components/Forms/PostForm/PostForm'
 import {
   getApprovedPosts,
   resetPagination,
