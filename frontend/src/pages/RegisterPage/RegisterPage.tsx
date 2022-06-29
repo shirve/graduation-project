@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import { useAppDispatch } from '../../app/store'
-import { registerUser } from '../../features/users/userSlice'
+import { registerUser, resetAlert } from '../../features/users/userSlice'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -40,8 +40,9 @@ const RegisterPage = () => {
   }, [user, loading])
 
   useEffect(() => {
-    if (alert) {
-      displayAlert(alert)
+    if (alert) displayAlert(alert)
+    return () => {
+      if (alert) dispatch(resetAlert())
     }
   }, [alert])
 

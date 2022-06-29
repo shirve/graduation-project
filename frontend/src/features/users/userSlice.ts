@@ -101,6 +101,9 @@ export const userSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload ? action.payload : initialState.user
     },
+    resetAlert: (state) => {
+      state.alert = initialState.alert
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -153,5 +156,5 @@ export const userSlice = createSlice({
   },
 })
 
-export const { setUser } = userSlice.actions
+export const { setUser, resetAlert } = userSlice.actions
 export default userSlice.reducer

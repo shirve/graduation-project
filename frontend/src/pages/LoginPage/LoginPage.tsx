@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import { useAppDispatch } from '../../app/store'
-import { loginUser } from '../../features/users/userSlice'
+import { loginUser, resetAlert } from '../../features/users/userSlice'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -38,8 +38,9 @@ const LoginPage = () => {
   }, [user, loading])
 
   useEffect(() => {
-    if (alert) {
-      displayAlert(alert)
+    if (alert) displayAlert(alert)
+    return () => {
+      if (alert) dispatch(resetAlert())
     }
   }, [alert])
 

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { RootState, useAppDispatch } from '../../app/store'
 import {
   getApprovedProjects,
+  resetAlert,
   setPage,
 } from '../../features/projects/projectSlice'
 import Modal from 'react-modal'
@@ -53,6 +54,9 @@ const ProjectsPage = () => {
       if (alert.type === 'info') {
         setShowProjectFormModal(false)
       }
+    }
+    return () => {
+      if (alert) dispatch(resetAlert())
     }
   }, [alert])
 

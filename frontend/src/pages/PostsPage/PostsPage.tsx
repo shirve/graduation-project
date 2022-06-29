@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import PostForm from '../../components/Forms/PostForm/PostForm'
 import {
   getApprovedPosts,
+  resetAlert,
   resetPagination,
   setPage,
 } from '../../features/posts/postSlice'
@@ -78,6 +79,9 @@ const PostsPage = () => {
     if (alert) {
       displayAlert(alert)
       setShowPostFormModal(false)
+    }
+    return () => {
+      if (alert) dispatch(resetAlert())
     }
   }, [alert])
 
