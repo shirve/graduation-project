@@ -4,18 +4,14 @@ import { useSelector } from 'react-redux'
 import { RootState, useAppDispatch } from '../../app/store'
 import {
   getApprovedProjects,
-  resetAlert,
   setPage,
 } from '../../features/projects/projectSlice'
-import Modal from 'react-modal'
-import ProjectForm from '../../components/Forms/ProjectForm/ProjectForm'
 import ProjectsWrapper from '../../components/ProjectsWrapper/ProjectsWrapper'
 import Pagination from '../../components/common/Pagination/Pagination'
 import Button from '../../components/common/Buttons/Button/Button'
-import CloseButton from '../../components/common/Buttons/CloseButton/CloseButton'
 import HeaderContext from '../../context/header/HeaderContext'
-import displayAlert from '../../utils/displayAlert'
 import styles from './ProjectsPage.module.scss'
+import ProjectCreateModal from '../../components/Modals/Projects/ProjectCreateModal/ProjectCreateModal'
 
 const ProjectsPage = () => {
   const [showProjectFormModal, setShowProjectFormModal] = useState(false)
@@ -25,7 +21,7 @@ const ProjectsPage = () => {
   const { setHeader } = useContext(HeaderContext)
 
   const { user } = useSelector((state: RootState) => state.user)
-  const { projects, pagination, loading, alert } = useSelector(
+  const { projects, pagination, loading } = useSelector(
     (state: RootState) => state.projects
   )
 
@@ -47,18 +43,6 @@ const ProjectsPage = () => {
     )
     window.scrollTo(0, 0)
   }, [page])
-
-  useEffect(() => {
-    if (alert) {
-      displayAlert(alert)
-      if (alert.type === 'info') {
-        setShowProjectFormModal(false)
-      }
-    }
-    return () => {
-      if (alert) dispatch(resetAlert())
-    }
-  }, [alert])
 
   const handleShowProjectFormModal = () => {
     setShowProjectFormModal((prevState) => !prevState)
@@ -84,18 +68,10 @@ const ProjectsPage = () => {
           <Button onClick={handleShowProjectFormModal} width={'100%'}>
             Nowy projekt gry
           </Button>
-          <Modal
-            appElement={document.getElementById('root') || undefined}
-            isOpen={showProjectFormModal}
-            overlayClassName={styles.modalOverlay}
-            className={styles.modalContent}
-          >
-            <div className={styles.modalHeader}>
-              <h4>Nowy projekt gry</h4>
-              <CloseButton onClick={handleShowProjectFormModal} />
-            </div>
-            <ProjectForm />
-          </Modal>
+          <ProjectCreateModal
+            showModal={showProjectFormModal}
+            handleShowModal={handleShowProjectFormModal}
+          />
         </React.Fragment>
       )}
       <div className={styles.header}>

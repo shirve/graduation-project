@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import { useAppDispatch } from '../../app/store'
-import { loginUser, resetAlert } from '../../features/users/userSlice'
+import { loginUser } from '../../features/users/userSlice'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -14,7 +14,6 @@ import Spinner from '../../components/common/Spinner/Spinner'
 import { LoginFormFields } from '../../constants/Auth/LoginFormFields'
 import { UserLoginViewModel } from '../../models/Users/UserLoginViewModel'
 import styles from './LoginPage.module.scss'
-import displayAlert from '../../utils/displayAlert'
 
 const LoginPage = () => {
   const navigate = useNavigate()
@@ -22,7 +21,7 @@ const LoginPage = () => {
 
   const { setHeader } = useContext(HeaderContext)
 
-  const { user, loading, alert } = useSelector((state: RootState) => state.user)
+  const { user, loading } = useSelector((state: RootState) => state.user)
 
   useEffect(() => {
     setHeader('ZALOGUJ SIĘ')
@@ -36,13 +35,6 @@ const LoginPage = () => {
       navigate('/')
     }
   }, [user, loading])
-
-  useEffect(() => {
-    if (alert) displayAlert(alert)
-    return () => {
-      if (alert) dispatch(resetAlert())
-    }
-  }, [alert])
 
   const loginSchema = yup.object().shape({
     email: yup

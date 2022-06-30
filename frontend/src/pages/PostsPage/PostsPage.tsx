@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import PostForm from '../../components/Forms/PostForm/PostForm'
 import {
   getApprovedPosts,
-  resetAlert,
   resetPagination,
   setPage,
 } from '../../features/posts/postSlice'
@@ -13,14 +11,12 @@ import HeaderContext from '../../context/header/HeaderContext'
 import Select from 'react-select'
 import { PostGenres } from '../../constants/Posts/PostGenres'
 import { SelectFieldOptionViewModel } from '../../models/Forms/SelectFieldOptionViewModel'
-import Modal from 'react-modal'
 import PostsWrapper from '../../components/PostsWrapper/PostsWrapper'
 import Button from '../../components/common/Buttons/Button/Button'
-import CloseButton from '../../components/common/Buttons/CloseButton/CloseButton'
 import styles from './PostsPage.module.scss'
 import { CustomSelectFieldStyles } from '../../styles/SelectField/CustomSelectFieldStyles'
-import displayAlert from '../../utils/displayAlert'
 import Pagination from '../../components/common/Pagination/Pagination'
+import PostCreateModal from '../../components/Modals/Posts/PostCreateModal/PostCreateModal'
 
 const PostsPage = () => {
   const [genre, setGenre] = useState<SelectFieldOptionViewModel | null>(null)
@@ -31,7 +27,7 @@ const PostsPage = () => {
   const { setHeader } = useContext(HeaderContext)
 
   const { user } = useSelector((state: RootState) => state.user)
-  const { posts, pagination, loading, alert } = useSelector(
+  const { posts, pagination, loading } = useSelector(
     (state: RootState) => state.posts
   )
 
@@ -75,16 +71,6 @@ const PostsPage = () => {
     }
   }, [genre])
 
-  useEffect(() => {
-    if (alert) {
-      displayAlert(alert)
-      setShowPostFormModal(false)
-    }
-    return () => {
-      if (alert) dispatch(resetAlert())
-    }
-  }, [alert])
-
   const handleShowPostFormModal = () => {
     setShowPostFormModal((prevState) => !prevState)
   }
@@ -120,18 +106,10 @@ const PostsPage = () => {
           <Button onClick={handleShowPostFormModal} width={'100%'}>
             Nowa propozycja gry
           </Button>
-          <Modal
-            appElement={document.getElementById('root') || undefined}
-            isOpen={showPostFormModal}
-            overlayClassName={styles.modalOverlay}
-            className={styles.modalContent}
-          >
-            <div className={styles.modalHeader}>
-              <h4>Nowa propozycja gry</h4>
-              <CloseButton onClick={handleShowPostFormModal} />
-            </div>
-            <PostForm />
-          </Modal>
+          <PostCreateModal
+            showModal={showPostFormModal}
+            handleShowModal={handleShowPostFormModal}
+          />
         </React.Fragment>
       )}
       <div className={styles.header}>

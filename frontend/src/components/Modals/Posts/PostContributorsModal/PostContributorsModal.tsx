@@ -8,7 +8,6 @@ import CloseButton from '../../../common/Buttons/CloseButton/CloseButton'
 import { PostViewModel } from '../../../../models/Posts/PostViewModel'
 import { ObjectId } from 'mongoose'
 import styles from './PostContributorsModal.module.scss'
-import displayAlert from '../../../../utils/displayAlert'
 
 interface Props {
   post: PostViewModel
@@ -29,7 +28,6 @@ const PostContributorsModal = ({ post, showModal, handleShowModal }: Props) => {
       user?._id !== post.user._id
     ) {
       dispatch(applyToContribute({ postId, message }))
-      displayAlert({ type: 'info', message: 'Twoja aplikacja została wysłana' })
       handleShowModal()
       setMessage('')
     }

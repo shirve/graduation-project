@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import { useAppDispatch } from '../../app/store'
-import { registerUser, resetAlert } from '../../features/users/userSlice'
+import { registerUser } from '../../features/users/userSlice'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -14,7 +14,6 @@ import Button from '../../components/common/Buttons/Button/Button'
 import { RegisterFormFields } from '../../constants/Auth/RegisterFormFields'
 import { UserRegisterViewModel } from '../../models/Users/UserRegisterViewModel'
 import styles from './RegisterPage.module.scss'
-import displayAlert from '../../utils/displayAlert'
 
 const RegisterPage = () => {
   const navigate = useNavigate()
@@ -22,7 +21,7 @@ const RegisterPage = () => {
 
   const { setHeader } = useContext(HeaderContext)
 
-  const { user, loading, alert, serverErrors } = useSelector(
+  const { user, loading, serverErrors } = useSelector(
     (state: RootState) => state.user
   )
 
@@ -38,13 +37,6 @@ const RegisterPage = () => {
       navigate('/')
     }
   }, [user, loading])
-
-  useEffect(() => {
-    if (alert) displayAlert(alert)
-    return () => {
-      if (alert) dispatch(resetAlert())
-    }
-  }, [alert])
 
   const registerSchema = yup.object().shape({
     firstName: yup
