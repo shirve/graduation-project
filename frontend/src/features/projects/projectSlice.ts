@@ -106,7 +106,7 @@ export const createProject = createAsyncThunk<
 // Update project
 // PUT /api/projects/:id
 export const updateProject = createAsyncThunk<
-  ProjectViewModel,
+  { project: ProjectViewModel; alert: AlertViewModel },
   { projectId: ObjectId; data: FormData },
   { rejectValue: AlertViewModel }
 >('projects/update', async (projectData, thunkAPI) => {
@@ -124,7 +124,7 @@ export const updateProject = createAsyncThunk<
 // Delete project
 // DELETE /api/projects/:id
 export const deleteProject = createAsyncThunk<
-  ObjectId,
+  { projectId: ObjectId; alert: AlertViewModel },
   ObjectId,
   { rejectValue: AlertViewModel }
 >('projects/delete', async (projectId, thunkAPI) => {
@@ -139,7 +139,7 @@ export const deleteProject = createAsyncThunk<
 // Approve project
 // PATCH /api/projects/:id/approve
 export const approveProject = createAsyncThunk<
-  ObjectId,
+  { projectId: ObjectId; alert: AlertViewModel },
   ObjectId,
   { rejectValue: AlertViewModel }
 >('projects/approve', async (projectId, thunkAPI) => {
@@ -181,11 +181,9 @@ export const projectSlice = createSlice({
     builder
       .addCase(getUserProjects.pending, (state) => {
         state.loading = 'pending'
-        state.alert = initialState.alert
       })
       .addCase(getUserProjects.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = initialState.alert
         state.projects = action.payload
         state.pagination = initialState.pagination
       })
@@ -195,11 +193,9 @@ export const projectSlice = createSlice({
       })
       .addCase(getApprovedProjects.pending, (state) => {
         state.loading = 'pending'
-        state.alert = initialState.alert
       })
       .addCase(getApprovedProjects.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = initialState.alert
         state.projects = action.payload.projects
         state.pagination = action.payload.pagination
       })
@@ -209,11 +205,9 @@ export const projectSlice = createSlice({
       })
       .addCase(getUnapprovedProjects.pending, (state) => {
         state.loading = 'pending'
-        state.alert = initialState.alert
       })
       .addCase(getUnapprovedProjects.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = initialState.alert
         state.projects = action.payload
         state.pagination = initialState.pagination
       })
@@ -227,12 +221,11 @@ export const projectSlice = createSlice({
       .addCase(getProjectDetails.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
         state.projects = action.payload
+        state.pagination = initialState.pagination
       })
-      .addCase(getProjectDetails.rejected, (state) => {
+      .addCase(getProjectDetails.rejected, (state, action) => {
         state.loading = 'failed'
-      })
-      .addCase(createProject.pending, (state) => {
-        state.alert = initialState.alert
+        state.alert = action.payload
       })
       .addCase(createProject.fulfilled, (state, action) => {
         state.alert = action.payload
@@ -240,49 +233,33 @@ export const projectSlice = createSlice({
       .addCase(createProject.rejected, (state, action) => {
         state.alert = action.payload
       })
-      .addCase(updateProject.pending, (state) => {
-        state.loading = 'pending'
-        state.alert = initialState.alert
-      })
       .addCase(updateProject.fulfilled, (state, action) => {
-        state.loading = 'fulfilled'
-        state.alert = initialState.alert
+        state.alert = action.payload.alert
         state.projects = state.projects.map((project) =>
-          action.payload._id === project._id ? action.payload : project
+          action.payload.project._id === project._id
+            ? action.payload.project
+            : project
         )
       })
       .addCase(updateProject.rejected, (state, action) => {
-        state.loading = 'failed'
         state.alert = action.payload
       })
-      .addCase(deleteProject.pending, (state) => {
-        state.loading = 'pending'
-        state.alert = initialState.alert
-      })
       .addCase(deleteProject.fulfilled, (state, action) => {
-        state.loading = 'fulfilled'
-        state.alert = initialState.alert
+        state.alert = action.payload.alert
         state.projects = state.projects.filter(
-          (project) => project._id !== action.payload
+          (project) => project._id !== action.payload.projectId
         )
       })
       .addCase(deleteProject.rejected, (state, action) => {
-        state.loading = 'failed'
         state.alert = action.payload
       })
-      .addCase(approveProject.pending, (state) => {
-        state.loading = 'pending'
-        state.alert = initialState.alert
-      })
       .addCase(approveProject.fulfilled, (state, action) => {
-        state.loading = 'fulfilled'
-        state.alert = initialState.alert
+        state.alert = action.payload.alert
         state.projects = state.projects.filter(
-          (project) => project._id !== action.payload
+          (project) => project._id !== action.payload.projectId
         )
       })
       .addCase(approveProject.rejected, (state, action) => {
-        state.loading = 'failed'
         state.alert = action.payload
       })
       .addCase(likeProject.fulfilled, (state, action) => {

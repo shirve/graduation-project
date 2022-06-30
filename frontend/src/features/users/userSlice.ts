@@ -109,12 +109,9 @@ export const userSlice = createSlice({
     builder
       .addCase(registerUser.pending, (state) => {
         state.loading = 'pending'
-        state.alert = initialState.alert
-        state.serverErrors = initialState.serverErrors
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = initialState.alert
         state.user = action.payload
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -124,11 +121,9 @@ export const userSlice = createSlice({
       })
       .addCase(loginUser.pending, (state) => {
         state.loading = 'pending'
-        state.alert = initialState.alert
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = 'fulfilled'
-        state.alert = initialState.alert
         state.user = action.payload
       })
       .addCase(loginUser.rejected, (state, action) => {

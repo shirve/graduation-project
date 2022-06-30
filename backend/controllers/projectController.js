@@ -135,7 +135,10 @@ const deleteProject = asyncHandler(async (req, res) => {
 
   await project.remove()
 
-  res.status(200).json(req.params.id)
+  res.status(200).json({
+    projectId: req.params.id,
+    alert: { type: 'info', message: 'Projekt usunięto pomyślnie.' },
+  })
 })
 
 // Update project
@@ -188,7 +191,14 @@ const updateProject = asyncHandler(async (req, res) => {
     }
   )
 
-  res.status(200).json(updatedProject)
+  res.status(200).json({
+    project: updatedProject,
+    alert: {
+      type: 'info',
+      message:
+        'Projekt edytowany pomyślnie. Przekazano do zatwierdzenia przez administratora.',
+    },
+  })
 })
 
 // Approve project
@@ -216,7 +226,10 @@ const approveProject = asyncHandler(async (req, res) => {
     new: true,
   })
 
-  res.status(200).json(req.params.id)
+  res.status(200).json({
+    projectId: req.params.id,
+    alert: { type: 'info', message: 'Projekt zatwierdzono pomyślnie.' },
+  })
 })
 
 // Like project

@@ -147,7 +147,10 @@ const deletePost = asyncHandler(async (req, res) => {
 
   await post.remove()
 
-  res.status(200).json(req.params.id)
+  res.status(200).json({
+    postId: req.params.id,
+    alert: { type: 'info', message: 'Post usunięto pomyślnie.' },
+  })
 })
 
 // Update post
@@ -181,7 +184,14 @@ const updatePost = asyncHandler(async (req, res) => {
     new: true,
   })
 
-  res.status(200).json(updatedPost)
+  res.status(200).json({
+    post: updatedPost,
+    alert: {
+      type: 'info',
+      message:
+        'Post edytowany pomyślnie. Przekazano do zatwierdzenia przez administratora.',
+    },
+  })
 })
 
 // Approve post
@@ -211,7 +221,10 @@ const approvePost = asyncHandler(async (req, res) => {
     new: true,
   })
 
-  res.status(200).json(req.params.id)
+  res.status(200).json({
+    postId: req.params.id,
+    alert: { type: 'info', message: 'Post zatwierdzono pomyślnie.' },
+  })
 })
 
 // Reject post
@@ -241,7 +254,10 @@ const rejectPost = asyncHandler(async (req, res) => {
     new: true,
   })
 
-  res.status(200).json(req.params.id)
+  res.status(200).json({
+    postId: req.params.id,
+    alert: { type: 'info', message: 'Post odrzucono pomyślnie.' },
+  })
 })
 
 // Like post
@@ -313,7 +329,13 @@ const applyToContribute = asyncHandler(async (req, res) => {
     new: true,
   })
 
-  res.status(200).json(updatedPost)
+  res.status(200).json({
+    post: updatedPost,
+    alert: {
+      type: 'info',
+      message: 'Twoja aplikacja została wysłana.',
+    },
+  })
 })
 
 // Approve contributor
