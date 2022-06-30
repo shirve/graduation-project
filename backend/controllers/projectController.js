@@ -137,7 +137,7 @@ const deleteProject = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     projectId: req.params.id,
-    alert: { type: 'info', message: 'Projekt usunięto pomyślnie.' },
+    alert: { type: 'info', message: 'Projekt usunięto pomyślnie.', time: 2000 },
   })
 })
 
@@ -228,7 +228,11 @@ const approveProject = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     projectId: req.params.id,
-    alert: { type: 'info', message: 'Projekt zatwierdzono pomyślnie.' },
+    alert: {
+      type: 'info',
+      message: 'Projekt zatwierdzono pomyślnie.',
+      time: 2000,
+    },
   })
 })
 

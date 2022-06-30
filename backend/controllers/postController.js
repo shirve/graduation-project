@@ -149,7 +149,7 @@ const deletePost = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     postId: req.params.id,
-    alert: { type: 'info', message: 'Post usunięto pomyślnie.' },
+    alert: { type: 'info', message: 'Post usunięto pomyślnie.', time: 2000 },
   })
 })
 
@@ -223,7 +223,11 @@ const approvePost = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     postId: req.params.id,
-    alert: { type: 'info', message: 'Post zatwierdzono pomyślnie.' },
+    alert: {
+      type: 'info',
+      message: 'Post zatwierdzono pomyślnie.',
+      time: 2000,
+    },
   })
 })
 
@@ -256,7 +260,7 @@ const rejectPost = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     postId: req.params.id,
-    alert: { type: 'info', message: 'Post odrzucono pomyślnie.' },
+    alert: { type: 'info', message: 'Post odrzucono pomyślnie.', time: 2000 },
   })
 })
 
