@@ -1,16 +1,14 @@
 import Modal from 'react-modal'
 import PostForm from '../../../Forms/PostForm/PostForm'
 import CloseButton from '../../../common/Buttons/CloseButton/CloseButton'
-import { PostViewModel } from '../../../../models/Posts/PostViewModel'
-import styles from './PostEditModal.module.scss'
+import styles from './PostCreateModal.module.scss'
 
 interface Props {
-  post: PostViewModel
   showModal: boolean
   handleShowModal: () => void
 }
 
-const PostEditModal = ({ post, showModal, handleShowModal }: Props) => {
+const PostCreateModal = ({ showModal, handleShowModal }: Props) => {
   return (
     <Modal
       appElement={document.getElementById('root') || undefined}
@@ -19,12 +17,12 @@ const PostEditModal = ({ post, showModal, handleShowModal }: Props) => {
       className={styles.modalContent}
     >
       <div className={styles.modalHeader}>
-        <h4>Edytuj propozycje gry</h4>
+        <h4>Nowa propozycja gry</h4>
         <CloseButton onClick={handleShowModal} />
       </div>
-      <PostForm post={post} handleShowModal={handleShowModal} />
+      <PostForm handleShowModal={handleShowModal} />
     </Modal>
   )
 }
 
-export default PostEditModal
+export default PostCreateModal

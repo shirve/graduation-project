@@ -15,9 +15,10 @@ import styles from './PostForm.module.scss'
 
 interface Props {
   post?: PostViewModel
+  handleShowModal?: () => void
 }
 
-const PostForm = ({ post }: Props) => {
+const PostForm = ({ post, handleShowModal }: Props) => {
   const dispatch = useAppDispatch()
 
   const postSchema = Yup.object().shape({
@@ -48,6 +49,7 @@ const PostForm = ({ post }: Props) => {
     const dataCopy = { ...data, genres: data.genres ?? [] }
     if (post) dispatch(updatePost({ postId: post._id, data: dataCopy }))
     if (!post) dispatch(createPost(dataCopy))
+    if (handleShowModal) handleShowModal()
   }
 
   return (

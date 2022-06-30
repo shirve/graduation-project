@@ -22,7 +22,7 @@ const ProjectEditModal = ({ project, showModal, handleShowModal }: Props) => {
         <h4>Edytuj projekt</h4>
         <CloseButton onClick={handleShowModal} />
       </div>
-      <ProjectForm project={project} />
+      <ProjectForm project={project} handleShowModal={handleShowModal} />
     </Modal>
   )
 }

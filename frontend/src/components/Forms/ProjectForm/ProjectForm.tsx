@@ -23,9 +23,10 @@ import styles from './ProjectForm.module.scss'
 
 interface Props {
   project?: ProjectViewModel
+  handleShowModal?: () => void
 }
 
-const ProjectForm = ({ project }: Props) => {
+const ProjectForm = ({ project, handleShowModal }: Props) => {
   const [GDDOptions, setGDDOptions] = useState<SelectFieldOptionViewModel[]>([])
   const { user } = useSelector((state: RootState) => state.user)
   const dispatch = useAppDispatch()
@@ -90,6 +91,7 @@ const ProjectForm = ({ project }: Props) => {
     if (project)
       dispatch(updateProject({ projectId: project._id, data: formData }))
     if (!project) dispatch(createProject(formData))
+    if (handleShowModal) handleShowModal()
   }
 
   return (
