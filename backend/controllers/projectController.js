@@ -36,7 +36,7 @@ const getApprovedProjects = asyncHandler(async (req, res) => {
       projects: data.docs,
       pagination: {
         page: data.page - 1,
-        limit: data.limit,
+        limit: limit ? data.limit : 10,
         totalPages: data.totalPages,
       },
     })

@@ -2,14 +2,8 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState, useAppDispatch } from '../../app/store'
-import {
-  getApprovedPosts,
-  resetPagination as resetPostsPagination,
-} from '../../features/posts/postSlice'
-import {
-  getApprovedProjects,
-  resetPagination as resetProjectsPagination,
-} from '../../features/projects/projectSlice'
+import { getApprovedPosts } from '../../features/posts/postSlice'
+import { getApprovedProjects } from '../../features/projects/projectSlice'
 import { usersClient } from '../../api/AxiosClients'
 import PostsWrapper from '../../components/PostsWrapper/PostsWrapper'
 import ProjectsWrapper from '../../components/ProjectsWrapper/ProjectsWrapper'
@@ -22,7 +16,6 @@ import styles from './UserDetailsPage.module.scss'
 const UserDetailsPage = () => {
   const [user, setUser] = useState<UserDetailsViewModel>()
   const [userLoading, setUserLoading] = useState(true)
-  const [requestsDispatched, setRequestsDispatched] = useState(false)
 
   const { userId } = useParams()
   const { setHeader } = useContext(HeaderContext)
@@ -48,20 +41,8 @@ const UserDetailsPage = () => {
       getUser(userId)
       dispatch(getApprovedPosts({ user: userId }))
       dispatch(getApprovedProjects({ user: userId }))
-      setRequestsDispatched(true)
     }
   }, [])
-
-  useEffect(() => {
-    if (
-      requestsDispatched &&
-      postsLoading === 'fulfilled' &&
-      projectsLoading === 'fulfilled'
-    ) {
-      dispatch(resetPostsPagination())
-      dispatch(resetProjectsPagination())
-    }
-  }, [requestsDispatched, postsLoading, projectsLoading])
 
   const getUser = async (userId: string) => {
     await usersClient
