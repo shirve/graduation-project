@@ -29,7 +29,7 @@ const getApprovedProjects = asyncHandler(async (req, res) => {
 
   Project.paginate(query, {
     sort,
-    limit: limit ?? 10,
+    limit: limit ?? Number.MAX_SAFE_INTEGER,
     offset,
   }).then((data) => {
     res.status(200).json({

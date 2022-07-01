@@ -32,7 +32,7 @@ const getApprovedPosts = asyncHandler(async (req, res) => {
 
   Post.paginate(query, {
     sort,
-    limit: limit ?? 10,
+    limit: limit ?? Number.MAX_SAFE_INTEGER,
     offset,
   }).then((data) => {
     res.status(200).json({
