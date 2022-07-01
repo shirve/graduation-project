@@ -20,7 +20,6 @@ const getApprovedProjects = asyncHandler(async (req, res) => {
   const { page, limit, user } = req.query
 
   const offset = page ? page * limit : 0
-  const amount = limit ? limit : undefined
   const query = { 'status.approved': { $eq: true } }
   const sort = { createdAt: 'desc' }
 
@@ -28,7 +27,11 @@ const getApprovedProjects = asyncHandler(async (req, res) => {
     query['user._id'] = { $eq: user }
   }
 
-  Project.paginate(query, { sort, amount, offset }).then((data) => {
+  Project.paginate(query, {
+    sort,
+    limit: limit ?? 10,
+    offset,
+  }).then((data) => {
     res.status(200).json({
       projects: data.docs,
       pagination: {

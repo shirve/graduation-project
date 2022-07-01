@@ -173,6 +173,9 @@ export const projectSlice = createSlice({
     setPage: (state, action) => {
       state.pagination.page = action.payload
     },
+    resetPagination: (state) => {
+      state.pagination = initialState.pagination
+    },
     resetAlert: (state) => {
       state.alert = initialState.alert
     },
@@ -270,5 +273,5 @@ export const projectSlice = createSlice({
   },
 })
 
-export const { setPage, resetAlert } = projectSlice.actions
+export const { setPage, resetPagination, resetAlert } = projectSlice.actions
 export default projectSlice.reducer

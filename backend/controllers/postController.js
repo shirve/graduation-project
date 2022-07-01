@@ -19,7 +19,6 @@ const getApprovedPosts = asyncHandler(async (req, res) => {
   const { page, limit, genre, user } = req.query
 
   const offset = page ? page * limit : 0
-  const amount = limit ? limit : undefined
   const query = { 'status.approved': { $eq: true } }
   const sort = { createdAt: 'desc' }
 
@@ -31,7 +30,11 @@ const getApprovedPosts = asyncHandler(async (req, res) => {
     query['user._id'] = { $eq: user }
   }
 
-  Post.paginate(query, { sort, amount, offset }).then((data) => {
+  Post.paginate(query, {
+    sort,
+    limit: limit ?? 10,
+    offset,
+  }).then((data) => {
     res.status(200).json({
       posts: data.docs,
       pagination: {

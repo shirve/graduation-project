@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { RootState, useAppDispatch } from '../../app/store'
 import {
   getApprovedProjects,
+  resetPagination,
   setPage,
 } from '../../features/projects/projectSlice'
 import ProjectsWrapper from '../../components/ProjectsWrapper/ProjectsWrapper'
@@ -31,6 +32,7 @@ const ProjectsPage = () => {
     setHeader('PROJEKTY')
     return () => {
       setHeader('')
+      dispatch(resetPagination())
     }
   }, [])
 
