@@ -104,14 +104,15 @@ const PostItem = ({
           </div>
           <div>{new Date(post.createdAt).toLocaleString('pl-PL')}</div>
         </div>
-        <ul className={styles.tags}>
-          {post.data.genres &&
-            post.data.genres.map((genre) => (
+        {post.data.genres && (
+          <ul className={styles.tags}>
+            {post.data.genres.map((genre) => (
               <li key={genre} onClick={() => onGenreChange?.(genre)}>
                 #{genre}
               </li>
             ))}
-        </ul>
+          </ul>
+        )}
         <div className={styles.content}>
           {post.status.approved ? (
             <Link to={`/posts/${post._id}`} className={styles.postDetailsLink}>

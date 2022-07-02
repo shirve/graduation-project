@@ -19,9 +19,10 @@ import ImageSwiper from '../ImageSwiper/ImageSwiper'
 interface Props {
   project: ProjectViewModel
   displayedButtons?: ProjectButtonTypes[]
+  onGenreChange?: (genre: string) => void
 }
 
-const ProjectItem = ({ project, displayedButtons }: Props) => {
+const ProjectItem = ({ project, displayedButtons, onGenreChange }: Props) => {
   const [showProjectDeleteModal, setShowProjectDeleteModal] = useState(false)
   const [showProjectEditModal, setShowProjectEditModal] = useState(false)
 
@@ -55,6 +56,15 @@ const ProjectItem = ({ project, displayedButtons }: Props) => {
           </div>
           <div>{new Date(project.createdAt).toLocaleString('pl-PL')}</div>
         </div>
+        {project.data.genres && (
+          <ul className={styles.tags}>
+            {project.data.genres.map((genre) => (
+              <li key={genre} onClick={() => onGenreChange?.(genre)}>
+                #{genre}
+              </li>
+            ))}
+          </ul>
+        )}
         <div className={styles.content}>
           {project.status.approved ? (
             <Link

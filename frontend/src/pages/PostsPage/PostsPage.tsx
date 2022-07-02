@@ -9,7 +9,7 @@ import {
 import { RootState, useAppDispatch } from '../../app/store'
 import HeaderContext from '../../context/header/HeaderContext'
 import Select from 'react-select'
-import { PostGenres } from '../../constants/Posts/PostGenres'
+import { GameGenres } from '../../constants/SelectFieldOptions/GameGenres'
 import { SelectFieldOptionViewModel } from '../../models/Forms/SelectFieldOptionViewModel'
 import PostsWrapper from '../../components/PostsWrapper/PostsWrapper'
 import Button from '../../components/common/Buttons/Button/Button'
@@ -79,7 +79,7 @@ const PostsPage = () => {
     setGenre({
       value: genre,
       label:
-        PostGenres.find((postGenre) => genre === postGenre.value)?.label ??
+        GameGenres.find((gameGenre) => genre === gameGenre.value)?.label ??
         genre,
     })
     window.scrollTo(0, 0)
@@ -118,7 +118,7 @@ const PostsPage = () => {
           className={styles.select}
           placeholder='Filtruj według gatunku'
           value={genre}
-          options={PostGenres}
+          options={GameGenres}
           onChange={(option) => setGenre(option)}
           styles={CustomSelectFieldStyles}
         />

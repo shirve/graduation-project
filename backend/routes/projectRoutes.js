@@ -21,7 +21,7 @@ const { validate } = require('../middleware/validateMiddleware')
 router.get('/', protect, getUserProjects)
 
 // Get approved projects
-// GET /api/projects/approved?page=number&limit=number&user=string
+// GET /api/projects/approved?page=number&limit=number&genre=string&user=string
 router.get('/approved', getApprovedProjects)
 
 // Get unapproved projects
@@ -45,6 +45,7 @@ router.post(
       .notEmpty()
       .isString()
       .matches(/^https:\/\/github.com\/.+\/.+/),
+    body('genres').isArray(),
   ]),
   createProject
 )
@@ -62,6 +63,7 @@ router.put(
       .notEmpty()
       .isString()
       .matches(/^https:\/\/github.com\/.+\/.+/),
+    body('genres').isArray(),
   ]),
   updateProject
 )

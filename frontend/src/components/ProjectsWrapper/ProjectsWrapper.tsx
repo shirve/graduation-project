@@ -8,9 +8,15 @@ interface Props {
   projects: ProjectViewModel[]
   loading?: string
   displayedButtons?: ProjectButtonTypes[]
+  onGenreChange?: (genre: string) => void
 }
 
-const ProjectsWrapper = ({ projects, loading, displayedButtons }: Props) => {
+const ProjectsWrapper = ({
+  projects,
+  loading,
+  displayedButtons,
+  onGenreChange,
+}: Props) => {
   if (loading === 'pending') return <Spinner />
 
   return (
@@ -20,6 +26,7 @@ const ProjectsWrapper = ({ projects, loading, displayedButtons }: Props) => {
           key={index}
           project={project}
           displayedButtons={displayedButtons}
+          onGenreChange={onGenreChange}
         />
       ))}
     </React.Fragment>

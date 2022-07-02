@@ -9,4 +9,8 @@ export const CustomSelectFieldStyles: StylesConfig<any, boolean> = {
       borderColor: '#ccc',
     },
   }),
+  menu: (provided) => ({
+    ...provided,
+    zIndex: '99',
+  }),
 }

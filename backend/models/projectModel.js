@@ -34,6 +34,12 @@ const projectSchema = mongoose.Schema(
           required: false,
         },
       ],
+      genres: [
+        {
+          type: String,
+          required: false,
+        },
+      ],
     },
     gdd: {
       type: mongoose.Schema.Types.ObjectId,

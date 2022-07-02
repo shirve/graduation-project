@@ -3,4 +3,5 @@ export interface ProjectDataViewModel {
   description: string
   github: string
   images: string[]
+  genres: string[]
 }

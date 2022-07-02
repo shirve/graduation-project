@@ -16,6 +16,16 @@
       color: $black-muted;
     }
   }
+  .tags {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    li {
+      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+  }
   .content {
     h3 {
       margin-top: 0.5rem;

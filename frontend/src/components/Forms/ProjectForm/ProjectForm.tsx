@@ -40,6 +40,7 @@ const ProjectForm = ({ project, handleShowModal }: Props) => {
         'Link musi być w formacie https://github.com/[nazwa-użytkownika]/[repozytorium-projektu]'
       )
       .required('To pole jest wymagane'),
+    genres: Yup.array().of(Yup.string()),
     gdd: Yup.string(),
   })
 
@@ -71,6 +72,7 @@ const ProjectForm = ({ project, handleShowModal }: Props) => {
       title: project?.data.title,
       description: project?.data.description,
       github: project?.data.github,
+      genres: project?.data.genres,
       gdd: project?.gdd?.toString(),
     },
   })
@@ -82,6 +84,11 @@ const ProjectForm = ({ project, handleShowModal }: Props) => {
     formData.append('github', data.github)
     Array.from(data.images).forEach((image) => {
       formData.append('images', image)
+    })
+
+    const genres = data.genres ?? []
+    genres.forEach((genre) => {
+      formData.append('genres', genre)
     })
 
     if (data.gdd) {
@@ -121,12 +128,15 @@ const ProjectForm = ({ project, handleShowModal }: Props) => {
                 errors={errors}
                 name={field.name}
                 label={field.label}
-                options={GDDOptions}
+                options={field.options ?? GDDOptions}
+                isMulti={field.isMulti}
               />
-              <small>
-                *Załącz dokument projektowy gry wybierając jedną z dodanych
-                przez siebie propozycji gier
-              </small>
+              {field.name === 'gdd' && (
+                <small>
+                  *Załącz dokument projektowy gry wybierając jedną z dodanych
+                  przez siebie propozycji gier
+                </small>
+              )}
             </>
           )}
           {field.component === 'file' && (

@@ -1,4 +1,4 @@
-import { PostGenres } from './PostGenres'
+import { GameGenres } from '../SelectFieldOptions/GameGenres'
 
 export const PostFormFields = [
   { name: 'title', component: 'input', label: 'Tytuł' },
@@ -13,7 +13,7 @@ export const PostFormFields = [
     name: 'genres',
     component: 'select',
     label: 'Gatunek/Gatunki',
-    options: PostGenres,
+    options: GameGenres,
     isMulti: true,
   },
 ]

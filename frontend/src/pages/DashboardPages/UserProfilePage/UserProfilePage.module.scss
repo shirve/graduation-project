@@ -15,13 +15,13 @@
   li {
     display: flex;
     align-items: center;
-    border-bottom: 2px transparent solid;
+    border-bottom: 3px transparent solid;
     white-space: nowrap;
     cursor: pointer;
     padding: 0 1rem 1rem 1rem;
   }
   .active {
-    border-bottom: 2px $blue solid;
+    border-bottom: 3px $blue solid;
   }
   .badge {
     display: inline-block;
