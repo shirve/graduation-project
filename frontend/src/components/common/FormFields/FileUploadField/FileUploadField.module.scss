@@ -2,7 +2,21 @@
 
 .wrapper {
   input {
+    display: none;
+  }
+  label {
     display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    color: $gray;
+    background-color: $white;
+    border: 1px solid $gray;
+    border-radius: 0.25rem;
+    cursor: pointer;
+  }
+  .filesAttached {
+    color: $black-muted;
   }
   .error {
     display: flex;

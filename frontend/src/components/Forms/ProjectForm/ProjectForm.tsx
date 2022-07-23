@@ -65,6 +65,7 @@ const ProjectForm = ({ project, handleShowModal }: Props) => {
     register,
     control,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<ProjectFormDataViewModel>({
     resolver: yupResolver(projectSchema),
@@ -146,6 +147,7 @@ const ProjectForm = ({ project, handleShowModal }: Props) => {
                 errors={errors}
                 name={field.name}
                 label={field.label}
+                files={watch('images')}
                 accept={field.accept}
                 multiple={field.multiple}
               />
