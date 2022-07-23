@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState, useAppDispatch } from '../../../app/store'
 import { updateUser } from '../../../features/users/userSlice'
@@ -10,6 +10,7 @@ import TextareaField from '../../common/FormFields/TextareaField/TextareaField'
 import Button from '../../common/Buttons/Button/Button'
 import { UserDetailsViewModel } from '../../../models/Users/UserDetailsViewModel'
 import styles from './UserProfileEditForm.module.scss'
+import { UserProfileEditFormFields } from '../../../constants/Users/UserProfileEditFormFields'
 
 const UserProfileEditForm = () => {
   const { user } = useSelector((state: RootState) => state.user)
@@ -50,39 +51,30 @@ const UserProfileEditForm = () => {
   return (
     <form>
       <div className={styles.card}>
-        <InputField
-          register={register}
-          errors={errors}
-          name={'firstName'}
-          label={'Imię'}
-          disabled
-        />
-        <InputField
-          register={register}
-          errors={errors}
-          name={'lastName'}
-          label={'Nazwisko'}
-          disabled
-        />
-        <InputField
-          register={register}
-          errors={errors}
-          name={'email'}
-          label={'Email'}
-          disabled
-        />
-        <InputField
-          register={register}
-          errors={errors}
-          name={'github'}
-          label={'Github'}
-        />
-        <TextareaField
-          register={register}
-          errors={errors}
-          name={'technologies'}
-          label={'Technologie'}
-        />
+        {UserProfileEditFormFields.map(
+          ({ name, component, label, disabled }) => (
+            <React.Fragment key={name}>
+              {component === 'input' && (
+                <InputField
+                  register={register}
+                  errors={errors}
+                  name={name}
+                  label={label}
+                  disabled={disabled}
+                />
+              )}
+              {component === 'textarea' && (
+                <TextareaField
+                  register={register}
+                  errors={errors}
+                  name={name}
+                  label={label}
+                  disabled={disabled}
+                />
+              )}
+            </React.Fragment>
+          )
+        )}
       </div>
       <Button
         type={'submit'}

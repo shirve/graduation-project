@@ -104,58 +104,60 @@ const ProjectForm = ({ project, handleShowModal }: Props) => {
 
   return (
     <form className={styles.form}>
-      {ProjectFormFields.map((field) => (
-        <React.Fragment key={field.name}>
-          {field.component === 'input' && (
-            <InputField
-              register={register}
-              errors={errors}
-              name={field.name}
-              label={field.label}
-            />
-          )}
-          {field.component === 'textarea' && (
-            <TextareaField
-              register={register}
-              errors={errors}
-              name={field.name}
-              label={field.label}
-            />
-          )}
-          {field.component === 'select' && (
-            <>
-              <SelectField
-                control={control}
-                errors={errors}
-                name={field.name}
-                label={field.label}
-                options={field.options ?? GDDOptions}
-                isMulti={field.isMulti}
-              />
-              {field.name === 'gdd' && (
-                <small>
-                  *Załącz dokument projektowy gry wybierając jedną z dodanych
-                  przez siebie propozycji gier
-                </small>
-              )}
-            </>
-          )}
-          {field.component === 'file' && (
-            <>
-              <FileUploadField
+      {ProjectFormFields.map(
+        ({ name, component, label, options, isMulti, accept, multiple }) => (
+          <React.Fragment key={name}>
+            {component === 'input' && (
+              <InputField
                 register={register}
                 errors={errors}
-                name={field.name}
-                label={field.label}
-                files={watch('images')}
-                accept={field.accept}
-                multiple={field.multiple}
+                name={name}
+                label={label}
               />
-              <small>*Maksymalnie 5 zdjęć o rozmiarze 2 MB</small>
-            </>
-          )}
-        </React.Fragment>
-      ))}
+            )}
+            {component === 'textarea' && (
+              <TextareaField
+                register={register}
+                errors={errors}
+                name={name}
+                label={label}
+              />
+            )}
+            {component === 'select' && (
+              <>
+                <SelectField
+                  control={control}
+                  errors={errors}
+                  name={name}
+                  label={label}
+                  options={options ?? GDDOptions}
+                  isMulti={isMulti}
+                />
+                {name === 'gdd' && (
+                  <small>
+                    *Załącz dokument projektowy gry wybierając jedną z dodanych
+                    przez siebie propozycji gier
+                  </small>
+                )}
+              </>
+            )}
+            {component === 'file' && (
+              <>
+                <FileUploadField
+                  register={register}
+                  errors={errors}
+                  name={name}
+                  label={label}
+                  files={watch('images')}
+                  accept={accept}
+                  multiple={multiple}
+                />
+                <small>*Maksymalnie 5 zdjęć o rozmiarze 2 MB</small>
+              </>
+            )}
+          </React.Fragment>
+        )
+      )}
       <Button
         type={'submit'}
         onClick={handleSubmit(onSubmit)}

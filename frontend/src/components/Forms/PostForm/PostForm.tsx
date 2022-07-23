@@ -54,32 +54,32 @@ const PostForm = ({ post, handleShowModal }: Props) => {
 
   return (
     <form className={styles.form}>
-      {PostFormFields.map((field) => (
-        <React.Fragment key={field.name}>
-          {field.component === 'input' && (
+      {PostFormFields.map(({ name, component, label, options, isMulti }) => (
+        <React.Fragment key={name}>
+          {component === 'input' && (
             <InputField
               register={register}
               errors={errors}
-              name={field.name}
-              label={field.label}
+              name={name}
+              label={label}
             />
           )}
-          {field.component === 'textarea' && (
+          {component === 'textarea' && (
             <TextareaField
               register={register}
               errors={errors}
-              name={field.name}
-              label={field.label}
+              name={name}
+              label={label}
             />
           )}
-          {field.component === 'select' && field.options && (
+          {component === 'select' && options && (
             <SelectField
               control={control}
               errors={errors}
-              name={field.name}
-              label={field.label}
-              options={field.options}
-              isMulti={field.isMulti}
+              name={name}
+              label={label}
+              options={options}
+              isMulti={isMulti}
             />
           )}
         </React.Fragment>

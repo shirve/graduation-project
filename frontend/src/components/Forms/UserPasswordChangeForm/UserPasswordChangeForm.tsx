@@ -7,6 +7,7 @@ import InputField from '../../common/FormFields/InputField/InputField'
 import Button from '../../common/Buttons/Button/Button'
 import { UserPasswordChangeViewModel } from '../../../models/Users/UserPasswordChangeViewModel'
 import styles from './UserPasswordChangeForm.module.scss'
+import { UserPasswordChangeFormFields } from '../../../constants/Users/UserPasswordChangeFormFields'
 
 const UserPasswordChangeForm = () => {
   const dispatch = useAppDispatch()
@@ -45,27 +46,15 @@ const UserPasswordChangeForm = () => {
   return (
     <form>
       <div className={styles.card}>
-        <InputField
-          register={register}
-          errors={errors}
-          name={'oldPassword'}
-          label={'Stare hasło'}
-          type={'password'}
-        />
-        <InputField
-          register={register}
-          errors={errors}
-          name={'newPassword'}
-          label={'Nowe hasło'}
-          type={'password'}
-        />
-        <InputField
-          register={register}
-          errors={errors}
-          name={'confirmPassword'}
-          label={'Potwierdź nowe hasło'}
-          type={'password'}
-        />
+        {UserPasswordChangeFormFields.map(({ name, label }) => (
+          <InputField
+            register={register}
+            errors={errors}
+            name={name}
+            label={label}
+            type={'password'}
+          />
+        ))}
       </div>
       <Button
         type={'submit'}
