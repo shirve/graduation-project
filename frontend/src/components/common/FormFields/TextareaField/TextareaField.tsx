@@ -1,4 +1,6 @@
+import { useEffect, useRef } from 'react'
 import { UseFormRegister } from 'react-hook-form'
+import autosize from 'autosize'
 import styles from './TextareaField.module.scss'
 
 interface Props {
@@ -22,6 +24,12 @@ const TextareaField = ({
   marginTop,
   marginBottom,
 }: Props) => {
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  useEffect(() => {
+    autosize(textareaRef.current as Element)
+  }, [textareaRef])
+
   return (
     <div className={styles.wrapper} style={{ marginTop, marginBottom }}>
       <label>{label}</label>
@@ -30,6 +38,7 @@ const TextareaField = ({
         className={errors[name] ? styles.invalid : ''}
         placeholder={placeholder}
         disabled={disabled}
+        ref={textareaRef}
       />
       {errors[name] && (
         <span className={styles.error}>{errors[name].message}</span>
