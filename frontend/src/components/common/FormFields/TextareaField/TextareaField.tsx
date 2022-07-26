@@ -24,21 +24,26 @@ const TextareaField = ({
   marginTop,
   marginBottom,
 }: Props) => {
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const { ref, ...rest } = register(name)
+
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null)
 
   useEffect(() => {
-    autosize(textareaRef.current as Element)
+    if (textareaRef.current) autosize(textareaRef.current)
   }, [textareaRef])
 
   return (
     <div className={styles.wrapper} style={{ marginTop, marginBottom }}>
       <label>{label}</label>
       <textarea
-        {...register(name)}
+        {...rest}
+        ref={(e) => {
+          ref(e)
+          textareaRef.current = e
+        }}
         className={errors[name] ? styles.invalid : ''}
         placeholder={placeholder}
         disabled={disabled}
-        ref={textareaRef}
       />
       {errors[name] && (
         <span className={styles.error}>{errors[name].message}</span>
