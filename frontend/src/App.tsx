@@ -5,6 +5,7 @@ import {
   Navigate,
   Outlet,
 } from 'react-router-dom'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import AuthenticationRoute from './components/Routes/AuthenticationRoute/AuthenticationRoute'
@@ -75,6 +76,7 @@ const App = () => {
         </HeaderProvider>
         <ToastContainer />
         <AlertContainer />
+        <ReactQueryDevtools />
       </Router>
     </AuthenticationRoute>
   )
