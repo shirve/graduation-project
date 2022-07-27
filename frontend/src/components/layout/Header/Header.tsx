@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHeaderContext } from '../../../context/header/HeaderContext'
+import { useHeaderContext } from '../../../context/HeaderContext'
 import styles from './Header.module.scss'
 
 const Header = () => {

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useGetUnapprovedPosts } from '../../../features/posts/queries'
-import { useHeaderContext } from '../../../context/header/HeaderContext'
+import { useHeaderContext } from '../../../context/HeaderContext'
 import PostsWrapper from '../../../components/PostsWrapper/PostsWrapper'
 import styles from './UnapprovedPostsPage.module.scss'
 

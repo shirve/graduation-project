@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../app/store'
 import { useGetApprovedProjects } from '../../features/projects/queries'
 import Select from 'react-select'
 import ProjectsWrapper from '../../components/ProjectsWrapper/ProjectsWrapper'
 import Pagination from '../../components/common/Pagination/Pagination'
 import Button from '../../components/common/Buttons/Button/Button'
-import { useHeaderContext } from '../../context/header/HeaderContext'
+import { useHeaderContext } from '../../context/HeaderContext'
+import { useUserContext } from '../../context/UserContext'
 import styles from './ProjectsPage.module.scss'
 import ProjectCreateModal from '../../components/Modals/Projects/ProjectCreateModal/ProjectCreateModal'
 import { GameGenres } from '../../constants/SelectFieldOptions/GameGenres'
@@ -21,14 +20,13 @@ const ProjectsPage = () => {
   const [showProjectFormModal, setShowProjectFormModal] = useState(false)
 
   const { setHeader } = useHeaderContext()
+  const { user } = useUserContext()
 
   const {
     data: { projects = [], pagination: { totalPages = 0 } = {} } = {},
     isLoading,
     refetch,
   } = useGetApprovedProjects({ page, limit, genre: genre?.value })
-
-  const { user } = useSelector((state: RootState) => state.user)
 
   useEffect(() => {
     setHeader('PROJEKTY')

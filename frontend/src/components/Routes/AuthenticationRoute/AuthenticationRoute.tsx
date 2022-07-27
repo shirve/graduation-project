@@ -1,12 +1,7 @@
 import { useState, useEffect } from 'react'
-import {
-  setAxiosAuthorizationHeaders,
-  usersClient,
-} from '../../../api/AxiosClients'
-import { RootState, useAppDispatch } from '../../../app/store'
-import { useSelector } from 'react-redux'
-import { setUser } from '../../../features/users/userSlice'
-import { jwtDecode } from '../../../utils/jwtDecode'
+import { setAxiosAuthorizationHeaders } from '../../../api/AxiosClients'
+import { useAuthenticateUser } from '../../../features/users/queries'
+import { useUserContext } from '../../../context/UserContext'
 import Spinner from '../../common/Spinner/Spinner'
 
 const AuthenticationRoute = ({
@@ -15,23 +10,24 @@ const AuthenticationRoute = ({
   children: JSX.Element
 }): JSX.Element => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
-  const dispatch = useAppDispatch()
-  const { user } = useSelector((state: RootState) => state.user)
+
+  const { user, setUser } = useUserContext()
+
+  const { data, isFetched } = useAuthenticateUser()
 
   const setUserAndAxiosAuthorizationHeaders = async () => {
-    const { data } = await usersClient.get('/')
-    if (data !== '') {
-      dispatch(setUser(data.user))
+    if (data !== '' && data) {
+      setUser(data.user)
       setAxiosAuthorizationHeaders(data.token)
     }
     setIsAuthenticated(true)
   }
 
   useEffect(() => {
-    if (!isAuthenticated && !user) {
+    if (!isAuthenticated && !user && isFetched) {
       setUserAndAxiosAuthorizationHeaders()
     }
-  }, [isAuthenticated, user])
+  }, [isAuthenticated, user, isFetched])
 
   return isAuthenticated ? children : <Spinner centered />
 }

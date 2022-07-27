@@ -1,13 +1,12 @@
-import { useSelector } from 'react-redux'
 import { Navigate, Outlet } from 'react-router-dom'
-import { RootState } from '../../../app/store'
+import { useUserContext } from '../../../context/UserContext'
 
 interface Props {
   allowedRoles?: string[]
 }
 
 const ProtectedRoute = ({ allowedRoles }: Props) => {
-  const { user } = useSelector((state: RootState) => state.user)
+  const { user } = useUserContext()
 
   return (!allowedRoles && user) ||
     user?.roles.find((role) => allowedRoles?.includes(role)) ? (

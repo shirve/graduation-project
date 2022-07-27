@@ -1,37 +1,43 @@
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../app/store'
-import { useAppDispatch } from '../../app/store'
-import { loginUser } from '../../features/users/userSlice'
+import { useLoginUser } from '../../features/users/mutations'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { useHeaderContext } from '../../context/header/HeaderContext'
+import { useHeaderContext } from '../../context/HeaderContext'
+import { useUserContext } from '../../context/UserContext'
 import InputField from '../../components/common/FormFields/InputField/InputField'
 import Button from '../../components/common/Buttons/Button/Button'
 import Spinner from '../../components/common/Spinner/Spinner'
 import { LoginFormFields } from '../../constants/Auth/LoginFormFields'
 import { UserLoginViewModel } from '../../models/Users/UserLoginViewModel'
 import styles from './LoginPage.module.scss'
+import { setAxiosAuthorizationHeaders } from '../../api/AxiosClients'
+import { jwtDecode } from '../../utils/jwtDecode'
 
 const LoginPage = () => {
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
 
   const { setHeader } = useHeaderContext()
+  const { user, setUser } = useUserContext()
 
-  const { user, loading } = useSelector((state: RootState) => state.user)
+  const { mutate: loginUser, isLoading } = useLoginUser({
+    onSuccess: (data: string) => {
+      setAxiosAuthorizationHeaders(data)
+      const decodedUser = jwtDecode(data)
+      setUser(decodedUser)
+    },
+  })
 
   useEffect(() => {
     setHeader('ZALOGUJ SIĘ')
   }, [])
 
   useEffect(() => {
-    if (loading === 'fulfilled' || user) {
+    if (user) {
       navigate('/')
     }
-  }, [user, loading])
+  }, [user])
 
   const loginSchema = yup.object().shape({
     email: yup
@@ -51,10 +57,10 @@ const LoginPage = () => {
   })
 
   const onSubmit = (data: UserLoginViewModel) => {
-    dispatch(loginUser(data))
+    loginUser(data)
   }
 
-  if (loading === 'pending') return <Spinner />
+  if (isLoading) return <Spinner />
 
   return (
     <div className={styles.login}>

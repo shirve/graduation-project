@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGetApprovedPosts } from '../../features/posts/queries'
 import { useGetApprovedProjects } from '../../features/projects/queries'
-import { usersClient } from '../../api/AxiosClients'
+import { useGetUserDetails } from '../../features/users/queries'
 import PostsWrapper from '../../components/PostsWrapper/PostsWrapper'
 import ProjectsWrapper from '../../components/ProjectsWrapper/ProjectsWrapper'
-import { useHeaderContext } from '../../context/header/HeaderContext'
+import { useHeaderContext } from '../../context/HeaderContext'
 import Spinner from '../../components/common/Spinner/Spinner'
-import { UserDetailsViewModel } from '../../models/Users/UserDetailsViewModel'
-import displayAlert from '../../utils/displayAlert'
 import styles from './UserDetailsPage.module.scss'
 
 const UserDetailsPage = () => {
-  const [user, setUser] = useState<UserDetailsViewModel>()
-  const [userLoading, setUserLoading] = useState(true)
-
   const { userId } = useParams()
   const { setHeader } = useHeaderContext()
 
@@ -30,28 +25,11 @@ const UserDetailsPage = () => {
     refetch: refetchApprovedProjects,
   } = useGetApprovedProjects({ user: userId })
 
+  const { data: user, isLoading: userLoading } = useGetUserDetails(userId ?? '')
+
   useEffect(() => {
     setHeader('PROFIL UŻYTKOWNIKA')
   }, [])
-
-  useEffect(() => {
-    if (userId !== undefined) {
-      getUser(userId)
-    }
-  }, [])
-
-  const getUser = async (userId: string) => {
-    await usersClient
-      .get(`/${userId}`)
-      .then((res) => {
-        setUser(res.data)
-        setUserLoading(false)
-      })
-      .catch((error) => {
-        displayAlert(error.response.data)
-        setUserLoading(false)
-      })
-  }
 
   if (userLoading || postsLoading || projectsLoading) {
     return <Spinner />

@@ -1,8 +1,7 @@
 import React, { ReactElement, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../../app/store'
 import { useApprovePost, useLikePost } from '../../../features/posts/mutations'
+import { useUserContext } from '../../../context/UserContext'
 import { ObjectId } from 'mongoose'
 import { IoGameControllerOutline, IoGameController } from 'react-icons/io5'
 import { PostViewModel } from '../../../models/Posts/PostViewModel'
@@ -46,7 +45,7 @@ const PostItem = ({
     onSuccess: () => onRefetch?.(),
   })
 
-  const { user } = useSelector((state: RootState) => state.user)
+  const { user } = useUserContext()
 
   useEffect(() => {
     if (!displayedButtons?.includes('readMore')) {

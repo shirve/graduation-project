@@ -1,39 +1,43 @@
 import { useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../app/store'
-import { useAppDispatch } from '../../app/store'
-import { registerUser } from '../../features/users/userSlice'
+import { useRegisterUser } from '../../features/users/mutations'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { useHeaderContext } from '../../context/header/HeaderContext'
+import { useHeaderContext } from '../../context/HeaderContext'
+import { useUserContext } from '../../context/UserContext'
 import InputField from '../../components/common/FormFields/InputField/InputField'
 import Spinner from '../../components/common/Spinner/Spinner'
 import Button from '../../components/common/Buttons/Button/Button'
 import { RegisterFormFields } from '../../constants/Auth/RegisterFormFields'
 import { UserRegisterViewModel } from '../../models/Users/UserRegisterViewModel'
 import styles from './RegisterPage.module.scss'
+import { setAxiosAuthorizationHeaders } from '../../api/AxiosClients'
+import { jwtDecode } from '../../utils/jwtDecode'
 
 const RegisterPage = () => {
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
 
   const { setHeader } = useHeaderContext()
+  const { user, setUser } = useUserContext()
 
-  const { user, loading, serverErrors } = useSelector(
-    (state: RootState) => state.user
-  )
+  const { mutate: registerUser, isLoading } = useRegisterUser({
+    onSuccess: (data: string) => {
+      setAxiosAuthorizationHeaders(data)
+      const decodedUser = jwtDecode(data)
+      setUser(decodedUser)
+    },
+  })
 
   useEffect(() => {
     setHeader('ZAREJESTRUJ SIĘ')
   }, [])
 
   useEffect(() => {
-    if (loading === 'fulfilled' || user) {
+    if (user) {
       navigate('/')
     }
-  }, [user, loading])
+  }, [user])
 
   const registerSchema = yup.object().shape({
     firstName: yup
@@ -87,10 +91,10 @@ const RegisterPage = () => {
   })
 
   const onSubmit = (data: UserRegisterViewModel) => {
-    dispatch(registerUser(data))
+    registerUser(data)
   }
 
-  if (loading === 'pending') return <Spinner />
+  if (isLoading) return <Spinner />
 
   return (
     <div className={styles.register}>
@@ -100,9 +104,9 @@ const RegisterPage = () => {
             key={field.name}
             register={register}
             errors={errors}
-            serverError={
-              serverErrors?.find((error) => error.param === field.name)?.msg
-            }
+            // serverError={
+            //   serverErrors?.find((error) => error.param === field.name)?.msg
+            // }
             name={field.name}
             label={field.label}
             type={field.type}

@@ -1,8 +1,7 @@
-import { useAppDispatch } from '../../../app/store'
-import { changePassword } from '../../../features/users/userSlice'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useChangePassword } from '../../../features/users/mutations'
 import InputField from '../../common/FormFields/InputField/InputField'
 import Button from '../../common/Buttons/Button/Button'
 import { UserPasswordChangeViewModel } from '../../../models/Users/UserPasswordChangeViewModel'
@@ -10,7 +9,7 @@ import styles from './UserPasswordChangeForm.module.scss'
 import { UserPasswordChangeFormFields } from '../../../constants/Users/UserPasswordChangeFormFields'
 
 const UserPasswordChangeForm = () => {
-  const dispatch = useAppDispatch()
+  const { mutate: changePassword } = useChangePassword()
 
   const passwordChangeSchema = yup.object().shape({
     oldPassword: yup.string().required('To pole jest wymagane'),
@@ -39,7 +38,7 @@ const UserPasswordChangeForm = () => {
   })
 
   const onSubmit = (data: UserPasswordChangeViewModel) => {
-    dispatch(changePassword(data))
+    changePassword(data)
     reset()
   }
 

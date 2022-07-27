@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../app/store'
 import { useGetApprovedPosts } from '../../features/posts/queries'
-import { useHeaderContext } from '../../context/header/HeaderContext'
+import { useHeaderContext } from '../../context/HeaderContext'
+import { useUserContext } from '../../context/UserContext'
 import Select from 'react-select'
 import { GameGenres } from '../../constants/SelectFieldOptions/GameGenres'
 import { SelectFieldOptionViewModel } from '../../models/Forms/SelectFieldOptionViewModel'
@@ -21,14 +20,13 @@ const PostsPage = () => {
   const [showPostFormModal, setShowPostFormModal] = useState<boolean>(false)
 
   const { setHeader } = useHeaderContext()
+  const { user } = useUserContext()
 
   const {
     data: { posts = [], pagination: { totalPages = 0 } = {} } = {},
     isLoading,
     refetch,
   } = useGetApprovedPosts({ page, limit, genre: genre?.value })
-
-  const { user } = useSelector((state: RootState) => state.user)
 
   useEffect(() => {
     setHeader('PROPOZYCJE GIER')

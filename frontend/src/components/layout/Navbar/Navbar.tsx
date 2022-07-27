@@ -1,23 +1,27 @@
 import { useEffect, useState } from 'react'
 import { FaChevronDown } from 'react-icons/fa'
-import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { RootState } from '../../../app/store'
-import { logoutUser } from '../../../features/users/userSlice'
+import { useLogoutUser } from '../../../features/users/mutations'
+import { useUserContext } from '../../../context/UserContext'
 import './Navbar.scss'
 
 const Navbar = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { user } = useSelector((state: RootState) => state.user)
   const [showDropdownList, setShowDropdownList] = useState(false)
+
+  const { user, setUser } = useUserContext()
+
+  const { mutate: logoutUser } = useLogoutUser({
+    onSuccess: () => setUser(null),
+  })
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     setShowDropdownList(false)
   }, [navigate])
 
   const handleLogout = () => {
-    dispatch(logoutUser())
+    logoutUser()
     navigate('/')
   }
 

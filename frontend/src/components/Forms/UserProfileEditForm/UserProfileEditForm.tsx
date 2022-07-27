@@ -1,21 +1,26 @@
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from '../../../app/store'
-import { updateUser } from '../../../features/users/userSlice'
+import { useUpdateUser } from '../../../features/users/mutations'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useUserContext } from '../../../context/UserContext'
 import InputField from '../../common/FormFields/InputField/InputField'
 import TextareaField from '../../common/FormFields/TextareaField/TextareaField'
 import Button from '../../common/Buttons/Button/Button'
 import { UserDetailsViewModel } from '../../../models/Users/UserDetailsViewModel'
+import { UserViewModel } from '../../../models/Users/UserViewModel'
+import { AlertViewModel } from '../../../models/Alert/AlertViewModel'
 import styles from './UserProfileEditForm.module.scss'
 import { UserProfileEditFormFields } from '../../../constants/Users/UserProfileEditFormFields'
 
 const UserProfileEditForm = () => {
-  const { user } = useSelector((state: RootState) => state.user)
+  const { user, setUser } = useUserContext()
 
-  const dispatch = useAppDispatch()
+  const { mutate: updateUser } = useUpdateUser({
+    onSuccess: (data: { user: UserViewModel; alert: AlertViewModel }) => {
+      setUser(data.user)
+    },
+  })
 
   const profileEditSchema = yup.object().shape({
     github: yup
@@ -45,7 +50,7 @@ const UserProfileEditForm = () => {
   }, [user])
 
   const onSubmit = (data: UserDetailsViewModel) => {
-    dispatch(updateUser(data))
+    updateUser(data)
   }
 
   return (

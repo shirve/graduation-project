@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useGetUnapprovedProjects } from '../../../features/projects/queries'
-import { useHeaderContext } from '../../../context/header/HeaderContext'
+import { useHeaderContext } from '../../../context/HeaderContext'
 import ProjectsWrapper from '../../../components/ProjectsWrapper/ProjectsWrapper'
 import styles from './UnapprovedProjectsPage.module.scss'
 

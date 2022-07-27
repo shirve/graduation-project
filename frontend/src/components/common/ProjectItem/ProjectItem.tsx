@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../../app/store'
 import {
   useApproveProject,
   useLikeProject,
 } from '../../../features/projects/mutations'
+import { useUserContext } from '../../../context/UserContext'
 import { ProjectViewModel } from '../../../models/Projects/ProjectViewModel'
 import { ProjectButtonTypes } from '../../../models/Projects/ProjectButtonTypes'
 import { ObjectId } from 'mongoose'
@@ -39,7 +38,7 @@ const ProjectItem = ({
     onSuccess: () => onRefetch?.(),
   })
 
-  const { user } = useSelector((state: RootState) => state.user)
+  const { user } = useUserContext()
 
   const handleProjectApprove = (projectId: ObjectId) => {
     approveProject(projectId)

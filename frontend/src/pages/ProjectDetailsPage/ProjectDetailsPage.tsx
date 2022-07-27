@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useGetProjectDetails } from '../../features/projects/queries'
-import { useHeaderContext } from '../../context/header/HeaderContext'
+import { useHeaderContext } from '../../context/HeaderContext'
 import ProjectItem from '../../components/common/ProjectItem/ProjectItem'
 import Spinner from '../../components/common/Spinner/Spinner'
 import styles from './ProjectDetailsPage.module.scss'

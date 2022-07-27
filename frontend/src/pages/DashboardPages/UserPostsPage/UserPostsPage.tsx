@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useGetUserPosts } from '../../../features/posts/queries'
-import { useHeaderContext } from '../../../context/header/HeaderContext'
+import { useHeaderContext } from '../../../context/HeaderContext'
 import { PostViewModel } from '../../../models/Posts/PostViewModel'
 import PostsWrapper from '../../../components/PostsWrapper/PostsWrapper'
 import styles from './UserPostsPage.module.scss'

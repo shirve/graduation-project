@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useGetPostDetails } from '../../features/posts/queries'
-import { useHeaderContext } from '../../context/header/HeaderContext'
+import { useHeaderContext } from '../../context/HeaderContext'
 import PostItem from '../../components/common/PostItem/PostItem'
 import Spinner from '../../components/common/Spinner/Spinner'
 import styles from './PostDetailsPage.module.scss'

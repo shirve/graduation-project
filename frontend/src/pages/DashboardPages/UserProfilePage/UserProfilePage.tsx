@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useHeaderContext } from '../../../context/header/HeaderContext'
+import { useHeaderContext } from '../../../context/HeaderContext'
 import styles from './UserProfilePage.module.scss'
 import UserProfileEditForm from '../../../components/Forms/UserProfileEditForm/UserProfileEditForm'
 import UserPasswordChangeForm from '../../../components/Forms/UserPasswordChangeForm/UserPasswordChangeForm'

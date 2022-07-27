@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../../app/store'
-import { postsClient } from '../../../api/AxiosClients'
 import {
   useCreateProject,
   useUpdateProject,
 } from '../../../features/projects/mutations'
+import { useGetApprovedPosts } from '../../../features/posts/queries'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
+import { useUserContext } from '../../../context/UserContext'
 import Button from '../../common/Buttons/Button/Button'
 import InputField from '../../common/FormFields/InputField/InputField'
 import TextareaField from '../../common/FormFields/TextareaField/TextareaField'
@@ -29,8 +28,12 @@ interface Props {
 
 const ProjectForm = ({ project, handleShowModal, onRefetch }: Props) => {
   const [GDDOptions, setGDDOptions] = useState<SelectFieldOptionViewModel[]>([])
-  const { user } = useSelector((state: RootState) => state.user)
 
+  const { user } = useUserContext()
+
+  const { data: userPosts } = useGetApprovedPosts({
+    user: user?._id.toString(),
+  })
   const { mutate: createProject } = useCreateProject()
   const { mutate: updateProject } = useUpdateProject({
     onSuccess: () => onRefetch?.(),
@@ -50,21 +53,13 @@ const ProjectForm = ({ project, handleShowModal, onRefetch }: Props) => {
   })
 
   useEffect(() => {
-    const getGDDOptions = async () => {
-      await postsClient
-        .get('/approved', {
-          params: { user: user?._id },
-        })
-        .then((res) => {
-          setGDDOptions(
-            res.data.posts.map((post: PostViewModel) => {
-              return { value: post._id, label: post.data.title }
-            })
-          )
-        })
+    if (userPosts?.posts) {
+      const userGDDOptions = userPosts.posts.map((post: PostViewModel) => {
+        return { value: post._id.toString(), label: post.data.title }
+      })
+      setGDDOptions(userGDDOptions)
     }
-    getGDDOptions()
-  }, [])
+  }, [userPosts])
 
   const {
     register,
@@ -89,12 +84,11 @@ const ProjectForm = ({ project, handleShowModal, onRefetch }: Props) => {
     formData.append('description', data.description)
     formData.append('github', data.github)
     Array.from(data.images).forEach((image) => {
-      formData.append('images', image)
+      formData.append('images[]', image)
     })
 
-    const genres = data.genres ?? []
-    genres.forEach((genre) => {
-      formData.append('genres', genre)
+    Array.from(data.genres).forEach((genre) => {
+      formData.append('genres[]', genre)
     })
 
     if (data.gdd) {

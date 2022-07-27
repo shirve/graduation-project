@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useGetUserProjects } from '../../../features/projects/queries'
-import { useHeaderContext } from '../../../context/header/HeaderContext'
+import { useHeaderContext } from '../../../context/HeaderContext'
 import ProjectsWrapper from '../../../components/ProjectsWrapper/ProjectsWrapper'
 import { ProjectViewModel } from '../../../models/Projects/ProjectViewModel'
 import styles from './UserProjectsPage.module.scss'

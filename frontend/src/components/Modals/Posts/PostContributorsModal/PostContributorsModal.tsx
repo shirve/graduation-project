@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../../../app/store'
 import { useApplyToContribute } from '../../../../features/posts/mutations'
+import { useUserContext } from '../../../../context/UserContext'
 import Modal from 'react-modal'
 import Button from '../../../common/Buttons/Button/Button'
 import CloseButton from '../../../common/Buttons/CloseButton/CloseButton'
@@ -24,10 +23,11 @@ const PostContributorsModal = ({
 }: Props) => {
   const [message, setMessage] = useState('')
 
+  const { user } = useUserContext()
+
   const { mutate: applyToContribute } = useApplyToContribute({
     onSuccess: () => onRefetch?.(),
   })
-  const { user } = useSelector((state: RootState) => state.user)
 
   const handlePostApplyToContribute = (postId: ObjectId, message: string) => {
     if (

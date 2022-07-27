@@ -1,11 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../app/store'
 import {
   useApproveContributor,
   useRejectContributor,
 } from '../../features/posts/mutations'
+import { useUserContext } from '../../context/UserContext'
 import Button from '../common/Buttons/Button/Button'
 import { PostViewModel } from '../../models/Posts/PostViewModel'
 import { PostContributorStatusTypes } from '../../models/Posts/PostContributorStatusTypes'
@@ -19,13 +18,14 @@ interface Props {
 }
 
 const PostContributors = ({ post, postContributors, onRefetch }: Props) => {
+  const { user } = useUserContext()
+
   const { mutate: approveContributor } = useApproveContributor({
     onSuccess: () => onRefetch?.(),
   })
   const { mutate: rejectContributor } = useRejectContributor({
     onSuccess: () => onRefetch?.(),
   })
-  const { user } = useSelector((state: RootState) => state.user)
 
   const handleApproveContributor = (
     postId: ObjectId,
