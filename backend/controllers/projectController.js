@@ -76,6 +76,11 @@ const getProjectDetails = asyncHandler(async (req, res) => {
     return
   }
 
+  if (!project) {
+    res.status(404).end()
+    return
+  }
+
   if (project.status.approved === false) {
     res.status(404).end()
     return
@@ -97,7 +102,7 @@ const createProject = asyncHandler(async (req, res) => {
   const { gdd, ...data } = req.body
   const images = req.files.map((file) => file.filename)
 
-  await Project.create({
+  const createdProject = await Project.create({
     data: { ...data, images },
     gdd: gdd,
     status: {
@@ -110,9 +115,12 @@ const createProject = asyncHandler(async (req, res) => {
   })
 
   res.status(201).json({
-    type: 'info',
-    message:
-      'Projekt dodany pomyślnie. Przekazano do zatwierdzenia przez administratora.',
+    project: createdProject,
+    alert: {
+      type: 'info',
+      message:
+        'Projekt dodany pomyślnie. Przekazano do zatwierdzenia przez administratora.',
+    },
   })
 })
 
@@ -143,7 +151,7 @@ const deleteProject = asyncHandler(async (req, res) => {
   await project.remove()
 
   res.status(200).json({
-    projectId: req.params.id,
+    project: project,
     alert: { type: 'info', message: 'Projekt usunięto pomyślnie.', time: 2000 },
   })
 })
@@ -229,12 +237,16 @@ const approveProject = asyncHandler(async (req, res) => {
     approved: true,
   }
 
-  await Project.findByIdAndUpdate(req.params.id, project, {
-    new: true,
-  })
+  const updatedProject = await Project.findByIdAndUpdate(
+    req.params.id,
+    project,
+    {
+      new: true,
+    }
+  )
 
   res.status(200).json({
-    projectId: req.params.id,
+    project: updatedProject,
     alert: {
       type: 'info',
       message: 'Projekt zatwierdzono pomyślnie.',
