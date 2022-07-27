@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from '../../../../app/store'
-import { applyToContribute } from '../../../../features/posts/postSlice'
+import { RootState } from '../../../../app/store'
+import { useApplyToContribute } from '../../../../features/posts/mutations'
 import Modal from 'react-modal'
 import Button from '../../../common/Buttons/Button/Button'
 import CloseButton from '../../../common/Buttons/CloseButton/CloseButton'
@@ -13,21 +13,28 @@ interface Props {
   post: PostViewModel
   showModal: boolean
   handleShowModal: () => void
+  onRefetch?: () => void
 }
 
-const PostContributorsModal = ({ post, showModal, handleShowModal }: Props) => {
+const PostContributorsModal = ({
+  post,
+  showModal,
+  handleShowModal,
+  onRefetch,
+}: Props) => {
   const [message, setMessage] = useState('')
 
+  const { mutate: applyToContribute } = useApplyToContribute({
+    onSuccess: () => onRefetch?.(),
+  })
   const { user } = useSelector((state: RootState) => state.user)
-
-  const dispatch = useAppDispatch()
 
   const handlePostApplyToContribute = (postId: ObjectId, message: string) => {
     if (
       !post.contributors.find((contributor) => contributor._id === user?._id) &&
       user?._id !== post.user._id
     ) {
-      dispatch(applyToContribute({ postId, message }))
+      applyToContribute({ postId, message })
       handleShowModal()
       setMessage('')
     }

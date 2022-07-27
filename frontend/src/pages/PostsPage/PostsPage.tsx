@@ -1,12 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import {
-  getApprovedPosts,
-  resetPagination,
-  setPage,
-} from '../../features/posts/postSlice'
-import { RootState, useAppDispatch } from '../../app/store'
+import { RootState } from '../../app/store'
+import { useGetApprovedPosts } from '../../features/posts/queries'
 import HeaderContext from '../../context/header/HeaderContext'
 import Select from 'react-select'
 import { GameGenres } from '../../constants/SelectFieldOptions/GameGenres'
@@ -19,57 +15,27 @@ import Pagination from '../../components/common/Pagination/Pagination'
 import PostCreateModal from '../../components/Modals/Posts/PostCreateModal/PostCreateModal'
 
 const PostsPage = () => {
+  const [page, setPage] = useState(0)
+  const [limit, setLimit] = useState(10)
   const [genre, setGenre] = useState<SelectFieldOptionViewModel | null>(null)
   const [showPostFormModal, setShowPostFormModal] = useState<boolean>(false)
 
-  const dispatch = useAppDispatch()
-
   const { setHeader } = useContext(HeaderContext)
 
-  const { user } = useSelector((state: RootState) => state.user)
-  const { posts, pagination, loading } = useSelector(
-    (state: RootState) => state.posts
-  )
+  const {
+    data: { posts = [], pagination: { totalPages = 0 } = {} } = {},
+    isLoading,
+    refetch,
+  } = useGetApprovedPosts({ page, limit, genre: genre?.value })
 
-  const { page, limit, totalPages } = pagination
+  const { user } = useSelector((state: RootState) => state.user)
 
   useEffect(() => {
     setHeader('PROPOZYCJE GIER')
     return () => {
       setHeader('')
-      dispatch(resetPagination())
     }
   }, [])
-
-  // Fetch posts on component mount or when page changes
-  useEffect(() => {
-    dispatch(
-      getApprovedPosts({
-        page,
-        limit,
-        genre: genre?.value,
-      })
-    )
-    window.scrollTo(0, 0)
-  }, [page])
-
-  useEffect(() => {
-    // If genre changes while on page !== 0 --> set page to 0
-    if (page !== 0) {
-      dispatch(setPage(0))
-    }
-    // If genre changes when on page === 0 --> fetch with current page
-    if (genre && page === 0) {
-      dispatch(
-        getApprovedPosts({
-          page,
-          limit,
-          genre: genre?.value,
-        })
-      )
-      window.scrollTo(0, 0)
-    }
-  }, [genre])
 
   const handleShowPostFormModal = () => {
     setShowPostFormModal((prevState) => !prevState)
@@ -82,12 +48,11 @@ const PostsPage = () => {
         GameGenres.find((gameGenre) => genre === gameGenre.value)?.label ??
         genre,
     })
-    window.scrollTo(0, 0)
   }
 
   const handlePageChange = (newPage: number) => {
     if (page !== newPage) {
-      dispatch(setPage(newPage))
+      setPage(newPage)
     }
   }
 
@@ -126,16 +91,13 @@ const PostsPage = () => {
       {posts.length === 0 && <div>Nie znaleziono postów</div>}
       <PostsWrapper
         posts={posts}
-        loading={loading}
+        isLoading={isLoading}
         onGenreChange={handleGenreChange}
         displayedButtons={['like', 'contribute', 'readMore', 'delete']}
         postContributors={['approved']}
+        onRefetch={refetch}
       />
-      <Pagination
-        page={page}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+      <Pagination totalPages={totalPages} onPageChange={handlePageChange} />
     </React.Fragment>
   )
 }

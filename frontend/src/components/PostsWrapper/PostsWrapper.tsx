@@ -7,30 +7,33 @@ import Spinner from '../common/Spinner/Spinner'
 
 interface Props {
   posts: PostViewModel[]
-  loading?: string
+  isLoading?: boolean
   onGenreChange?: (genre: string) => void
   displayedButtons?: PostButtonTypes[]
   postContributors?: PostContributorStatusTypes[]
+  onRefetch?: () => void
 }
 
 const PostsWrapper = ({
   posts,
-  loading,
+  isLoading,
   onGenreChange,
   displayedButtons,
   postContributors,
+  onRefetch,
 }: Props) => {
-  if (loading === 'pending') return <Spinner />
+  if (isLoading) return <Spinner />
 
   return (
     <React.Fragment>
-      {posts.map((post, index) => (
+      {posts.map((post) => (
         <PostItem
-          key={index}
+          key={post._id.toString()}
           post={post}
           onGenreChange={onGenreChange}
           displayedButtons={displayedButtons}
           postContributors={postContributors}
+          onRefetch={onRefetch}
         />
       ))}
     </React.Fragment>

@@ -1,5 +1,4 @@
-import { useAppDispatch } from '../../../../app/store'
-import { deletePost } from '../../../../features/posts/postSlice'
+import { useDeletePost } from '../../../../features/posts/mutations'
 import Modal from 'react-modal'
 import Button from '../../../common/Buttons/Button/Button'
 import { PostViewModel } from '../../../../models/Posts/PostViewModel'
@@ -10,13 +9,21 @@ interface Props {
   post: PostViewModel
   showModal: boolean
   handleShowModal: () => void
+  onRefetch?: () => void
 }
 
-const PostDeleteModal = ({ post, showModal, handleShowModal }: Props) => {
-  const dispatch = useAppDispatch()
+const PostDeleteModal = ({
+  post,
+  showModal,
+  handleShowModal,
+  onRefetch,
+}: Props) => {
+  const { mutate: deletePost } = useDeletePost({
+    onSuccess: () => onRefetch?.(),
+  })
 
   const handlePostDelete = (postId: ObjectId) => {
-    dispatch(deletePost(postId))
+    deletePost(postId)
     handleShowModal()
   }
 

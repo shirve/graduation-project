@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { getUserPosts } from '../../../features/posts/postSlice'
-import { RootState } from '../../../app/store'
+import { useGetUserPosts } from '../../../features/posts/queries'
 import HeaderContext from '../../../context/header/HeaderContext'
 import { PostViewModel } from '../../../models/Posts/PostViewModel'
 import PostsWrapper from '../../../components/PostsWrapper/PostsWrapper'
@@ -10,11 +8,9 @@ import styles from './UserPostsPage.module.scss'
 type FilterType = 'approved' | 'unapproved' | 'rejected'
 
 const UserPostsPage = () => {
-  const dispatch = useDispatch()
-
   const { setHeader } = useContext(HeaderContext)
 
-  const { posts, loading } = useSelector((state: RootState) => state.posts)
+  const { data: posts = [], isFetched, isLoading, refetch } = useGetUserPosts()
 
   const [filterType, setFilterType] = useState<FilterType>('approved')
   const [filteredPosts, setFilteredPosts] = useState<PostViewModel[]>([])
@@ -50,18 +46,14 @@ const UserPostsPage = () => {
   }, [])
 
   useEffect(() => {
-    handleFilterChange(filterType)
-  }, [posts])
+    if (isFetched) handleFilterChange(filterType)
+  }, [isFetched])
 
   useEffect(() => {
     setHeader('TWOJE PROPOZYCJE GIER')
     return () => {
       setHeader('')
     }
-  }, [])
-
-  useEffect(() => {
-    dispatch(getUserPosts())
   }, [])
 
   return (
@@ -104,9 +96,10 @@ const UserPostsPage = () => {
       )}
       <PostsWrapper
         posts={filteredPosts}
-        loading={loading}
+        isLoading={isLoading}
         displayedButtons={['edit', 'delete']}
         postContributors={['approved', 'unapproved']}
+        onRefetch={refetch}
       />
     </React.Fragment>
   )

@@ -1,24 +1,45 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from '../../app/store'
+import { RootState } from '../../app/store'
 import {
-  approveContributor,
-  rejectContributor,
-} from '../../features/posts/postSlice'
+  useApproveContributor,
+  useRejectContributor,
+} from '../../features/posts/mutations'
 import Button from '../common/Buttons/Button/Button'
 import { PostViewModel } from '../../models/Posts/PostViewModel'
 import { PostContributorStatusTypes } from '../../models/Posts/PostContributorStatusTypes'
+import { ObjectId } from 'mongoose'
 import styles from './PostContributors.module.scss'
 
 interface Props {
   post: PostViewModel
   postContributors?: PostContributorStatusTypes[]
+  onRefetch?: () => void
 }
 
-const PostContributors = ({ post, postContributors }: Props) => {
+const PostContributors = ({ post, postContributors, onRefetch }: Props) => {
+  const { mutate: approveContributor } = useApproveContributor({
+    onSuccess: () => onRefetch?.(),
+  })
+  const { mutate: rejectContributor } = useRejectContributor({
+    onSuccess: () => onRefetch?.(),
+  })
   const { user } = useSelector((state: RootState) => state.user)
-  const dispatch = useAppDispatch()
+
+  const handleApproveContributor = (
+    postId: ObjectId,
+    contributorId: ObjectId
+  ) => {
+    approveContributor({ postId, contributorId })
+  }
+
+  const handleRejectContributor = (
+    postId: ObjectId,
+    contributorId: ObjectId
+  ) => {
+    rejectContributor({ postId, contributorId })
+  }
 
   return (
     <div className={styles.contributors}>
@@ -41,11 +62,9 @@ const PostContributors = ({ post, postContributors }: Props) => {
                           <td>
                             <Button
                               onClick={() =>
-                                dispatch(
-                                  rejectContributor({
-                                    postId: post._id,
-                                    contributorId: contributor._id,
-                                  })
+                                handleRejectContributor(
+                                  post._id,
+                                  contributor._id
                                 )
                               }
                               height={'25px'}
@@ -83,11 +102,9 @@ const PostContributors = ({ post, postContributors }: Props) => {
                         <td>
                           <Button
                             onClick={() =>
-                              dispatch(
-                                approveContributor({
-                                  postId: post._id,
-                                  contributorId: contributor._id,
-                                })
+                              handleApproveContributor(
+                                post._id,
+                                contributor._id
                               )
                             }
                             height={'25px'}
@@ -98,12 +115,7 @@ const PostContributors = ({ post, postContributors }: Props) => {
                         <td>
                           <Button
                             onClick={() =>
-                              dispatch(
-                                rejectContributor({
-                                  postId: post._id,
-                                  contributorId: contributor._id,
-                                })
-                              )
+                              handleRejectContributor(post._id, contributor._id)
                             }
                             height={'25px'}
                           >

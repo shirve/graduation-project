@@ -3,12 +3,11 @@ import { FaAngleRight, FaAngleLeft } from 'react-icons/fa'
 import styles from './Pagination.module.scss'
 
 interface Props {
-  page: number
   totalPages: number
   onPageChange: (newPage: number) => void
 }
 
-const Pagination = ({ page, totalPages, onPageChange }: Props) => {
+const Pagination = ({ totalPages, onPageChange }: Props) => {
   if (totalPages === 1) return null
 
   return (
@@ -20,7 +19,6 @@ const Pagination = ({ page, totalPages, onPageChange }: Props) => {
       pageRangeDisplayed={2}
       marginPagesDisplayed={2}
       pageCount={totalPages}
-      initialPage={page}
       containerClassName={styles.pagination}
       activeClassName={styles.active}
       disabledClassName={styles.disabled}

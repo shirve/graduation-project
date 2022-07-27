@@ -1,8 +1,8 @@
 import React, { ReactElement, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { RootState } from '../../../app/store'
-import { approvePost, likePost } from '../../../features/posts/postSlice'
+import { useApprovePost, useLikePost } from '../../../features/posts/mutations'
 import { ObjectId } from 'mongoose'
 import { IoGameControllerOutline, IoGameController } from 'react-icons/io5'
 import { PostViewModel } from '../../../models/Posts/PostViewModel'
@@ -22,6 +22,7 @@ interface Props {
   onGenreChange?: (genre: string) => void
   displayedButtons?: PostButtonTypes[]
   postContributors?: PostContributorStatusTypes[]
+  onRefetch?: () => void
 }
 
 const PostItem = ({
@@ -29,6 +30,7 @@ const PostItem = ({
   onGenreChange,
   displayedButtons,
   postContributors,
+  onRefetch,
 }: Props): ReactElement => {
   const [readMore, setReadMore] = useState(false)
   const [showPostDeleteModal, setShowPostDeleteModal] = useState(false)
@@ -37,9 +39,13 @@ const PostItem = ({
   const [showPostContributorsModal, setShowPostContributorsModal] =
     useState(false)
 
+  const { mutate: approvePost } = useApprovePost({
+    onSuccess: () => onRefetch?.(),
+  })
+  const { mutate: likePost } = useLikePost({
+    onSuccess: () => onRefetch?.(),
+  })
   const { user } = useSelector((state: RootState) => state.user)
-
-  const dispatch = useDispatch()
 
   useEffect(() => {
     if (!displayedButtons?.includes('readMore')) {
@@ -48,12 +54,12 @@ const PostItem = ({
   }, [])
 
   const handlePostApprove = (postId: ObjectId) => {
-    dispatch(approvePost(postId))
+    approvePost(postId)
   }
 
   const handlePostLike = (postId: ObjectId) => {
     if (user) {
-      dispatch(likePost(postId))
+      likePost(postId)
     }
   }
 
@@ -193,7 +199,11 @@ const PostItem = ({
           )}
         </div>
         {readMore && postContributors && (
-          <PostContributors post={post} postContributors={postContributors} />
+          <PostContributors
+            post={post}
+            postContributors={postContributors}
+            onRefetch={onRefetch}
+          />
         )}
         {post.status.rejected && (
           <div className={styles.status}>
@@ -206,21 +216,25 @@ const PostItem = ({
         post={post}
         showModal={showPostDeleteModal}
         handleShowModal={handleShowPostDeleteModal}
+        onRefetch={onRefetch}
       />
       <PostEditModal
         post={post}
         showModal={showPostEditModal}
         handleShowModal={handleShowPostEditModal}
+        onRefetch={onRefetch}
       />
       <PostRejectModal
         post={post}
         showModal={showPostRejectModal}
         handleShowModal={handleShowPostRejectModal}
+        onRefetch={onRefetch}
       />
       <PostContributorsModal
         post={post}
         showModal={showPostContributorsModal}
         handleShowModal={handleShowPostContributorsModal}
+        onRefetch={onRefetch}
       />
     </React.Fragment>
   )

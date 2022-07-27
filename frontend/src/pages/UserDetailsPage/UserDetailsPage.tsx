@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState, useAppDispatch } from '../../app/store'
-import { getApprovedPosts } from '../../features/posts/postSlice'
+import { useGetApprovedPosts } from '../../features/posts/queries'
 import { getApprovedProjects } from '../../features/projects/projectSlice'
 import { usersClient } from '../../api/AxiosClients'
 import PostsWrapper from '../../components/PostsWrapper/PostsWrapper'
@@ -20,9 +20,12 @@ const UserDetailsPage = () => {
   const { userId } = useParams()
   const { setHeader } = useContext(HeaderContext)
 
-  const { posts, loading: postsLoading } = useSelector(
-    (state: RootState) => state.posts
-  )
+  const {
+    data: { posts = [] } = {},
+    isLoading: postsLoading,
+    refetch: refetchApprovedPosts,
+  } = useGetApprovedPosts({ user: userId })
+
   const { projects, loading: projectsLoading } = useSelector(
     (state: RootState) => state.projects
   )
@@ -39,7 +42,6 @@ const UserDetailsPage = () => {
   useEffect(() => {
     if (userId !== undefined) {
       getUser(userId)
-      dispatch(getApprovedPosts({ user: userId }))
       dispatch(getApprovedProjects({ user: userId }))
     }
   }, [])
@@ -57,11 +59,7 @@ const UserDetailsPage = () => {
       })
   }
 
-  if (
-    userLoading ||
-    postsLoading === 'pending' ||
-    projectsLoading === 'pending'
-  ) {
+  if (userLoading || postsLoading || projectsLoading === 'pending') {
     return <Spinner />
   }
 
@@ -110,9 +108,10 @@ const UserDetailsPage = () => {
             {posts.length === 0 && <div>Nie znaleziono postów</div>}
             <PostsWrapper
               posts={posts}
-              loading={postsLoading}
+              isLoading={postsLoading}
               displayedButtons={['like', 'contribute', 'delete']}
               postContributors={['approved']}
+              onRefetch={refetchApprovedPosts}
             />
           </div>
           <div className={styles.projects}>

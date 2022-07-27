@@ -8,9 +8,15 @@ interface Props {
   post: PostViewModel
   showModal: boolean
   handleShowModal: () => void
+  onRefetch?: () => void
 }
 
-const PostEditModal = ({ post, showModal, handleShowModal }: Props) => {
+const PostEditModal = ({
+  post,
+  showModal,
+  handleShowModal,
+  onRefetch,
+}: Props) => {
   return (
     <Modal
       appElement={document.getElementById('root') || undefined}
@@ -22,7 +28,11 @@ const PostEditModal = ({ post, showModal, handleShowModal }: Props) => {
         <h4>Edytuj propozycje gry</h4>
         <CloseButton onClick={handleShowModal} />
       </div>
-      <PostForm post={post} handleShowModal={handleShowModal} />
+      <PostForm
+        post={post}
+        handleShowModal={handleShowModal}
+        onRefetch={onRefetch}
+      />
     </Modal>
   )
 }

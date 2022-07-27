@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { useAppDispatch } from '../../../../app/store'
-import { rejectPost } from '../../../../features/posts/postSlice'
+import { useRejectPost } from '../../../../features/posts/mutations'
 import Modal from 'react-modal'
 import Button from '../../../common/Buttons/Button/Button'
 import CloseButton from '../../../common/Buttons/CloseButton/CloseButton'
@@ -12,15 +11,23 @@ interface Props {
   post: PostViewModel
   showModal: boolean
   handleShowModal: () => void
+  onRefetch?: () => void
 }
 
-const PostRejectModal = ({ post, showModal, handleShowModal }: Props) => {
+const PostRejectModal = ({
+  post,
+  showModal,
+  handleShowModal,
+  onRefetch,
+}: Props) => {
   const [message, setMessage] = useState('')
 
-  const dispatch = useAppDispatch()
+  const { mutate: rejectPost } = useRejectPost({
+    onSuccess: () => onRefetch?.(),
+  })
 
   const handlePostReject = (postId: ObjectId, message: string) => {
-    dispatch(rejectPost({ postId, message }))
+    rejectPost({ postId, message })
     handleShowModal()
   }
 

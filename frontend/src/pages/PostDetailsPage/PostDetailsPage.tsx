@@ -1,8 +1,6 @@
 import { useEffect, useContext } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from '../../app/store'
-import { getPostDetails } from '../../features/posts/postSlice'
+import { useGetPostDetails } from '../../features/posts/queries'
 import HeaderContext from '../../context/header/HeaderContext'
 import PostItem from '../../components/common/PostItem/PostItem'
 import Spinner from '../../components/common/Spinner/Spinner'
@@ -13,9 +11,8 @@ const PostDetailsPage = () => {
   const { postId } = useParams()
   const { setHeader } = useContext(HeaderContext)
 
-  const { posts, loading } = useSelector((state: RootState) => state.posts)
+  const { data: post, isError, refetch } = useGetPostDetails(postId ?? '')
 
-  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -26,21 +23,16 @@ const PostDetailsPage = () => {
   }, [])
 
   useEffect(() => {
-    if (postId !== undefined) {
-      dispatch(getPostDetails(postId))
-    }
-  }, [postId])
+    if (isError) navigate('/not-found')
+  }, [isError])
 
-  useEffect(() => {
-    if (loading === 'failed') navigate('/not-found')
-  }, [loading])
-
-  return posts.length > 0 ? (
+  return post ? (
     <>
       <PostItem
-        post={posts[0]}
+        post={post}
         displayedButtons={['like', 'contribute', 'delete']}
         postContributors={['approved']}
+        onRefetch={refetch}
       />
       <div className={styles.return}>
         <Link to={'/posts'}>
