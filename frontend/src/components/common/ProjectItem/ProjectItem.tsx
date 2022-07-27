@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from '../../../app/store'
+import { RootState } from '../../../app/store'
 import {
-  approveProject,
-  likeProject,
-} from '../../../features/projects/projectSlice'
+  useApproveProject,
+  useLikeProject,
+} from '../../../features/projects/mutations'
 import { ProjectViewModel } from '../../../models/Projects/ProjectViewModel'
 import { ProjectButtonTypes } from '../../../models/Projects/ProjectButtonTypes'
 import { ObjectId } from 'mongoose'
@@ -20,22 +20,34 @@ interface Props {
   project: ProjectViewModel
   displayedButtons?: ProjectButtonTypes[]
   onGenreChange?: (genre: string) => void
+  onRefetch?: () => void
 }
 
-const ProjectItem = ({ project, displayedButtons, onGenreChange }: Props) => {
+const ProjectItem = ({
+  project,
+  displayedButtons,
+  onGenreChange,
+  onRefetch,
+}: Props) => {
   const [showProjectDeleteModal, setShowProjectDeleteModal] = useState(false)
   const [showProjectEditModal, setShowProjectEditModal] = useState(false)
 
+  const { mutate: approveProject } = useApproveProject({
+    onSuccess: () => onRefetch?.(),
+  })
+  const { mutate: likeProject } = useLikeProject({
+    onSuccess: () => onRefetch?.(),
+  })
+
   const { user } = useSelector((state: RootState) => state.user)
-  const dispatch = useAppDispatch()
 
   const handleProjectApprove = (projectId: ObjectId) => {
-    dispatch(approveProject(projectId))
+    approveProject(projectId)
   }
 
   const handleProjectLike = (projectId: ObjectId) => {
     if (user) {
-      dispatch(likeProject(projectId))
+      likeProject(projectId)
     }
   }
 
@@ -124,11 +136,13 @@ const ProjectItem = ({ project, displayedButtons, onGenreChange }: Props) => {
         project={project}
         showModal={showProjectDeleteModal}
         handleShowModal={handleShowProjectDeleteModal}
+        onRefetch={onRefetch}
       />
       <ProjectEditModal
         project={project}
         showModal={showProjectEditModal}
         handleShowModal={handleShowProjectEditModal}
+        onRefetch={onRefetch}
       />
     </React.Fragment>
   )

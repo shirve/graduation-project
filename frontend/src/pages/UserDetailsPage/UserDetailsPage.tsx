@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from '../../app/store'
 import { useGetApprovedPosts } from '../../features/posts/queries'
-import { getApprovedProjects } from '../../features/projects/projectSlice'
+import { useGetApprovedProjects } from '../../features/projects/queries'
 import { usersClient } from '../../api/AxiosClients'
 import PostsWrapper from '../../components/PostsWrapper/PostsWrapper'
 import ProjectsWrapper from '../../components/ProjectsWrapper/ProjectsWrapper'
@@ -26,11 +24,11 @@ const UserDetailsPage = () => {
     refetch: refetchApprovedPosts,
   } = useGetApprovedPosts({ user: userId })
 
-  const { projects, loading: projectsLoading } = useSelector(
-    (state: RootState) => state.projects
-  )
-
-  const dispatch = useAppDispatch()
+  const {
+    data: { projects = [] } = {},
+    isLoading: projectsLoading,
+    refetch: refetchApprovedProjects,
+  } = useGetApprovedProjects({ user: userId })
 
   useEffect(() => {
     setHeader('PROFIL UŻYTKOWNIKA')
@@ -42,7 +40,6 @@ const UserDetailsPage = () => {
   useEffect(() => {
     if (userId !== undefined) {
       getUser(userId)
-      dispatch(getApprovedProjects({ user: userId }))
     }
   }, [])
 
@@ -59,7 +56,7 @@ const UserDetailsPage = () => {
       })
   }
 
-  if (userLoading || postsLoading || projectsLoading === 'pending') {
+  if (userLoading || postsLoading || projectsLoading) {
     return <Spinner />
   }
 
@@ -121,8 +118,9 @@ const UserDetailsPage = () => {
             {projects.length === 0 && <div>Nie znaleziono projektów</div>}
             <ProjectsWrapper
               projects={projects}
-              loading={projectsLoading}
+              isLoading={projectsLoading}
               displayedButtons={['like', 'delete']}
+              onRefetch={refetchApprovedProjects}
             />
           </div>
         </React.Fragment>

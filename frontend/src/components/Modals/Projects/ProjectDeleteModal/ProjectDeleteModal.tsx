@@ -1,5 +1,4 @@
-import { useAppDispatch } from '../../../../app/store'
-import { deleteProject } from '../../../../features/projects/projectSlice'
+import { useDeleteProject } from '../../../../features/projects/mutations'
 import Modal from 'react-modal'
 import Button from '../../../common/Buttons/Button/Button'
 import { ProjectViewModel } from '../../../../models/Projects/ProjectViewModel'
@@ -10,13 +9,21 @@ interface Props {
   project: ProjectViewModel
   showModal: boolean
   handleShowModal: () => void
+  onRefetch?: () => void
 }
 
-const ProjectDeleteModal = ({ project, showModal, handleShowModal }: Props) => {
-  const dispatch = useAppDispatch()
+const ProjectDeleteModal = ({
+  project,
+  showModal,
+  handleShowModal,
+  onRefetch,
+}: Props) => {
+  const { mutate: deleteProject } = useDeleteProject({
+    onSuccess: () => onRefetch?.(),
+  })
 
   const handleProjectDelete = (projectId: ObjectId) => {
-    dispatch(deleteProject(projectId))
+    deleteProject(projectId)
     handleShowModal()
   }
 

@@ -1,8 +1,6 @@
 import { useEffect, useContext } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from '../../app/store'
-import { getProjectDetails } from '../../features/projects/projectSlice'
+import { useGetProjectDetails } from '../../features/projects/queries'
 import HeaderContext from '../../context/header/HeaderContext'
 import ProjectItem from '../../components/common/ProjectItem/ProjectItem'
 import Spinner from '../../components/common/Spinner/Spinner'
@@ -13,11 +11,12 @@ const ProjectDetailsPage = () => {
   const { projectId } = useParams()
   const { setHeader } = useContext(HeaderContext)
 
-  const { projects, loading } = useSelector(
-    (state: RootState) => state.projects
-  )
+  const {
+    data: project,
+    isError,
+    refetch,
+  } = useGetProjectDetails(projectId ?? '')
 
-  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -28,20 +27,15 @@ const ProjectDetailsPage = () => {
   }, [])
 
   useEffect(() => {
-    if (projectId !== undefined) {
-      dispatch(getProjectDetails(projectId))
-    }
-  }, [projectId])
+    if (isError) navigate('/not-found')
+  }, [isError])
 
-  useEffect(() => {
-    if (loading === 'failed') navigate('/not-found')
-  }, [loading])
-
-  return projects.length > 0 ? (
+  return project ? (
     <>
       <ProjectItem
-        project={projects[0]}
+        project={project}
         displayedButtons={['like', 'delete']}
+        onRefetch={refetch}
       />
       <div className={styles.return}>
         <Link to={'/projects'}>

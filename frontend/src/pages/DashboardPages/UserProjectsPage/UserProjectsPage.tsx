@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { RootState } from '../../../app/store'
-import { useSelector, useDispatch } from 'react-redux'
-import { getUserProjects } from '../../../features/projects/projectSlice'
+import { useGetUserProjects } from '../../../features/projects/queries'
 import HeaderContext from '../../../context/header/HeaderContext'
 import ProjectsWrapper from '../../../components/ProjectsWrapper/ProjectsWrapper'
 import { ProjectViewModel } from '../../../models/Projects/ProjectViewModel'
@@ -10,13 +8,14 @@ import styles from './UserProjectsPage.module.scss'
 type FilterType = 'approved' | 'unapproved'
 
 const UserProjectsPage = () => {
-  const dispatch = useDispatch()
-
   const { setHeader } = useContext(HeaderContext)
 
-  const { projects, loading } = useSelector(
-    (state: RootState) => state.projects
-  )
+  const {
+    data: projects = [],
+    isFetched,
+    isLoading,
+    refetch,
+  } = useGetUserProjects()
 
   const [filterType, setFilterType] = useState<FilterType>('approved')
   const [filteredProjects, setFilteredProjects] = useState<ProjectViewModel[]>(
@@ -50,18 +49,14 @@ const UserProjectsPage = () => {
   }, [])
 
   useEffect(() => {
-    handleFilterChange(filterType)
-  }, [projects])
+    if (isFetched) handleFilterChange(filterType)
+  }, [isFetched, projects])
 
   useEffect(() => {
     setHeader('TWOJE PROJEKTY')
     return () => {
       setHeader('')
     }
-  }, [])
-
-  useEffect(() => {
-    dispatch(getUserProjects())
   }, [])
 
   return (
@@ -98,8 +93,9 @@ const UserProjectsPage = () => {
       )}
       <ProjectsWrapper
         projects={filteredProjects}
-        loading={loading}
+        isLoading={isLoading}
         displayedButtons={['edit', 'delete']}
+        onRefetch={refetch}
       />
     </React.Fragment>
   )

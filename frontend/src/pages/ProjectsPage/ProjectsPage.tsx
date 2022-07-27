@@ -1,12 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from '../../app/store'
-import {
-  getApprovedProjects,
-  resetPagination,
-  setPage,
-} from '../../features/projects/projectSlice'
+import { RootState } from '../../app/store'
+import { useGetApprovedProjects } from '../../features/projects/queries'
 import Select from 'react-select'
 import ProjectsWrapper from '../../components/ProjectsWrapper/ProjectsWrapper'
 import Pagination from '../../components/common/Pagination/Pagination'
@@ -19,56 +15,27 @@ import { SelectFieldOptionViewModel } from '../../models/Forms/SelectFieldOption
 import { CustomSelectFieldStyles } from '../../styles/SelectField/CustomSelectFieldStyles'
 
 const ProjectsPage = () => {
+  const [page, setPage] = useState(0)
+  const [limit, setLimit] = useState(10)
   const [genre, setGenre] = useState<SelectFieldOptionViewModel | null>(null)
   const [showProjectFormModal, setShowProjectFormModal] = useState(false)
 
-  const dispatch = useAppDispatch()
-
   const { setHeader } = useContext(HeaderContext)
 
-  const { user } = useSelector((state: RootState) => state.user)
-  const { projects, pagination, loading } = useSelector(
-    (state: RootState) => state.projects
-  )
+  const {
+    data: { projects = [], pagination: { totalPages = 0 } = {} } = {},
+    isLoading,
+    refetch,
+  } = useGetApprovedProjects({ page, limit, genre: genre?.value })
 
-  const { page, limit, totalPages } = pagination
+  const { user } = useSelector((state: RootState) => state.user)
 
   useEffect(() => {
     setHeader('PROJEKTY')
     return () => {
       setHeader('')
-      dispatch(resetPagination())
     }
   }, [])
-
-  useEffect(() => {
-    dispatch(
-      getApprovedProjects({
-        page,
-        limit,
-        genre: genre?.value,
-      })
-    )
-    window.scrollTo(0, 0)
-  }, [page])
-
-  useEffect(() => {
-    // If genre changes while on page !== 0 --> set page to 0
-    if (page !== 0) {
-      dispatch(setPage(0))
-    }
-    // If genre changes when on page === 0 --> fetch with current page
-    if (genre && page === 0) {
-      dispatch(
-        getApprovedProjects({
-          page,
-          limit,
-          genre: genre?.value,
-        })
-      )
-      window.scrollTo(0, 0)
-    }
-  }, [genre])
 
   const handleShowProjectFormModal = () => {
     setShowProjectFormModal((prevState) => !prevState)
@@ -81,12 +48,11 @@ const ProjectsPage = () => {
         GameGenres.find((gameGenre) => genre === gameGenre.value)?.label ??
         genre,
     })
-    window.scrollTo(0, 0)
   }
 
   const handlePageChange = (newPage: number) => {
     if (page !== newPage) {
-      dispatch(setPage(newPage))
+      setPage(newPage)
     }
   }
 
@@ -124,15 +90,12 @@ const ProjectsPage = () => {
       {projects.length === 0 && <div>Nie znaleziono projektów</div>}
       <ProjectsWrapper
         projects={projects}
-        loading={loading}
+        isLoading={isLoading}
         displayedButtons={['like', 'delete']}
         onGenreChange={handleGenreChange}
+        onRefetch={refetch}
       />
-      <Pagination
-        page={page}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+      <Pagination totalPages={totalPages} onPageChange={handlePageChange} />
     </React.Fragment>
   )
 }

@@ -6,27 +6,30 @@ import Spinner from '../common/Spinner/Spinner'
 
 interface Props {
   projects: ProjectViewModel[]
-  loading?: string
+  isLoading?: boolean
   displayedButtons?: ProjectButtonTypes[]
   onGenreChange?: (genre: string) => void
+  onRefetch?: () => void
 }
 
 const ProjectsWrapper = ({
   projects,
-  loading,
+  isLoading,
   displayedButtons,
   onGenreChange,
+  onRefetch,
 }: Props) => {
-  if (loading === 'pending') return <Spinner />
+  if (isLoading) return <Spinner />
 
   return (
     <React.Fragment>
-      {projects.map((project, index) => (
+      {projects.map((project) => (
         <ProjectItem
-          key={index}
+          key={project._id.toString()}
           project={project}
           displayedButtons={displayedButtons}
           onGenreChange={onGenreChange}
+          onRefetch={onRefetch}
         />
       ))}
     </React.Fragment>

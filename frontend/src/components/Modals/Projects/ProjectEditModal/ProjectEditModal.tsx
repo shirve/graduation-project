@@ -8,9 +8,15 @@ interface Props {
   project: ProjectViewModel
   showModal: boolean
   handleShowModal: () => void
+  onRefetch?: () => void
 }
 
-const ProjectEditModal = ({ project, showModal, handleShowModal }: Props) => {
+const ProjectEditModal = ({
+  project,
+  showModal,
+  handleShowModal,
+  onRefetch,
+}: Props) => {
   return (
     <Modal
       appElement={document.getElementById('root') || undefined}
@@ -22,7 +28,11 @@ const ProjectEditModal = ({ project, showModal, handleShowModal }: Props) => {
         <h4>Edytuj projekt</h4>
         <CloseButton onClick={handleShowModal} />
       </div>
-      <ProjectForm project={project} handleShowModal={handleShowModal} />
+      <ProjectForm
+        project={project}
+        handleShowModal={handleShowModal}
+        onRefetch={onRefetch}
+      />
     </Modal>
   )
 }

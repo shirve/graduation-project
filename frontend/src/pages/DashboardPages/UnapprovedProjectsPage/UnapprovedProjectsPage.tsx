@@ -1,29 +1,19 @@
 import React, { useContext, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { getUnapprovedProjects } from '../../../features/projects/projectSlice'
-import { RootState } from '../../../app/store'
+import { useGetUnapprovedProjects } from '../../../features/projects/queries'
 import HeaderContext from '../../../context/header/HeaderContext'
 import ProjectsWrapper from '../../../components/ProjectsWrapper/ProjectsWrapper'
 import styles from './UnapprovedProjectsPage.module.scss'
 
 const UnapprovedProjectsPage = () => {
-  const dispatch = useDispatch()
-
   const { setHeader } = useContext(HeaderContext)
 
-  const { projects, loading } = useSelector(
-    (state: RootState) => state.projects
-  )
+  const { data: projects = [], isLoading, refetch } = useGetUnapprovedProjects()
 
   useEffect(() => {
     setHeader('NIEZATWIERDZONE PROJEKTY')
     return () => {
       setHeader('')
     }
-  }, [])
-
-  useEffect(() => {
-    dispatch(getUnapprovedProjects())
   }, [])
 
   return (
@@ -35,8 +25,9 @@ const UnapprovedProjectsPage = () => {
       )}
       <ProjectsWrapper
         projects={projects}
-        loading={loading}
+        isLoading={isLoading}
         displayedButtons={['delete', 'approve']}
+        onRefetch={refetch}
       />
     </React.Fragment>
   )

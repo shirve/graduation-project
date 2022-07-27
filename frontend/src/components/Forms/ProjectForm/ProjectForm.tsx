@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from '../../../app/store'
-import {
-  createProject,
-  updateProject,
-} from '../../../features/projects/projectSlice'
+import { RootState } from '../../../app/store'
 import { postsClient } from '../../../api/AxiosClients'
+import {
+  useCreateProject,
+  useUpdateProject,
+} from '../../../features/projects/mutations'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
@@ -24,12 +24,17 @@ import styles from './ProjectForm.module.scss'
 interface Props {
   project?: ProjectViewModel
   handleShowModal?: () => void
+  onRefetch?: () => void
 }
 
-const ProjectForm = ({ project, handleShowModal }: Props) => {
+const ProjectForm = ({ project, handleShowModal, onRefetch }: Props) => {
   const [GDDOptions, setGDDOptions] = useState<SelectFieldOptionViewModel[]>([])
   const { user } = useSelector((state: RootState) => state.user)
-  const dispatch = useAppDispatch()
+
+  const { mutate: createProject } = useCreateProject()
+  const { mutate: updateProject } = useUpdateProject({
+    onSuccess: () => onRefetch?.(),
+  })
 
   const projectSchema = Yup.object().shape({
     title: Yup.string().required('To pole jest wymagane'),
@@ -96,9 +101,8 @@ const ProjectForm = ({ project, handleShowModal }: Props) => {
       formData.append('gdd', data.gdd)
     }
 
-    if (project)
-      dispatch(updateProject({ projectId: project._id, data: formData }))
-    if (!project) dispatch(createProject(formData))
+    if (project) updateProject({ projectId: project._id, data: formData })
+    if (!project) createProject(formData)
     if (handleShowModal) handleShowModal()
   }
 
