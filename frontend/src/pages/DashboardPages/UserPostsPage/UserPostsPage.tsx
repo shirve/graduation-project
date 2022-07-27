@@ -47,7 +47,7 @@ const UserPostsPage = () => {
 
   useEffect(() => {
     if (isFetched) handleFilterChange(filterType)
-  }, [isFetched])
+  }, [isFetched, posts])
 
   useEffect(() => {
     setHeader('TWOJE PROPOZYCJE GIER')

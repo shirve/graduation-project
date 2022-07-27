@@ -45,6 +45,7 @@ const PostItem = ({
   const { mutate: likePost } = useLikePost({
     onSuccess: () => onRefetch?.(),
   })
+
   const { user } = useSelector((state: RootState) => state.user)
 
   useEffect(() => {
