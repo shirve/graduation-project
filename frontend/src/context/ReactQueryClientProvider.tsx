@@ -10,11 +10,12 @@ interface Props {
   children: React.ReactNode
 }
 
-export const queryClient = new QueryClient({
+const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 5 * 1000,
-      refetchOnReconnect: false,
+      refetchOnWindowFocus: process.env.NODE_ENV === 'production',
+      retry: process.env.NODE_ENV === 'production',
     },
   },
   queryCache: new QueryCache({

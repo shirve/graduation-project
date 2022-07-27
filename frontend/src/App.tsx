@@ -27,7 +27,6 @@ import UnapprovedProjectsPage from './pages/DashboardPages/UnapprovedProjectsPag
 import PostDetailsPage from './pages/PostDetailsPage/PostDetailsPage'
 import ProjectDetailsPage from './pages/ProjectDetailsPage/ProjectDetailsPage'
 import { HeaderProvider } from './context/header/HeaderContext'
-import AlertContainer from './utils/AlertContainer'
 
 const App = () => {
   return (
@@ -75,7 +74,6 @@ const App = () => {
           <Footer />
         </HeaderProvider>
         <ToastContainer />
-        <AlertContainer />
         <ReactQueryDevtools />
       </Router>
     </AuthenticationRoute>
