@@ -80,6 +80,11 @@ const getPostDetails = asyncHandler(async (req, res) => {
     return
   }
 
+  if (!post) {
+    res.status(404).end()
+    return
+  }
+
   if (post.status.approved === false) {
     res.status(404).end()
     return
@@ -98,7 +103,7 @@ const createPost = asyncHandler(async (req, res) => {
     return
   }
 
-  await Post.create({
+  const createdPost = await Post.create({
     data: req.body.data,
     status: {
       approved: false,
@@ -122,9 +127,12 @@ const createPost = asyncHandler(async (req, res) => {
   })
 
   res.status(201).json({
-    type: 'info',
-    message:
-      'Post dodany pomyślnie. Przekazano do zatwierdzenia przez administratora.',
+    post: createdPost,
+    alert: {
+      type: 'info',
+      message:
+        'Post dodany pomyślnie. Przekazano do zatwierdzenia przez administratora.',
+    },
   })
 })
 
@@ -151,7 +159,7 @@ const deletePost = asyncHandler(async (req, res) => {
   await post.remove()
 
   res.status(200).json({
-    postId: req.params.id,
+    post: post,
     alert: { type: 'info', message: 'Post usunięto pomyślnie.', time: 2000 },
   })
 })
@@ -220,12 +228,12 @@ const approvePost = asyncHandler(async (req, res) => {
     message: null,
   }
 
-  await Post.findByIdAndUpdate(req.params.id, post, {
+  const updatedPost = await Post.findByIdAndUpdate(req.params.id, post, {
     new: true,
   })
 
   res.status(200).json({
-    postId: req.params.id,
+    post: updatedPost,
     alert: {
       type: 'info',
       message: 'Post zatwierdzono pomyślnie.',
@@ -257,12 +265,12 @@ const rejectPost = asyncHandler(async (req, res) => {
     message: req.body.message,
   }
 
-  await Post.findByIdAndUpdate(req.params.id, post, {
+  const updatedPost = await Post.findByIdAndUpdate(req.params.id, post, {
     new: true,
   })
 
   res.status(200).json({
-    postId: req.params.id,
+    post: updatedPost,
     alert: { type: 'info', message: 'Post odrzucono pomyślnie.', time: 2000 },
   })
 })
