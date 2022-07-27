@@ -1,19 +1,16 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useGetUnapprovedPosts } from '../../../features/posts/queries'
-import HeaderContext from '../../../context/header/HeaderContext'
+import { useHeaderContext } from '../../../context/header/HeaderContext'
 import PostsWrapper from '../../../components/PostsWrapper/PostsWrapper'
 import styles from './UnapprovedPostsPage.module.scss'
 
 const UnapprovedPostsPage = () => {
-  const { setHeader } = useContext(HeaderContext)
+  const { setHeader } = useHeaderContext()
 
   const { data: posts = [], isLoading, refetch } = useGetUnapprovedPosts()
 
   useEffect(() => {
     setHeader('NIEZATWIERDZONE POSTY')
-    return () => {
-      setHeader('')
-    }
   }, [])
 
   return (

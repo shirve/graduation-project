@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
@@ -7,7 +7,7 @@ import Select from 'react-select'
 import ProjectsWrapper from '../../components/ProjectsWrapper/ProjectsWrapper'
 import Pagination from '../../components/common/Pagination/Pagination'
 import Button from '../../components/common/Buttons/Button/Button'
-import HeaderContext from '../../context/header/HeaderContext'
+import { useHeaderContext } from '../../context/header/HeaderContext'
 import styles from './ProjectsPage.module.scss'
 import ProjectCreateModal from '../../components/Modals/Projects/ProjectCreateModal/ProjectCreateModal'
 import { GameGenres } from '../../constants/SelectFieldOptions/GameGenres'
@@ -20,7 +20,7 @@ const ProjectsPage = () => {
   const [genre, setGenre] = useState<SelectFieldOptionViewModel | null>(null)
   const [showProjectFormModal, setShowProjectFormModal] = useState(false)
 
-  const { setHeader } = useContext(HeaderContext)
+  const { setHeader } = useHeaderContext()
 
   const {
     data: { projects = [], pagination: { totalPages = 0 } = {} } = {},
@@ -32,9 +32,6 @@ const ProjectsPage = () => {
 
   useEffect(() => {
     setHeader('PROJEKTY')
-    return () => {
-      setHeader('')
-    }
   }, [])
 
   const handleShowProjectFormModal = () => {

@@ -1,13 +1,13 @@
-import React, { useContext } from 'react'
-import HeaderContext from '../../../context/header/HeaderContext'
+import React from 'react'
+import { useHeaderContext } from '../../../context/header/HeaderContext'
 import styles from './Header.module.scss'
 
 const Header = () => {
-  const { header } = useContext(HeaderContext)
+  const { header } = useHeaderContext()
 
   return (
     <React.Fragment>
-      {header !== '' && <header className={styles.header}>{header}</header>}
+      {header && <header className={styles.header}>{header}</header>}
     </React.Fragment>
   )
 }

@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react'
+import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
@@ -7,7 +7,7 @@ import { loginUser } from '../../features/users/userSlice'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import HeaderContext from '../../context/header/HeaderContext'
+import { useHeaderContext } from '../../context/header/HeaderContext'
 import InputField from '../../components/common/FormFields/InputField/InputField'
 import Button from '../../components/common/Buttons/Button/Button'
 import Spinner from '../../components/common/Spinner/Spinner'
@@ -19,15 +19,12 @@ const LoginPage = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const { setHeader } = useContext(HeaderContext)
+  const { setHeader } = useHeaderContext()
 
   const { user, loading } = useSelector((state: RootState) => state.user)
 
   useEffect(() => {
     setHeader('ZALOGUJ SIĘ')
-    return () => {
-      setHeader('')
-    }
   }, [])
 
   useEffect(() => {

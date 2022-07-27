@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
@@ -7,7 +7,7 @@ import { registerUser } from '../../features/users/userSlice'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import HeaderContext from '../../context/header/HeaderContext'
+import { useHeaderContext } from '../../context/header/HeaderContext'
 import InputField from '../../components/common/FormFields/InputField/InputField'
 import Spinner from '../../components/common/Spinner/Spinner'
 import Button from '../../components/common/Buttons/Button/Button'
@@ -19,7 +19,7 @@ const RegisterPage = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const { setHeader } = useContext(HeaderContext)
+  const { setHeader } = useHeaderContext()
 
   const { user, loading, serverErrors } = useSelector(
     (state: RootState) => state.user
@@ -27,9 +27,6 @@ const RegisterPage = () => {
 
   useEffect(() => {
     setHeader('ZAREJESTRUJ SIĘ')
-    return () => {
-      setHeader('')
-    }
   }, [])
 
   useEffect(() => {

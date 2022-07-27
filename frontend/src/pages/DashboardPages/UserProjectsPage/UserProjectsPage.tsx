@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useGetUserProjects } from '../../../features/projects/queries'
-import HeaderContext from '../../../context/header/HeaderContext'
+import { useHeaderContext } from '../../../context/header/HeaderContext'
 import ProjectsWrapper from '../../../components/ProjectsWrapper/ProjectsWrapper'
 import { ProjectViewModel } from '../../../models/Projects/ProjectViewModel'
 import styles from './UserProjectsPage.module.scss'
@@ -8,7 +8,7 @@ import styles from './UserProjectsPage.module.scss'
 type FilterType = 'approved' | 'unapproved'
 
 const UserProjectsPage = () => {
-  const { setHeader } = useContext(HeaderContext)
+  const { setHeader } = useHeaderContext()
 
   const {
     data: projects = [],
@@ -54,9 +54,6 @@ const UserProjectsPage = () => {
 
   useEffect(() => {
     setHeader('TWOJE PROJEKTY')
-    return () => {
-      setHeader('')
-    }
   }, [])
 
   return (

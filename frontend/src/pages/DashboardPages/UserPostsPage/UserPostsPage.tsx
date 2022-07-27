@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useGetUserPosts } from '../../../features/posts/queries'
-import HeaderContext from '../../../context/header/HeaderContext'
+import { useHeaderContext } from '../../../context/header/HeaderContext'
 import { PostViewModel } from '../../../models/Posts/PostViewModel'
 import PostsWrapper from '../../../components/PostsWrapper/PostsWrapper'
 import styles from './UserPostsPage.module.scss'
@@ -8,7 +8,7 @@ import styles from './UserPostsPage.module.scss'
 type FilterType = 'approved' | 'unapproved' | 'rejected'
 
 const UserPostsPage = () => {
-  const { setHeader } = useContext(HeaderContext)
+  const { setHeader } = useHeaderContext()
 
   const { data: posts = [], isFetched, isLoading, refetch } = useGetUserPosts()
 
@@ -51,9 +51,6 @@ const UserPostsPage = () => {
 
   useEffect(() => {
     setHeader('TWOJE PROPOZYCJE GIER')
-    return () => {
-      setHeader('')
-    }
   }, [])
 
   return (

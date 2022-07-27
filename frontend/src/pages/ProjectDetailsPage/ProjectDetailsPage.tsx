@@ -1,7 +1,7 @@
-import { useEffect, useContext } from 'react'
+import { useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useGetProjectDetails } from '../../features/projects/queries'
-import HeaderContext from '../../context/header/HeaderContext'
+import { useHeaderContext } from '../../context/header/HeaderContext'
 import ProjectItem from '../../components/common/ProjectItem/ProjectItem'
 import Spinner from '../../components/common/Spinner/Spinner'
 import styles from './ProjectDetailsPage.module.scss'
@@ -9,7 +9,7 @@ import { IoArrowUndo } from 'react-icons/io5'
 
 const ProjectDetailsPage = () => {
   const { projectId } = useParams()
-  const { setHeader } = useContext(HeaderContext)
+  const { setHeader } = useHeaderContext()
 
   const {
     data: project,
@@ -21,9 +21,6 @@ const ProjectDetailsPage = () => {
 
   useEffect(() => {
     setHeader('PROJEKTY')
-    return () => {
-      setHeader('')
-    }
   }, [])
 
   useEffect(() => {

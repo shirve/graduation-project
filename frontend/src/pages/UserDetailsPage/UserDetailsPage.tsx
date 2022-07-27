@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGetApprovedPosts } from '../../features/posts/queries'
 import { useGetApprovedProjects } from '../../features/projects/queries'
 import { usersClient } from '../../api/AxiosClients'
 import PostsWrapper from '../../components/PostsWrapper/PostsWrapper'
 import ProjectsWrapper from '../../components/ProjectsWrapper/ProjectsWrapper'
-import HeaderContext from '../../context/header/HeaderContext'
+import { useHeaderContext } from '../../context/header/HeaderContext'
 import Spinner from '../../components/common/Spinner/Spinner'
 import { UserDetailsViewModel } from '../../models/Users/UserDetailsViewModel'
 import displayAlert from '../../utils/displayAlert'
@@ -16,7 +16,7 @@ const UserDetailsPage = () => {
   const [userLoading, setUserLoading] = useState(true)
 
   const { userId } = useParams()
-  const { setHeader } = useContext(HeaderContext)
+  const { setHeader } = useHeaderContext()
 
   const {
     data: { posts = [] } = {},
@@ -32,9 +32,6 @@ const UserDetailsPage = () => {
 
   useEffect(() => {
     setHeader('PROFIL UŻYTKOWNIKA')
-    return () => {
-      setHeader('')
-    }
   }, [])
 
   useEffect(() => {

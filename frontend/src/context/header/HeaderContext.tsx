@@ -1,4 +1,10 @@
-import { createContext, Dispatch, SetStateAction, useState } from 'react'
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useState,
+} from 'react'
 
 interface IHeaderContext {
   header: string
@@ -6,6 +12,8 @@ interface IHeaderContext {
 }
 
 const HeaderContext = createContext({} as IHeaderContext)
+
+export const useHeaderContext = () => useContext(HeaderContext)
 
 export const HeaderProvider = ({ children }: { children: React.ReactNode }) => {
   const [header, setHeader] = useState<string>('')

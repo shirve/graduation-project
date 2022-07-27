@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import { useGetApprovedPosts } from '../../features/posts/queries'
-import HeaderContext from '../../context/header/HeaderContext'
+import { useHeaderContext } from '../../context/header/HeaderContext'
 import Select from 'react-select'
 import { GameGenres } from '../../constants/SelectFieldOptions/GameGenres'
 import { SelectFieldOptionViewModel } from '../../models/Forms/SelectFieldOptionViewModel'
@@ -20,7 +20,7 @@ const PostsPage = () => {
   const [genre, setGenre] = useState<SelectFieldOptionViewModel | null>(null)
   const [showPostFormModal, setShowPostFormModal] = useState<boolean>(false)
 
-  const { setHeader } = useContext(HeaderContext)
+  const { setHeader } = useHeaderContext()
 
   const {
     data: { posts = [], pagination: { totalPages = 0 } = {} } = {},
@@ -32,9 +32,6 @@ const PostsPage = () => {
 
   useEffect(() => {
     setHeader('PROPOZYCJE GIER')
-    return () => {
-      setHeader('')
-    }
   }, [])
 
   const handleShowPostFormModal = () => {

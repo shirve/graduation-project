@@ -1,7 +1,7 @@
-import { useEffect, useContext } from 'react'
+import { useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useGetPostDetails } from '../../features/posts/queries'
-import HeaderContext from '../../context/header/HeaderContext'
+import { useHeaderContext } from '../../context/header/HeaderContext'
 import PostItem from '../../components/common/PostItem/PostItem'
 import Spinner from '../../components/common/Spinner/Spinner'
 import styles from './PostDetailsPage.module.scss'
@@ -9,7 +9,7 @@ import { IoArrowUndo } from 'react-icons/io5'
 
 const PostDetailsPage = () => {
   const { postId } = useParams()
-  const { setHeader } = useContext(HeaderContext)
+  const { setHeader } = useHeaderContext()
 
   const { data: post, isError, refetch } = useGetPostDetails(postId ?? '')
 
@@ -17,9 +17,6 @@ const PostDetailsPage = () => {
 
   useEffect(() => {
     setHeader('PROPOZYCJE GIER')
-    return () => {
-      setHeader('')
-    }
   }, [])
 
   useEffect(() => {
