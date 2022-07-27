@@ -15,7 +15,11 @@ const HeaderContext = createContext({} as IHeaderContext)
 
 export const useHeaderContext = () => useContext(HeaderContext)
 
-export const HeaderProvider = ({ children }: { children: React.ReactNode }) => {
+export const HeaderContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode
+}) => {
   const [header, setHeader] = useState<string>('')
 
   return (

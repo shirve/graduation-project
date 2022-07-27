@@ -26,57 +26,60 @@ import UnapprovedPostsPage from './pages/DashboardPages/UnapprovedPostsPage/Unap
 import UnapprovedProjectsPage from './pages/DashboardPages/UnapprovedProjectsPage/UnapprovedProjectsPage'
 import PostDetailsPage from './pages/PostDetailsPage/PostDetailsPage'
 import ProjectDetailsPage from './pages/ProjectDetailsPage/ProjectDetailsPage'
-import { HeaderProvider } from './context/header/HeaderContext'
+import { HeaderContextProvider } from './context/HeaderContext'
+import { UserContextProvider } from './context/UserContext'
 
 const App = () => {
   return (
-    <AuthenticationRoute>
-      <Router>
-        <HeaderProvider>
-          <Navbar />
-          <Header />
-          <main className='page-wrapper col-xl-8 col-lg-8 col-md-10 col-sm-10 col-xs-12'>
-            <Routes>
-              <Route path='dashboard' element={<Outlet />}>
-                <Route element={<ProtectedRoute />}>
-                  <Route index element={<Navigate to='profile' />} />
-                  <Route path='profile' element={<UserProfilePage />} />
-                  <Route path='posts' element={<UserPostsPage />} />
-                  <Route path='projects' element={<UserProjectsPage />} />
-                  <Route path='*' element={<Navigate to='/not-found' />} />
+    <UserContextProvider>
+      <AuthenticationRoute>
+        <Router>
+          <HeaderContextProvider>
+            <Navbar />
+            <Header />
+            <main className='page-wrapper col-xl-8 col-lg-8 col-md-10 col-sm-10 col-xs-12'>
+              <Routes>
+                <Route path='dashboard' element={<Outlet />}>
+                  <Route element={<ProtectedRoute />}>
+                    <Route index element={<Navigate to='profile' />} />
+                    <Route path='profile' element={<UserProfilePage />} />
+                    <Route path='posts' element={<UserPostsPage />} />
+                    <Route path='projects' element={<UserProjectsPage />} />
+                    <Route path='*' element={<Navigate to='/not-found' />} />
+                  </Route>
+                  <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+                    <Route
+                      path='unapproved-posts'
+                      element={<UnapprovedPostsPage />}
+                    />
+                    <Route
+                      path='unapproved-projects'
+                      element={<UnapprovedProjectsPage />}
+                    />
+                  </Route>
                 </Route>
-                <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-                  <Route
-                    path='unapproved-posts'
-                    element={<UnapprovedPostsPage />}
-                  />
-                  <Route
-                    path='unapproved-projects'
-                    element={<UnapprovedProjectsPage />}
-                  />
-                </Route>
-              </Route>
-              <Route path='users/:userId' element={<UserDetailsPage />} />
-              <Route path='posts' element={<PostsPage />} />
-              <Route path='posts/:postId' element={<PostDetailsPage />} />
-              <Route path='projects' element={<ProjectsPage />} />
-              <Route
-                path='projects/:projectId'
-                element={<ProjectDetailsPage />}
-              />
-              <Route path='register' element={<RegisterPage />} />
-              <Route path='login' element={<LoginPage />} />
-              <Route path='not-found' element={<NotFoundPage />} />
-              <Route path='/' element={<Navigate to='/posts' />} />
-              <Route path='*' element={<Navigate to='/not-found' />} />
-            </Routes>
-          </main>
-          <Footer />
-        </HeaderProvider>
-        <ToastContainer />
-        <ReactQueryDevtools />
-      </Router>
-    </AuthenticationRoute>
+                <Route path='users/:userId' element={<UserDetailsPage />} />
+                <Route path='posts' element={<PostsPage />} />
+                <Route path='posts/:postId' element={<PostDetailsPage />} />
+                <Route path='projects' element={<ProjectsPage />} />
+                <Route
+                  path='projects/:projectId'
+                  element={<ProjectDetailsPage />}
+                />
+                <Route path='register' element={<RegisterPage />} />
+                <Route path='login' element={<LoginPage />} />
+                <Route path='not-found' element={<NotFoundPage />} />
+                <Route path='/' element={<Navigate to='/posts' />} />
+                <Route path='*' element={<Navigate to='/not-found' />} />
+              </Routes>
+            </main>
+            <Footer />
+          </HeaderContextProvider>
+          <ToastContainer />
+          <ReactQueryDevtools />
+        </Router>
+      </AuthenticationRoute>
+    </UserContextProvider>
   )
 }
 

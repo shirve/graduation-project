@@ -79,8 +79,8 @@ router.put(
 )
 
 // Authenticate user from cookies
-// GET /api/users
-router.get('/', authenticateUser)
+// GET /api/users/auth
+router.get('/auth', authenticateUser)
 
 // Change password
 // PATCH /api/users/chpasswd

@@ -153,7 +153,7 @@ const getUser = asyncHandler(async (req, res) => {
 })
 
 // Authenticate user from cookie
-// GET /api/users
+// GET /api/users/auth
 const authenticateUser = asyncHandler(async (req, res) => {
   try {
     const token = req.cookies['auth']
@@ -203,7 +203,9 @@ const changePassword = asyncHandler(async (req, res) => {
     }
   )
 
-  res.status(200).json({ type: 'info', message: 'Hasło zostało zmienione!' })
+  res
+    .status(200)
+    .json({ alert: { type: 'info', message: 'Hasło zostało zmienione!' } })
 })
 
 // Generate JWT
