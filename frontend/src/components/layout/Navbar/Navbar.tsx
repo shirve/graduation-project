@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { FaChevronDown } from 'react-icons/fa'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useLogoutUser } from '../../../features/users/mutations'
 import { useUserContext } from '../../../context/UserContext'
+import { useClickAway } from 'react-use'
 import './Navbar.scss'
 
 const Navbar = () => {
   const [showDropdownList, setShowDropdownList] = useState(false)
+  const dropdownRef = useRef(null)
 
-  const { user, setUser } = useUserContext()
+  const { user, clearUser } = useUserContext()
 
   const { mutate: logoutUser } = useLogoutUser({
-    onSuccess: () => setUser(null),
+    onSuccess: () => clearUser(),
   })
 
   const navigate = useNavigate()
@@ -25,7 +27,11 @@ const Navbar = () => {
     navigate('/')
   }
 
-  const handleDropdown = () => {
+  useClickAway(dropdownRef, () => {
+    handleShowDropdownList()
+  })
+
+  const handleShowDropdownList = () => {
     setShowDropdownList((prevState) => !prevState)
   }
 
@@ -63,12 +69,12 @@ const Navbar = () => {
             </li>
             {user ? (
               <li className='nav-item'>
-                <div className='nav-link' onClick={handleDropdown}>
+                <div className='nav-link' onClick={handleShowDropdownList}>
                   TWOJE KONTO&nbsp;
                   <FaChevronDown />
                 </div>
                 {showDropdownList && (
-                  <ul className='nav-dropdown'>
+                  <ul className='nav-dropdown' ref={dropdownRef}>
                     <li>
                       <NavLink className='nav-link' to='/dashboard/profile'>
                         TWÓJ PROFIL

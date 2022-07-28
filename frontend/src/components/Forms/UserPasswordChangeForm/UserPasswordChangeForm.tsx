@@ -9,7 +9,11 @@ import styles from './UserPasswordChangeForm.module.scss'
 import { UserPasswordChangeFormFields } from '../../../constants/Users/UserPasswordChangeFormFields'
 
 const UserPasswordChangeForm = () => {
-  const { mutate: changePassword } = useChangePassword()
+  const { mutate: changePassword } = useChangePassword({
+    onSuccess: () => {
+      reset()
+    },
+  })
 
   const passwordChangeSchema = yup.object().shape({
     oldPassword: yup.string().required('To pole jest wymagane'),
@@ -39,7 +43,6 @@ const UserPasswordChangeForm = () => {
 
   const onSubmit = (data: UserPasswordChangeViewModel) => {
     changePassword(data)
-    reset()
   }
 
   return (
@@ -47,6 +50,7 @@ const UserPasswordChangeForm = () => {
       <div className={styles.card}>
         {UserPasswordChangeFormFields.map(({ name, label }) => (
           <InputField
+            key={name}
             register={register}
             errors={errors}
             name={name}

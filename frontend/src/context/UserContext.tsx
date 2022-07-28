@@ -10,6 +10,7 @@ import { UserViewModel } from '../models/Users/UserViewModel'
 interface IUserContext {
   user: UserViewModel | null
   setUser: Dispatch<SetStateAction<UserViewModel | null>>
+  clearUser: () => void
 }
 
 const UserContext = createContext({} as IUserContext)
@@ -23,8 +24,10 @@ export const UserContextProvider = ({
 }) => {
   const [user, setUser] = useState<UserViewModel | null>(null)
 
+  const clearUser = () => setUser(null)
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, clearUser }}>
       {children}
     </UserContext.Provider>
   )
