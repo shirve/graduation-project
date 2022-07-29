@@ -1,8 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import {
-  useCreateProject,
-  useUpdateProject,
-} from '../../../features/projects/mutations'
 import { useGetApprovedPosts } from '../../../features/posts/queries'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -22,21 +18,16 @@ import styles from './ProjectForm.module.scss'
 
 interface Props {
   project?: ProjectViewModel
-  handleShowModal?: () => void
-  onRefetch?: () => void
+  onSubmit: (data: ProjectFormDataViewModel) => void
 }
 
-const ProjectForm = ({ project, handleShowModal, onRefetch }: Props) => {
+const ProjectForm = ({ project, onSubmit }: Props) => {
   const [GDDOptions, setGDDOptions] = useState<SelectFieldOptionViewModel[]>([])
 
   const { user } = useUserContext()
 
   const { data: userPosts } = useGetApprovedPosts({
     user: user?._id.toString(),
-  })
-  const { mutate: createProject } = useCreateProject()
-  const { mutate: updateProject } = useUpdateProject({
-    onSuccess: () => onRefetch?.(),
   })
 
   const projectSchema = Yup.object().shape({
@@ -77,28 +68,6 @@ const ProjectForm = ({ project, handleShowModal, onRefetch }: Props) => {
       gdd: project?.gdd?.toString(),
     },
   })
-
-  const onSubmit = (data: ProjectFormDataViewModel) => {
-    const formData = new FormData()
-    formData.append('title', data.title)
-    formData.append('description', data.description)
-    formData.append('github', data.github)
-    Array.from(data.images).forEach((image) => {
-      formData.append('images[]', image)
-    })
-
-    Array.from(data.genres).forEach((genre) => {
-      formData.append('genres[]', genre)
-    })
-
-    if (data.gdd) {
-      formData.append('gdd', data.gdd)
-    }
-
-    if (project) updateProject({ projectId: project._id, data: formData })
-    if (!project) createProject(formData)
-    if (handleShowModal) handleShowModal()
-  }
 
   return (
     <form className={styles.form}>

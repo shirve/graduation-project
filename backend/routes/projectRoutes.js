@@ -45,7 +45,7 @@ router.post(
       .notEmpty()
       .isString()
       .matches(/^https:\/\/github.com\/.+\/.+/),
-    body('genres').isArray(),
+    body('genres').optional().isArray(),
   ]),
   createProject
 )
@@ -63,7 +63,7 @@ router.put(
       .notEmpty()
       .isString()
       .matches(/^https:\/\/github.com\/.+\/.+/),
-    body('genres').isArray(),
+    body('genres').optional().isArray(),
   ]),
   updateProject
 )

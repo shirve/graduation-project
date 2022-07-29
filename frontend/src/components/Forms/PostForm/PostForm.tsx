@@ -1,5 +1,4 @@
 import React from 'react'
-import { useCreatePost, useUpdatePost } from '../../../features/posts/mutations'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
@@ -14,16 +13,10 @@ import styles from './PostForm.module.scss'
 
 interface Props {
   post?: PostViewModel
-  handleShowModal?: () => void
-  onRefetch?: () => void
+  onSubmit: (data: PostDataViewModel) => void
 }
 
-const PostForm = ({ post, handleShowModal, onRefetch }: Props) => {
-  const { mutate: createPost } = useCreatePost()
-  const { mutate: updatePost } = useUpdatePost({
-    onSuccess: () => onRefetch?.(),
-  })
-
+const PostForm = ({ post, onSubmit }: Props) => {
   const postSchema = Yup.object().shape({
     title: Yup.string().required('To pole jest wymagane'),
     story: Yup.string().required('To pole jest wymagane'),
@@ -47,13 +40,6 @@ const PostForm = ({ post, handleShowModal, onRefetch }: Props) => {
       ...post?.data,
     },
   })
-
-  const onSubmit = (data: PostDataViewModel) => {
-    const dataCopy = { ...data, genres: data.genres ?? [] }
-    if (post) updatePost({ postId: post._id, post: dataCopy })
-    if (!post) createPost(dataCopy)
-    if (handleShowModal) handleShowModal()
-  }
 
   return (
     <form className={styles.form}>

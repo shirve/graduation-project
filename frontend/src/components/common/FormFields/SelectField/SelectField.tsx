@@ -50,7 +50,7 @@ const SelectField = ({
               options={options}
               placeholder={placeholder ?? ''}
               value={options.filter((option) => value?.includes(option.value))}
-              onChange={(selectedOption) =>
+              onChange={(selectedOption) => {
                 onChange(
                   isMulti
                     ? (selectedOption as MultiValue<any>).map(
@@ -58,7 +58,7 @@ const SelectField = ({
                       )
                     : (selectedOption as SingleValue<any>)?.value
                 )
-              }
+              }}
               isMulti={isMulti}
               styles={CustomSelectFieldStyles}
               isDisabled={disabled}
