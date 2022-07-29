@@ -1,4 +1,4 @@
-import Modal from 'react-modal'
+import ModalWrapper from '../../../ModalWrapper/ModalWrapper'
 import PostForm from '../../../Forms/PostForm/PostForm'
 import CloseButton from '../../../common/Buttons/CloseButton/CloseButton'
 import styles from './PostCreateModal.module.scss'
@@ -10,18 +10,13 @@ interface Props {
 
 const PostCreateModal = ({ showModal, handleShowModal }: Props) => {
   return (
-    <Modal
-      appElement={document.getElementById('root') || undefined}
-      isOpen={showModal}
-      overlayClassName={styles.modalOverlay}
-      className={styles.modalContent}
-    >
-      <div className={styles.modalHeader}>
+    <ModalWrapper isOpen={showModal} style={{ content: { width: 'auto' } }}>
+      <div className={styles.header}>
         <h4>Nowa propozycja gry</h4>
         <CloseButton onClick={handleShowModal} />
       </div>
       <PostForm handleShowModal={handleShowModal} />
-    </Modal>
+    </ModalWrapper>
   )
 }
 

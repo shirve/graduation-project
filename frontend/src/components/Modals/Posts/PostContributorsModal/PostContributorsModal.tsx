@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useApplyToContribute } from '../../../../features/posts/mutations'
 import { useUserContext } from '../../../../context/UserContext'
-import Modal from 'react-modal'
+import ModalWrapper from '../../../ModalWrapper/ModalWrapper'
 import Button from '../../../common/Buttons/Button/Button'
 import CloseButton from '../../../common/Buttons/CloseButton/CloseButton'
 import { PostViewModel } from '../../../../models/Posts/PostViewModel'
@@ -40,19 +40,27 @@ const PostContributorsModal = ({
     }
   }
 
+  const handleCloseModal = () => {
+    handleShowModal()
+    setMessage('')
+  }
+
   return (
-    <Modal
-      appElement={document.getElementById('root') || undefined}
+    <ModalWrapper
       isOpen={showModal}
-      overlayClassName={styles.modalOverlay}
-      className={styles.modalContent}
+      onRequestClose={handleShowModal}
+      style={{ content: { width: 'auto' } }}
     >
-      <div className={styles.modalHeader}>
+      <div className={styles.header}>
         <h4>Wiadomość aplikacyjna</h4>
-        <CloseButton onClick={handleShowModal} />
+        <CloseButton onClick={handleCloseModal} />
       </div>
-      <textarea value={message} onChange={(e) => setMessage(e.target.value)} />
-      <div className={styles.modalButtons}>
+      <textarea
+        className={styles.message}
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+      />
+      <div className={styles.buttons}>
         <Button
           onClick={() => handlePostApplyToContribute(post._id, message)}
           width={'100%'}
@@ -60,7 +68,7 @@ const PostContributorsModal = ({
           Wyślij
         </Button>
       </div>
-    </Modal>
+    </ModalWrapper>
   )
 }
 

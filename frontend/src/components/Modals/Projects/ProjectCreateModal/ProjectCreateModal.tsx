@@ -1,4 +1,4 @@
-import Modal from 'react-modal'
+import ModalWrapper from '../../../ModalWrapper/ModalWrapper'
 import ProjectForm from '../../../Forms/ProjectForm/ProjectForm'
 import CloseButton from '../../../common/Buttons/CloseButton/CloseButton'
 import styles from './ProjectCreateModal.module.scss'
@@ -10,18 +10,13 @@ interface Props {
 
 const ProjectCreateModal = ({ showModal, handleShowModal }: Props) => {
   return (
-    <Modal
-      appElement={document.getElementById('root') || undefined}
-      isOpen={showModal}
-      overlayClassName={styles.modalOverlay}
-      className={styles.modalContent}
-    >
-      <div className={styles.modalHeader}>
+    <ModalWrapper isOpen={showModal} style={{ content: { width: 'auto' } }}>
+      <div className={styles.header}>
         <h4>Nowy projekt gry</h4>
         <CloseButton onClick={handleShowModal} />
       </div>
       <ProjectForm handleShowModal={handleShowModal} />
-    </Modal>
+    </ModalWrapper>
   )
 }
 

@@ -1,66 +1,14 @@
 @import '../../../../styles/CommonStyles.scss';
 
-.modalOverlay {
-  z-index: 999;
+.header {
   display: flex;
-  position: fixed;
-  inset: 0px;
-  background-color: rgba(0, 0, 0, 0.6);
-  animation: modal-blur-in 0.5s forwards;
-  .modalHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-    padding: 0;
-    border: none;
-    h4 {
-      margin: 0;
-    }
-  }
-  .modalContent {
-    position: absolute;
-    inset: 2rem;
-    width: 800px;
-    margin: auto;
-    padding: 1rem;
-    background: $white;
-    border: 1px $gray solid;
-    border-radius: 0.25rem;
-    overflow: auto;
-  }
-  .modalButtons {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 0;
+  border: none;
+  h4 {
+    margin: 0;
   }
 }
-
-@include breakpoint(large) {
-  .modalOverlay {
-    .modalContent {
-      width: 80%;
-    }
-  }
-}
-
-@include breakpoint(small) {
-  .modalOverlay {
-    .modalContent {
-      inset: 1rem;
-      width: 90%;
-    }
-  }
-}
-
-@keyframes modal-blur-in {
-  from {
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
-  }
-  to {
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-  }
-}
+  

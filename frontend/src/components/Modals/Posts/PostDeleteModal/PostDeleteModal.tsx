@@ -1,5 +1,5 @@
 import { useDeletePost } from '../../../../features/posts/mutations'
-import Modal from 'react-modal'
+import ModalWrapper from '../../../ModalWrapper/ModalWrapper'
 import Button from '../../../common/Buttons/Button/Button'
 import { PostViewModel } from '../../../../models/Posts/PostViewModel'
 import { ObjectId } from 'mongoose'
@@ -28,14 +28,9 @@ const PostDeleteModal = ({
   }
 
   return (
-    <Modal
-      appElement={document.getElementById('root') || undefined}
-      isOpen={showModal}
-      overlayClassName={styles.modalOverlay}
-      className={styles.modalContent}
-    >
+    <ModalWrapper isOpen={showModal} onRequestClose={handleShowModal}>
       <div>Na pewno chcesz usunąć ten post?</div>
-      <div className={styles.modalButtons}>
+      <div className={styles.buttons}>
         <Button onClick={handleShowModal} width={'100%'}>
           Anuluj
         </Button>
@@ -43,7 +38,7 @@ const PostDeleteModal = ({
           Usuń
         </Button>
       </div>
-    </Modal>
+    </ModalWrapper>
   )
 }
 

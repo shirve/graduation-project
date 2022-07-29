@@ -1,4 +1,4 @@
-import Modal from 'react-modal'
+import ModalWrapper from '../../../ModalWrapper/ModalWrapper'
 import ProjectForm from '../../../Forms/ProjectForm/ProjectForm'
 import CloseButton from '../../../common/Buttons/CloseButton/CloseButton'
 import { ProjectViewModel } from '../../../../models/Projects/ProjectViewModel'
@@ -18,13 +18,8 @@ const ProjectEditModal = ({
   onRefetch,
 }: Props) => {
   return (
-    <Modal
-      appElement={document.getElementById('root') || undefined}
-      isOpen={showModal}
-      overlayClassName={styles.modalOverlay}
-      className={styles.modalContent}
-    >
-      <div className={styles.modalHeader}>
+    <ModalWrapper isOpen={showModal} style={{ content: { width: 'auto' } }}>
+      <div className={styles.header}>
         <h4>Edytuj projekt</h4>
         <CloseButton onClick={handleShowModal} />
       </div>
@@ -33,7 +28,7 @@ const ProjectEditModal = ({
         handleShowModal={handleShowModal}
         onRefetch={onRefetch}
       />
-    </Modal>
+    </ModalWrapper>
   )
 }
 

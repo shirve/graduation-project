@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useRejectPost } from '../../../../features/posts/mutations'
-import Modal from 'react-modal'
+import ModalWrapper from '../../../ModalWrapper/ModalWrapper'
 import Button from '../../../common/Buttons/Button/Button'
 import CloseButton from '../../../common/Buttons/CloseButton/CloseButton'
 import { PostViewModel } from '../../../../models/Posts/PostViewModel'
@@ -31,19 +31,27 @@ const PostRejectModal = ({
     handleShowModal()
   }
 
+  const handleCloseModal = () => {
+    handleShowModal()
+    setMessage('')
+  }
+
   return (
-    <Modal
-      appElement={document.getElementById('root') || undefined}
+    <ModalWrapper
       isOpen={showModal}
-      overlayClassName={styles.modalOverlay}
-      className={styles.modalContent}
+      onRequestClose={handleShowModal}
+      style={{ content: { width: 'auto' } }}
     >
-      <div className={styles.modalHeader}>
+      <div className={styles.header}>
         <h4>Powód odrzucenia</h4>
-        <CloseButton onClick={handleShowModal} />
+        <CloseButton onClick={handleCloseModal} />
       </div>
-      <textarea value={message} onChange={(e) => setMessage(e.target.value)} />
-      <div className={styles.modalButtons}>
+      <textarea
+        className={styles.message}
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+      />
+      <div className={styles.buttons}>
         <Button
           onClick={() => handlePostReject(post._id, message)}
           width={'100%'}
@@ -51,7 +59,7 @@ const PostRejectModal = ({
           Odrzuć
         </Button>
       </div>
-    </Modal>
+    </ModalWrapper>
   )
 }
 
