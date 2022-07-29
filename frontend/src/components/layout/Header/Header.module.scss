@@ -5,8 +5,8 @@
   font-size: 2.4rem;
   padding: 1rem;
   color: $white;
-  background-color: $blue;
-  border-bottom: 1px $gray solid;
+  background-color: $primary-500;
+  border-bottom: 1px $neutral-500 solid;
 }
 
 @include breakpoint(small) {

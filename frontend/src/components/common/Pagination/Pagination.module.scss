@@ -12,9 +12,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: $black-muted;
-    background-color: $white-muted;
-    border: 1px solid $gray;
+    color: $text-black;
+    background-color: $white;
+    border: 1px solid $neutral-500;
     padding: 0.375rem 1rem;
     svg {
       margin: 0.25rem -0.25rem;
@@ -22,15 +22,15 @@
   }
   .pageItem.active .pageLink {
     z-index: 2;
-    color: $white-muted;
-    background-color: $blue;
-    border-color: $blue;
+    color: $text-white;
+    background-color: $primary-500;
+    border-color: $primary-500;
   }
   .pageItem.disabled .pageLink {
     pointer-events: none;
-    color: $dark-gray;
-    background-color: $white-muted;
-    border-color: $gray;
+    color: $neutral-800;
+    background-color: $white;
+    border-color: $neutral-500;
   }
   .pageItem:first-child .pageLink {
     border-top-left-radius: 0.25rem;

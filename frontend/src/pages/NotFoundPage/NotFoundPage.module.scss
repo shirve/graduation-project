@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  color: $blue;
+  color: $primary-500;
   div {
     &:nth-child(1) {
       font-size: 16rem;
@@ -25,15 +25,15 @@
     align-items: center;
     position: absolute;
     top: 310px;
-    color: $white-muted;
-    background-color: $blue;
+    color: $text-white;
+    background-color: $primary-500;
     padding: 0.375rem 1.5rem;
     border-style: none;
     border-radius: 2rem;
     font-size: 1.2rem;
     &:hover {
-      color: $white-muted;
-      background-color: $blue;
+      color: $text-white;
+      background-color: $primary-500;
     }
   }
 }

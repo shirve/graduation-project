@@ -2,13 +2,13 @@
 
 nav.navbar {
   padding: 1rem 0;
-  background-color: $dark-blue;
+  background-color: $primary-700;
 }
 
 .nav {
   &-item {
     font-size: 1.125rem;
-    color: $white-muted;
+    color: $text-white;
     position: relative;
   }
   &-link {
@@ -19,8 +19,8 @@ nav.navbar {
     width: 350px;
     top: 59px;
     transform: translate(-40%);
-    background-color: $dark-blue;
-    border: 1px solid $dark-blue;
+    background-color: $primary-700;
+    border: 1px solid $primary-700;
     border-bottom-left-radius: 1rem;
     border-bottom-right-radius: 1rem;
     padding: 0.5rem 1rem 0.5rem 1rem;

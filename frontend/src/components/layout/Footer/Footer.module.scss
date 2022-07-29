@@ -4,9 +4,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-top: 1px $gray solid;
+  border-top: 1px $neutral-500 solid;
   padding: 2rem 1rem;
   margin-top: 1rem;
-  background-color: $dark-blue;
-  color: $white-muted;
+  background-color: $primary-700;
+  color: $text-white;
 }

@@ -5,7 +5,7 @@ body {
   margin: 0;
   font-family: 'Lato', sans-serif;
   background-color: #F0F2F5;
-  color: $black-muted;
+  color: $text-black;
 }
 
 li {
@@ -33,6 +33,6 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  -webkit-text-fill-color: $black-muted;
+  -webkit-text-fill-color: $text-black;
   transition: background-color 5000s ease-in-out 0s;
 }
