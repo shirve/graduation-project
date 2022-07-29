@@ -1,15 +1,13 @@
 import { useEffect, useRef } from 'react'
-import { UseFormRegister } from 'react-hook-form'
+import { FieldErrors, UseFormReturn, UseFormStateReturn } from 'react-hook-form'
 import autosize from 'autosize'
 import styles from './TextareaField.module.scss'
 
-interface Props {
-  register: UseFormRegister<any>
-  errors: any
+interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  register: UseFormReturn<any>['register']
+  errors: UseFormStateReturn<FieldErrors>['errors']
   name: string
   label: string
-  placeholder?: string
-  disabled?: boolean
   marginTop?: string
   marginBottom?: string
 }
@@ -19,10 +17,9 @@ const TextareaField = ({
   errors,
   name,
   label,
-  placeholder,
-  disabled,
   marginTop,
   marginBottom,
+  ...props
 }: Props) => {
   const { ref, ...rest } = register(name)
 
@@ -42,8 +39,7 @@ const TextareaField = ({
           textareaRef.current = e
         }}
         className={errors[name] ? styles.invalid : ''}
-        placeholder={placeholder}
-        disabled={disabled}
+        {...props}
       />
       {errors[name] && (
         <span className={styles.error}>{errors[name].message}</span>

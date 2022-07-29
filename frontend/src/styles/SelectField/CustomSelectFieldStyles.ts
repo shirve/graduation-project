@@ -13,4 +13,7 @@ export const CustomSelectFieldStyles: StylesConfig<any, boolean> = {
     ...provided,
     zIndex: '99',
   }),
+  indicatorSeparator: () => ({
+    display: 'none',
+  }),
 }

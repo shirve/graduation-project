@@ -1,15 +1,13 @@
-import { UseFormRegister } from 'react-hook-form'
+import { FieldErrors, UseFormReturn, UseFormStateReturn } from 'react-hook-form'
 import styles from './InputField.module.scss'
 
-interface Props {
-  register: UseFormRegister<any>
-  errors: any
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
+  register: UseFormReturn<any>['register']
+  errors: UseFormStateReturn<FieldErrors>['errors']
   serverError?: string
   name: string
   label: string
   type?: string
-  placeholder?: string
-  disabled?: boolean
   marginTop?: string
   marginBottom?: string
 }
@@ -21,10 +19,9 @@ const InputField = ({
   name,
   label,
   type,
-  placeholder,
-  disabled,
   marginTop,
   marginBottom,
+  ...props
 }: Props) => {
   return (
     <div className={styles.wrapper} style={{ marginTop, marginBottom }}>
@@ -32,9 +29,8 @@ const InputField = ({
       <input
         {...register(name)}
         className={errors[name] ? styles.invalid : ''}
-        type={type ? type : 'text'}
-        placeholder={placeholder}
-        disabled={disabled}
+        type={type ?? 'text'}
+        {...props}
       />
       {errors[name] && (
         <span className={styles.error}>{errors[name].message}</span>

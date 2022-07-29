@@ -1,16 +1,13 @@
-import { UseFormRegister } from 'react-hook-form'
+import { FieldErrors, UseFormReturn, UseFormStateReturn } from 'react-hook-form'
 import styles from './FileUploadField.module.scss'
 
-interface Props {
-  register: UseFormRegister<any>
-  errors: any
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
+  register: UseFormReturn<any>['register']
+  errors: UseFormStateReturn<FieldErrors>['errors']
   serverError?: string
   name: string
   label: string
   files: FileList
-  accept?: string
-  multiple?: boolean
-  disabled?: boolean
   marginTop?: string
   marginBottom?: string
 }
@@ -22,11 +19,9 @@ const FileUploadField = ({
   name,
   label,
   files,
-  accept,
-  multiple,
-  disabled,
   marginTop,
   marginBottom,
+  ...props
 }: Props) => {
   const attachedFiles = files?.length > 0 ? Object.values(files) : []
 
@@ -44,9 +39,7 @@ const FileUploadField = ({
         id={'file-dropzone'}
         {...register(name)}
         type={'file'}
-        accept={accept}
-        multiple={multiple}
-        disabled={disabled}
+        {...props}
       />
       {errors[name] && (
         <span className={styles.error}>{errors[name].message}</span>

@@ -1,11 +1,20 @@
-import { Control, Controller } from 'react-hook-form'
-import Select, { MultiValue, SingleValue } from 'react-select'
+import {
+  Controller,
+  FieldErrors,
+  UseFormReturn,
+  UseFormStateReturn,
+} from 'react-hook-form'
+import Select, {
+  Props as ReactSelectProps,
+  MultiValue,
+  SingleValue,
+} from 'react-select'
 import { CustomSelectFieldStyles } from '../../../../styles/SelectField/CustomSelectFieldStyles'
 import styles from './SelectField.module.scss'
 
-interface Props {
-  control: Control<any>
-  errors: any
+interface Props extends ReactSelectProps<any, boolean> {
+  control: UseFormReturn<any>['control']
+  errors: UseFormStateReturn<FieldErrors>['errors']
   name: string
   label: string
   options: any[]
@@ -27,6 +36,7 @@ const SelectField = ({
   disabled,
   marginTop,
   marginBottom,
+  ...props
 }: Props) => {
   return (
     <div className={styles.wrapper} style={{ marginTop, marginBottom }}>
@@ -38,7 +48,7 @@ const SelectField = ({
           return (
             <Select
               options={options}
-              placeholder={placeholder ? placeholder : ''}
+              placeholder={placeholder ?? ''}
               value={options.filter((option) => value?.includes(option.value))}
               onChange={(selectedOption) =>
                 onChange(
@@ -52,6 +62,7 @@ const SelectField = ({
               isMulti={isMulti}
               styles={CustomSelectFieldStyles}
               isDisabled={disabled}
+              {...props}
             />
           )
         }}
