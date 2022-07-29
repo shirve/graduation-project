@@ -19,9 +19,14 @@ const queryClient = new QueryClient({
     },
   },
   queryCache: new QueryCache({
-    onError: (error: any) => displayAlert(error.response.data),
+    onError: (error: any) => {
+      displayAlert(error.response.data)
+    },
   }),
   mutationCache: new MutationCache({
+    onError: (error: any) => {
+      displayAlert(error.response.data)
+    },
     onSuccess: (data: any) => {
       if (data.alert) displayAlert(data.alert)
     },
