@@ -30,6 +30,9 @@ const ProjectDeleteModal = ({
   return (
     <ModalWrapper isOpen={showModal} onRequestClose={handleShowModal}>
       <div>Na pewno chcesz usunąć ten projekt?</div>
+      <small className={styles.warning}>
+        Uwaga: Ta operacja jest nieodwracalna!
+      </small>
       <div className={styles.buttons}>
         <Button onClick={handleShowModal} width={'100%'}>
           Anuluj

@@ -27,13 +27,14 @@ const FileUploadField = ({
 
   return (
     <div className={styles.wrapper} style={{ marginTop, marginBottom }}>
+      <div>{label}</div>
       <label
         htmlFor={'file-dropzone'}
         className={attachedFiles.length > 0 ? styles.filesAttached : ''}
       >
         {attachedFiles.length > 0
           ? attachedFiles.map(({ name }) => name).join(', ')
-          : label}
+          : `Załącz plik${props.multiple ? 'i' : ''}`}
       </label>
       <input
         id={'file-dropzone'}

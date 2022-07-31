@@ -120,6 +120,13 @@ const ProjectForm = ({ project, onSubmit }: Props) => {
                   multiple={multiple}
                 />
                 <small>*Maksymalnie 5 zdjęć o rozmiarze 2 MB</small>
+                <br />
+                {project && (
+                  <small>
+                    *Nie musisz załączać zdjęć jeśli chcesz zatrzymać aktualne -
+                    po załączeniu nowych zdjęć aktualne zostaną nadpisane
+                  </small>
+                )}
               </>
             )}
           </React.Fragment>
