@@ -39,7 +39,7 @@ const Navbar = () => {
     <nav className='navbar navbar-expand-lg navbar-dark'>
       <div className='container-fluid'>
         <NavLink className='navbar-brand' to='/'>
-          NAVBAR
+          Podstawy Tworzenia Gier
         </NavLink>
         <button
           className='navbar-toggler'

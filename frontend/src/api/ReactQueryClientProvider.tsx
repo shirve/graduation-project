@@ -13,9 +13,9 @@ interface Props {
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 1000,
-      refetchOnWindowFocus: process.env.NODE_ENV === 'production',
-      retry: process.env.NODE_ENV === 'production',
+      staleTime: 60 * 1000,
+      refetchOnWindowFocus: false,
+      retry: 2,
     },
   },
   queryCache: new QueryCache({

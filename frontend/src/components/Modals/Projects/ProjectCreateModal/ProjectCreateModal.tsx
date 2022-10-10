@@ -18,8 +18,9 @@ const ProjectCreateModal = ({ showModal, handleShowModal }: Props) => {
     formData.append('title', data.title)
     formData.append('description', data.description)
     formData.append('github', data.github)
+
     Array.from(data.images).forEach((image) => {
-      formData.append('images[]', image)
+      formData.append('images', image)
     })
 
     Array.from(data.genres).forEach((genre) => {
