@@ -7,8 +7,6 @@ interface Props extends ReactModalProps {
   children: React.ReactNode
 }
 
-Modal.setAppElement(document.getElementById('root') as HTMLElement)
-
 const ModalWrapper = ({ isOpen, children, ...props }: Props) => {
   return (
     <Modal

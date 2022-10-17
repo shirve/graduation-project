@@ -89,7 +89,6 @@ const PostsPage = () => {
         isLoading={isLoading}
         onGenreChange={handleGenreChange}
         displayedButtons={['like', 'contribute', 'readMore', 'delete']}
-        postContributors={['approved']}
         onRefetch={refetch}
       />
       <Pagination totalPages={totalPages} onPageChange={handlePageChange} />

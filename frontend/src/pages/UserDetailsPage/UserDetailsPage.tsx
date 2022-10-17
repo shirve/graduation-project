@@ -82,7 +82,6 @@ const UserDetailsPage = () => {
               posts={posts}
               isLoading={postsLoading}
               displayedButtons={['like', 'contribute', 'delete']}
-              postContributors={['approved']}
               onRefetch={refetchApprovedPosts}
             />
           </div>

@@ -95,7 +95,7 @@ const UserPostsPage = () => {
         posts={filteredPosts}
         isLoading={isLoading}
         displayedButtons={['edit', 'delete']}
-        postContributors={['approved', 'unapproved']}
+        displayContributors={filterType === 'approved'}
         onRefetch={refetch}
       />
     </React.Fragment>

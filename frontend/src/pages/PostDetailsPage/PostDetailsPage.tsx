@@ -28,8 +28,8 @@ const PostDetailsPage = () => {
       <PostItem
         post={post}
         displayedButtons={['like', 'contribute', 'delete']}
-        postContributors={['approved']}
         onRefetch={refetch}
+        displayContributors
       />
       <div className={styles.return}>
         <Link to={'/posts'}>

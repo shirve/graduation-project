@@ -1,7 +1,6 @@
 import React from 'react'
 import { PostViewModel } from '../../models/Posts/PostViewModel'
 import { PostButtonTypes } from '../../models/Posts/PostButtonTypes'
-import { PostContributorStatusTypes } from '../../models/Posts/PostContributorStatusTypes'
 import PostItem from '../common/PostItem/PostItem'
 import Spinner from '../common/Spinner/Spinner'
 
@@ -10,7 +9,7 @@ interface Props {
   isLoading?: boolean
   onGenreChange?: (genre: string) => void
   displayedButtons?: PostButtonTypes[]
-  postContributors?: PostContributorStatusTypes[]
+  displayContributors?: boolean
   onRefetch?: () => void
 }
 
@@ -19,7 +18,7 @@ const PostsWrapper = ({
   isLoading,
   onGenreChange,
   displayedButtons,
-  postContributors,
+  displayContributors,
   onRefetch,
 }: Props) => {
   if (isLoading) return <Spinner />
@@ -32,7 +31,7 @@ const PostsWrapper = ({
           post={post}
           onGenreChange={onGenreChange}
           displayedButtons={displayedButtons}
-          postContributors={postContributors}
+          displayContributors={displayContributors}
           onRefetch={onRefetch}
         />
       ))}

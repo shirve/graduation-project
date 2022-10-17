@@ -22,7 +22,6 @@ const UnapprovedPostsPage = () => {
         posts={posts}
         isLoading={isLoading}
         displayedButtons={['delete', 'reject', 'approve']}
-        postContributors={['approved']}
         onRefetch={refetch}
       />
     </React.Fragment>

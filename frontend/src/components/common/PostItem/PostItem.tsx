@@ -6,7 +6,6 @@ import { ObjectId } from 'mongoose'
 import { IoGameControllerOutline, IoGameController } from 'react-icons/io5'
 import { PostViewModel } from '../../../models/Posts/PostViewModel'
 import { PostButtonTypes } from '../../../models/Posts/PostButtonTypes'
-import { PostContributorStatusTypes } from '../../../models/Posts/PostContributorStatusTypes'
 import Button from '../Buttons/Button/Button'
 import styles from './PostItem.module.scss'
 import PostDeleteModal from '../../Modals/Posts/PostDeleteModal/PostDeleteModal'
@@ -20,7 +19,7 @@ interface Props {
   post: PostViewModel
   onGenreChange?: (genre: string) => void
   displayedButtons?: PostButtonTypes[]
-  postContributors?: PostContributorStatusTypes[]
+  displayContributors?: boolean
   onRefetch?: () => void
 }
 
@@ -28,7 +27,7 @@ const PostItem = ({
   post,
   onGenreChange,
   displayedButtons,
-  postContributors,
+  displayContributors,
   onRefetch,
 }: Props): ReactElement => {
   const [readMore, setReadMore] = useState(false)
@@ -147,11 +146,8 @@ const PostItem = ({
           )}
         </div>
         <div className={styles.manage}>
-          {displayedButtons?.includes('readMore') && readMore === false && (
-            <span
-              onClick={() => setReadMore(!readMore)}
-              className={styles.readMore}
-            >
+          {displayedButtons?.includes('readMore') && !readMore && (
+            <span onClick={() => setReadMore(true)} className={styles.readMore}>
               Czytaj więcej...
             </span>
           )}
@@ -198,13 +194,6 @@ const PostItem = ({
             </React.Fragment>
           )}
         </div>
-        {readMore && postContributors && (
-          <PostContributors
-            post={post}
-            postContributors={postContributors}
-            onRefetch={onRefetch}
-          />
-        )}
         {post.status.rejected && (
           <div className={styles.status}>
             <h4>Powód odrzucenia</h4>
@@ -212,6 +201,9 @@ const PostItem = ({
           </div>
         )}
       </div>
+      {readMore && displayContributors && (
+        <PostContributors post={post} onRefetch={onRefetch} />
+      )}
       <PostDeleteModal
         post={post}
         showModal={showPostDeleteModal}

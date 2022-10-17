@@ -15,7 +15,7 @@ interface Props {
 const Button = ({
   children,
   onClick,
-  type,
+  type = 'button',
   disabled,
   height,
   width,
@@ -24,7 +24,7 @@ const Button = ({
 }: Props) => {
   return (
     <button
-      type={type ? type : 'button'}
+      type={type}
       className={styles.button}
       onClick={onClick}
       disabled={disabled}

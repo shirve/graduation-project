@@ -1,0 +1,54 @@
+@import '../../../../styles/CommonStyles.scss';
+
+@mixin sharedClasses {
+  .data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    .name {
+      font-weight: bold;
+      color: inherit;
+      &:hover {
+        color: inherit;
+      }
+    }
+  }
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.25rem;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 0;
+  h4 {
+    margin: 0;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  .contributor {
+    display: flex;
+    @include sharedClasses()
+  }
+  .applicant {
+    display: flex;
+    gap: 0.25rem;
+    @include sharedClasses()
+  }
+}
+
+@include breakpoint(small) {
+  .applicant {
+    flex-direction: column;
+  }
+}
