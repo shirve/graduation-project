@@ -31,7 +31,7 @@ const TextareaField = ({
 
   return (
     <div className={styles.wrapper} style={{ marginTop, marginBottom }}>
-      <label>{label}</label>
+      <label className={errors[name] ? styles.labelError : ''}>{label}</label>
       <textarea
         {...rest}
         ref={(e) => {

@@ -27,7 +27,7 @@ const FileUploadField = ({
 
   return (
     <div className={styles.wrapper} style={{ marginTop, marginBottom }}>
-      <div>{label}</div>
+      <div className={errors[name] ? styles.labelError : ''}>{label}</div>
       <label
         htmlFor={'file-dropzone'}
         className={attachedFiles.length > 0 ? styles.filesAttached : ''}

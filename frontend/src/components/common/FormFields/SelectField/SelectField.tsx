@@ -40,7 +40,7 @@ const SelectField = ({
 }: Props) => {
   return (
     <div className={styles.wrapper} style={{ marginTop, marginBottom }}>
-      <label>{label}</label>
+      <label className={errors[name] ? styles.labelError : ''}>{label}</label>
       <Controller
         name={name}
         control={control}
