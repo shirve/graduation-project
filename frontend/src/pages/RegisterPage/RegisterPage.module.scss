@@ -6,11 +6,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  form {
+  .form {
     display: flex;
     flex-direction: column;
     align-content: center;
-    width: 350px;
+    width: 100%;
+    max-width: 400px;
     button {
       margin: 1rem 0;
     } 

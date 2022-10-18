@@ -64,7 +64,7 @@ const LoginPage = () => {
 
   return (
     <div className={styles.login}>
-      <form>
+      <form className={styles.form}>
         {LoginFormFields.map((field) => (
           <InputField
             key={field.name}
@@ -80,7 +80,6 @@ const LoginPage = () => {
           type={'submit'}
           onClick={handleSubmit(onSubmit)}
           disabled={isSubmitting}
-          width={'100%'}
         >
           Zaloguj
         </Button>

@@ -63,7 +63,7 @@ const PostsPage = () => {
       </div>
       {user && (
         <React.Fragment>
-          <Button onClick={handleShowPostFormModal} width={'100%'}>
+          <Button onClick={handleShowPostFormModal} fullWidth>
             Nowa propozycja gry
           </Button>
           <PostCreateModal

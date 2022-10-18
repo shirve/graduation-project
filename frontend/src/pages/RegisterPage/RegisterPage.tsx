@@ -98,15 +98,12 @@ const RegisterPage = () => {
 
   return (
     <div className={styles.register}>
-      <form>
+      <form className={styles.form}>
         {RegisterFormFields.map((field) => (
           <InputField
             key={field.name}
             register={register}
             errors={errors}
-            // serverError={
-            //   serverErrors?.find((error) => error.param === field.name)?.msg
-            // }
             name={field.name}
             label={field.label}
             type={field.type}
@@ -117,7 +114,6 @@ const RegisterPage = () => {
           type={'submit'}
           onClick={handleSubmit(onSubmit)}
           disabled={isSubmitting}
-          width={'100%'}
         >
           Zarejestruj
         </Button>

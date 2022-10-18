@@ -21,6 +21,9 @@
     border-radius: 0.25rem;
     overflow: auto;
   }
+  .fullWidth {
+    width: auto;
+  }
 }
 
 @include breakpoint(large) {

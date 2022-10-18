@@ -62,19 +62,23 @@ const ProjectItem = ({
     <React.Fragment>
       <div className={styles.wrapper}>
         <div className={styles.info}>
-          <div>
-            <Link to={`/users/${project.user._id}`}>{project.user.name}</Link>
-          </div>
-          <div>{new Date(project.createdAt).toLocaleString('pl-PL')}</div>
+          <Link className={styles.user} to={`/users/${project.user._id}`}>
+            {project.user.name}
+          </Link>
+          <span>{new Date(project.createdAt).toLocaleString('pl-PL')}</span>
         </div>
         {project.data.genres && (
-          <ul className={styles.tags}>
+          <div className={styles.tags}>
             {project.data.genres.map((genre) => (
-              <li key={genre} onClick={() => onGenreChange?.(genre)}>
+              <span
+                key={genre}
+                className={styles.tag}
+                onClick={() => onGenreChange?.(genre)}
+              >
                 #{genre}
-              </li>
+              </span>
             ))}
-          </ul>
+          </div>
         )}
         <div className={styles.content}>
           {project.status.approved ? (

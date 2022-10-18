@@ -37,11 +37,7 @@ const PostRejectModal = ({
   }
 
   return (
-    <ModalWrapper
-      isOpen={showModal}
-      onRequestClose={handleShowModal}
-      style={{ content: { width: 'auto' } }}
-    >
+    <ModalWrapper isOpen={showModal} onRequestClose={handleShowModal} fullWidth>
       <div className={styles.header}>
         <h4>Powód odrzucenia</h4>
         <CloseButton onClick={handleCloseModal} />
@@ -52,10 +48,7 @@ const PostRejectModal = ({
         onChange={(e) => setMessage(e.target.value)}
       />
       <div className={styles.buttons}>
-        <Button
-          onClick={() => handlePostReject(post._id, message)}
-          width={'100%'}
-        >
+        <Button onClick={() => handlePostReject(post._id, message)} fullWidth>
           Odrzuć
         </Button>
       </div>

@@ -62,7 +62,7 @@ const ProjectsPage = () => {
       </div>
       {user && (
         <React.Fragment>
-          <Button onClick={handleShowProjectFormModal} width={'100%'}>
+          <Button onClick={handleShowProjectFormModal} fullWidth>
             Nowy projekt gry
           </Button>
           <ProjectCreateModal

@@ -12,7 +12,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    a {
+    .user {
       color: $text-black;
     }
   }
@@ -21,9 +21,12 @@
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    li {
+    gap: 0.25rem;
+    .tag {
+      background-color: rgba($primary-500, 0.1);
+      border-radius: 1rem;
+      padding: 0 0.5rem;
       cursor: pointer;
-      margin-right: 0.5rem;
     }
   }
   .content {
@@ -37,7 +40,7 @@
     p {
       margin-bottom: 0.5rem;
     }
-    a.postDetailsLink {
+    .postDetailsLink {
       color: $text-black;
     }
   }

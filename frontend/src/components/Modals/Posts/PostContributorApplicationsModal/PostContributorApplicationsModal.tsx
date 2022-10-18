@@ -48,11 +48,7 @@ const PostContributorApplicationsModal = ({
   }
 
   return (
-    <ModalWrapper
-      isOpen={showModal}
-      onRequestClose={handleShowModal}
-      style={{ content: { width: 'auto' } }}
-    >
+    <ModalWrapper isOpen={showModal} onRequestClose={handleShowModal} fullWidth>
       <div className={styles.header}>
         <h4>Współtwórcy</h4>
         <CloseButton onClick={handleShowModal} />

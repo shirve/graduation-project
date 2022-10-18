@@ -1,39 +1,19 @@
 import React from 'react'
 import styles from './Button.module.scss'
 
-interface Props {
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode
   onClick: () => void
-  type?: 'button' | 'submit' | 'reset'
-  disabled?: boolean
-  height?: string
-  width?: string
-  marginTop?: string
-  marginBottom?: string
+  fullWidth?: boolean
 }
 
-const Button = ({
-  children,
-  onClick,
-  type = 'button',
-  disabled,
-  height,
-  width,
-  marginTop,
-  marginBottom,
-}: Props) => {
+const Button = ({ children, onClick, fullWidth, ...props }: Props) => {
   return (
     <button
-      type={type}
-      className={styles.button}
+      type={props.type ?? 'button'}
+      className={`${styles.button} ${fullWidth && styles.fullWidth}`}
       onClick={onClick}
-      disabled={disabled}
-      style={{
-        height,
-        width,
-        marginTop,
-        marginBottom,
-      }}
+      {...props}
     >
       {children}
     </button>

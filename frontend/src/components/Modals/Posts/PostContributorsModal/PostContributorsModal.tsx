@@ -46,11 +46,7 @@ const PostContributorsModal = ({
   }
 
   return (
-    <ModalWrapper
-      isOpen={showModal}
-      onRequestClose={handleShowModal}
-      style={{ content: { width: 'auto' } }}
-    >
+    <ModalWrapper isOpen={showModal} onRequestClose={handleShowModal} fullWidth>
       <div className={styles.header}>
         <h4>Wiadomość aplikacyjna</h4>
         <CloseButton onClick={handleCloseModal} />
@@ -63,7 +59,7 @@ const PostContributorsModal = ({
       <div className={styles.buttons}>
         <Button
           onClick={() => handlePostApplyToContribute(post._id, message)}
-          width={'100%'}
+          fullWidth
         >
           Wyślij
         </Button>

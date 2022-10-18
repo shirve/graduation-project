@@ -104,19 +104,23 @@ const PostItem = ({
     <React.Fragment>
       <div className={styles.wrapper}>
         <div className={styles.info}>
-          <div>
-            <Link to={`/users/${post.user._id}`}>{post.user.name}</Link>
-          </div>
-          <div>{new Date(post.createdAt).toLocaleString('pl-PL')}</div>
+          <Link className={styles.user} to={`/users/${post.user._id}`}>
+            {post.user.name}
+          </Link>
+          <span>{new Date(post.createdAt).toLocaleString('pl-PL')}</span>
         </div>
         {post.data.genres && (
-          <ul className={styles.tags}>
+          <div className={styles.tags}>
             {post.data.genres.map((genre) => (
-              <li key={genre} onClick={() => onGenreChange?.(genre)}>
+              <span
+                key={genre}
+                className={styles.tag}
+                onClick={() => onGenreChange?.(genre)}
+              >
                 #{genre}
-              </li>
+              </span>
             ))}
-          </ul>
+          </div>
         )}
         <div className={styles.content}>
           {post.status.approved ? (

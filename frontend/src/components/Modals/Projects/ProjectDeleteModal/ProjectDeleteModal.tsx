@@ -34,10 +34,10 @@ const ProjectDeleteModal = ({
         Uwaga: Ta operacja jest nieodwracalna!
       </small>
       <div className={styles.buttons}>
-        <Button onClick={handleShowModal} width={'100%'}>
+        <Button onClick={handleShowModal} fullWidth>
           Anuluj
         </Button>
-        <Button onClick={() => handleProjectDelete(project._id)} width={'100%'}>
+        <Button onClick={() => handleProjectDelete(project._id)} fullWidth>
           Usuń
         </Button>
       </div>

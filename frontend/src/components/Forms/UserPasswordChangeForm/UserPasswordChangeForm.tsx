@@ -46,25 +46,22 @@ const UserPasswordChangeForm = () => {
   }
 
   return (
-    <form>
-      <div className={styles.card}>
-        {UserPasswordChangeFormFields.map(({ name, label }) => (
-          <InputField
-            key={name}
-            register={register}
-            errors={errors}
-            name={name}
-            label={label}
-            type={'password'}
-          />
-        ))}
-      </div>
+    <form className={styles.form}>
+      {UserPasswordChangeFormFields.map(({ name, label }) => (
+        <InputField
+          key={name}
+          register={register}
+          errors={errors}
+          name={name}
+          label={label}
+          type={'password'}
+        />
+      ))}
       <Button
         type={'submit'}
         onClick={handleSubmit(onSubmit)}
-        width={'100%'}
-        marginTop={'1rem'}
         disabled={isSubmitting}
+        fullWidth
       >
         Zmień hasło
       </Button>

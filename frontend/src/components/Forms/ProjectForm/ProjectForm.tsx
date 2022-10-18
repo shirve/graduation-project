@@ -136,8 +136,7 @@ const ProjectForm = ({ project, onSubmit }: Props) => {
         type={'submit'}
         onClick={handleSubmit(onSubmit)}
         disabled={isSubmitting}
-        width={'100%'}
-        marginTop={'1rem'}
+        fullWidth
       >
         {project ? 'Edytuj projekt gry' : 'Dodaj nowy projekt gry'}
       </Button>

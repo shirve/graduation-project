@@ -45,7 +45,7 @@ const ProjectEditModal = ({
   }
 
   return (
-    <ModalWrapper isOpen={showModal} style={{ content: { width: 'auto' } }}>
+    <ModalWrapper isOpen={showModal} fullWidth>
       <div className={styles.header}>
         <h4>Edytuj projekt</h4>
         <CloseButton onClick={handleShowModal} />

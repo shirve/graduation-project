@@ -34,10 +34,10 @@ const PostDeleteModal = ({
         Uwaga: Ta operacja jest nieodwracalna!
       </small>
       <div className={styles.buttons}>
-        <Button onClick={handleShowModal} width={'100%'}>
+        <Button onClick={handleShowModal} fullWidth>
           Anuluj
         </Button>
-        <Button onClick={() => handlePostDelete(post._id)} width={'100%'}>
+        <Button onClick={() => handlePostDelete(post._id)} fullWidth>
           Usuń
         </Button>
       </div>

@@ -54,39 +54,34 @@ const UserProfileEditForm = () => {
   }
 
   return (
-    <form>
-      <div className={styles.card}>
-        {UserProfileEditFormFields.map(
-          ({ name, component, label, disabled }) => (
-            <React.Fragment key={name}>
-              {component === 'input' && (
-                <InputField
-                  register={register}
-                  errors={errors}
-                  name={name}
-                  label={label}
-                  disabled={disabled}
-                />
-              )}
-              {component === 'textarea' && (
-                <TextareaField
-                  register={register}
-                  errors={errors}
-                  name={name}
-                  label={label}
-                  disabled={disabled}
-                />
-              )}
-            </React.Fragment>
-          )
-        )}
-      </div>
+    <form className={styles.form}>
+      {UserProfileEditFormFields.map(({ name, component, label, disabled }) => (
+        <React.Fragment key={name}>
+          {component === 'input' && (
+            <InputField
+              register={register}
+              errors={errors}
+              name={name}
+              label={label}
+              disabled={disabled}
+            />
+          )}
+          {component === 'textarea' && (
+            <TextareaField
+              register={register}
+              errors={errors}
+              name={name}
+              label={label}
+              disabled={disabled}
+            />
+          )}
+        </React.Fragment>
+      ))}
       <Button
         type={'submit'}
         onClick={handleSubmit(onSubmit)}
-        width={'100%'}
-        marginTop={'1rem'}
         disabled={isSubmitting}
+        fullWidth
       >
         Aktualizuj
       </Button>
