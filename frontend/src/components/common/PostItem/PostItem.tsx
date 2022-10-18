@@ -122,7 +122,7 @@ const PostItem = ({
             ))}
           </div>
         )}
-        <div className={styles.content}>
+        <div className={`${styles.content} ${!readMore && styles.hideContent}`}>
           {post.status.approved ? (
             <Link to={`/posts/${post._id}`} className={styles.postDetailsLink}>
               <h3>{post.data.title}</h3>
@@ -132,29 +132,20 @@ const PostItem = ({
           )}
           <h4>Fabuła</h4>
           <p>{post.data.story}</p>
-          {readMore && (
-            <React.Fragment>
-              <h4>Rozgrywka</h4>
-              <p>{post.data.gameplay}</p>
-              <h4>Mechanika</h4>
-              <p>{post.data.mechanics}</p>
-              <h4>Bohaterowie</h4>
-              <p>{post.data.characters}</p>
-              <h4>Poziomy</h4>
-              <p>{post.data.levels}</p>
-              <h4>Grafika</h4>
-              <p>{post.data.graphics}</p>
-              <h4>Muzyka</h4>
-              <p>{post.data.music}</p>
-            </React.Fragment>
-          )}
+          <h4>Rozgrywka</h4>
+          <p>{post.data.gameplay}</p>
+          <h4>Mechanika</h4>
+          <p>{post.data.mechanics}</p>
+          <h4>Bohaterowie</h4>
+          <p>{post.data.characters}</p>
+          <h4>Poziomy</h4>
+          <p>{post.data.levels}</p>
+          <h4>Grafika</h4>
+          <p>{post.data.graphics}</p>
+          <h4>Muzyka</h4>
+          <p>{post.data.music}</p>
         </div>
         <div className={styles.manage}>
-          {displayedButtons?.includes('readMore') && !readMore && (
-            <span onClick={() => setReadMore(true)} className={styles.readMore}>
-              Czytaj więcej...
-            </span>
-          )}
           {readMore && (
             <React.Fragment>
               {displayedButtons?.includes('like') && (
@@ -202,6 +193,11 @@ const PostItem = ({
           <div className={styles.status}>
             <h4>Powód odrzucenia</h4>
             {post.status.message}
+          </div>
+        )}
+        {displayedButtons?.includes('readMore') && !readMore && (
+          <div className={styles.readMore}>
+            <button onClick={() => setReadMore(true)}>Czytaj więcej...</button>
           </div>
         )}
       </div>

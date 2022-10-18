@@ -1,6 +1,7 @@
 @import '../../../styles/CommonStyles.scss';
 
 .wrapper {
+  position: relative;
   margin-top: 1rem;
   color: $text-black;
   background-color: $white;
@@ -50,10 +51,6 @@
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-top: 1rem;
-    .readMore {
-      margin: auto;
-      cursor: pointer;
-    }
     button {
       svg {
         font-size: 1.6rem;
@@ -66,4 +63,25 @@
     margin-top: 1rem;
     padding-top: 1rem;
   }
+  .readMore {
+    position: absolute;
+    display: block;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 150px;
+    text-align: center;
+    background-image: linear-gradient(to bottom, transparent, white);
+    button {
+      position: absolute;
+      transform: translate(-50%, 450%);
+      border: none;
+      background-color: transparent;
+    }
+  }
+}
+
+.hideContent {
+  height: 300px;
+  overflow: hidden;
 }
