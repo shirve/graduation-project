@@ -1,7 +1,13 @@
 @import '../../styles/CommonStyles.scss';
 
+.w {
+  background-color: $neutral-500;
+  margin-top: -1rem;
+  margin-bottom: -1rem;
+  height: 3rem;
+}
+
 .wrapper {
-  margin-top: 1rem;
   color: $text-black;
   background-color: $white;
   border: 1px $neutral-500 solid;

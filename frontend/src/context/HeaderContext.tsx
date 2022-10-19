@@ -3,6 +3,7 @@ import {
   Dispatch,
   SetStateAction,
   useContext,
+  useEffect,
   useState,
 } from 'react'
 
@@ -20,7 +21,11 @@ export const HeaderContextProvider = ({
 }: {
   children: React.ReactNode
 }) => {
-  const [header, setHeader] = useState<string>('')
+  const [header, setHeader] = useState('')
+
+  useEffect(() => {
+    document.title = `Podstawy Tworzenia Gier - ${header}`
+  }, [header])
 
   return (
     <HeaderContext.Provider value={{ header, setHeader }}>

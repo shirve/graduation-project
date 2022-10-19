@@ -4,7 +4,6 @@ import { useLoginUser } from '../../features/users/mutations'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { useHeaderContext } from '../../context/HeaderContext'
 import { useUserContext } from '../../context/UserContext'
 import InputField from '../../components/common/FormFields/InputField/InputField'
 import Button from '../../components/common/Buttons/Button/Button'
@@ -14,11 +13,13 @@ import { UserLoginViewModel } from '../../models/Users/UserLoginViewModel'
 import styles from './LoginPage.module.scss'
 import { setAxiosAuthorizationHeaders } from '../../api/AxiosClients'
 import { jwtDecode } from '../../utils/jwtDecode'
+import useHeader from '../../hooks/useHeader'
 
 const LoginPage = () => {
+  useHeader('Zaloguj się')
+
   const navigate = useNavigate()
 
-  const { setHeader } = useHeaderContext()
   const { user, setUser } = useUserContext()
 
   const { mutate: loginUser, isLoading } = useLoginUser({
@@ -28,10 +29,6 @@ const LoginPage = () => {
       setUser(decodedUser)
     },
   })
-
-  useEffect(() => {
-    setHeader('ZALOGUJ SIĘ')
-  }, [])
 
   useEffect(() => {
     if (user) {

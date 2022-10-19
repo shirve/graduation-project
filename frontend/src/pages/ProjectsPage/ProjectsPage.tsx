@@ -1,25 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useGetApprovedProjects } from '../../features/projects/queries'
 import Select from 'react-select'
 import ProjectsWrapper from '../../components/ProjectsWrapper/ProjectsWrapper'
 import Pagination from '../../components/common/Pagination/Pagination'
 import Button from '../../components/common/Buttons/Button/Button'
-import { useHeaderContext } from '../../context/HeaderContext'
 import { useUserContext } from '../../context/UserContext'
 import styles from './ProjectsPage.module.scss'
 import ProjectCreateModal from '../../components/Modals/Projects/ProjectCreateModal/ProjectCreateModal'
 import { GameGenres } from '../../constants/SelectFieldOptions/GameGenres'
 import { SelectFieldOptionViewModel } from '../../models/Forms/SelectFieldOptionViewModel'
 import { CustomSelectFieldStyles } from '../../styles/SelectField/CustomSelectFieldStyles'
+import useHeader from '../../hooks/useHeader'
 
 const ProjectsPage = () => {
+  useHeader('Projekty')
+
   const [page, setPage] = useState(0)
   const [limit, setLimit] = useState(10)
   const [genre, setGenre] = useState<SelectFieldOptionViewModel | null>(null)
   const [showProjectFormModal, setShowProjectFormModal] = useState(false)
 
-  const { setHeader } = useHeaderContext()
   const { user } = useUserContext()
 
   const {
@@ -27,10 +28,6 @@ const ProjectsPage = () => {
     isLoading,
     refetch,
   } = useGetApprovedProjects({ page, limit, genre: genre?.value })
-
-  useEffect(() => {
-    setHeader('PROJEKTY')
-  }, [])
 
   const handleShowProjectFormModal = () => {
     setShowProjectFormModal((prevState) => !prevState)

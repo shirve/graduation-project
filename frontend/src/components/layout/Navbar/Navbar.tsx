@@ -59,35 +59,35 @@ const Navbar = () => {
           <ul className='navbar-nav'>
             <li className='nav-item'>
               <NavLink className='nav-link' to='/posts'>
-                PROPOZYCJE GIER
+                Propozycje Gier
               </NavLink>
             </li>
             <li className='nav-item'>
               <NavLink className='nav-link' to='/projects'>
-                PROJEKTY
+                Projekty
               </NavLink>
             </li>
             {user ? (
               <li className='nav-item'>
                 <div className='nav-link' onClick={handleShowDropdownList}>
-                  TWOJE KONTO&nbsp;
+                  Twoje Konto&nbsp;
                   <FaChevronDown />
                 </div>
                 {showDropdownList && (
                   <ul className='nav-dropdown' ref={dropdownRef}>
                     <li>
                       <NavLink className='nav-link' to='/dashboard/profile'>
-                        TWÓJ PROFIL
+                        Twój Profil
                       </NavLink>
                     </li>
                     <li>
                       <NavLink className='nav-link' to='/dashboard/posts'>
-                        TWOJE PROPOZYCJE GIER
+                        Twoje Propozycje Gier
                       </NavLink>
                     </li>
                     <li>
                       <NavLink className='nav-link' to='/dashboard/projects'>
-                        TWOJE PROJEKTY
+                        Twoje Projekty
                       </NavLink>
                     </li>
                     {user.roles.includes('admin') && (
@@ -98,7 +98,7 @@ const Navbar = () => {
                             className='nav-link'
                             to='/dashboard/unapproved-posts'
                           >
-                            NIEZATWIERDZONE POSTY
+                            Niezatwierdzone Posty
                           </NavLink>
                         </li>
                         <li>
@@ -106,7 +106,7 @@ const Navbar = () => {
                             className='nav-link'
                             to='/dashboard/unapproved-projects'
                           >
-                            NIEZATWIERDZONE PROJEKTY
+                            Niezatwierdzone Projekty
                           </NavLink>
                         </li>
                       </>
@@ -114,7 +114,7 @@ const Navbar = () => {
                     <hr className='m-0' />
                     <li>
                       <div className='nav-link' onClick={handleLogout}>
-                        WYLOGUJ
+                        Wyloguj
                       </div>
                     </li>
                   </ul>
@@ -124,12 +124,12 @@ const Navbar = () => {
               <>
                 <li className='nav-item'>
                   <NavLink className='nav-link' to='/login'>
-                    LOGIN
+                    Login
                   </NavLink>
                 </li>
                 <li className='nav-item'>
                   <NavLink className='nav-link' to='/register'>
-                    REJESTRACJA
+                    Rejestracja
                   </NavLink>
                 </li>
               </>

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useGetUserProjects } from '../../../features/projects/queries'
-import { useHeaderContext } from '../../../context/HeaderContext'
 import ProjectsWrapper from '../../../components/ProjectsWrapper/ProjectsWrapper'
 import { ProjectViewModel } from '../../../models/Projects/ProjectViewModel'
 import styles from './UserProjectsPage.module.scss'
+import useHeader from '../../../hooks/useHeader'
 
 type FilterType = 'approved' | 'unapproved'
 
 const UserProjectsPage = () => {
-  const { setHeader } = useHeaderContext()
+  useHeader('Twoje Projekty')
 
   const {
     data: projects = [],
@@ -51,10 +51,6 @@ const UserProjectsPage = () => {
   useEffect(() => {
     if (isFetched) handleFilterChange(filterType)
   }, [isFetched, projects])
-
-  useEffect(() => {
-    setHeader('TWOJE PROJEKTY')
-  }, [])
 
   return (
     <React.Fragment>

@@ -4,7 +4,6 @@ import { useRegisterUser } from '../../features/users/mutations'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { useHeaderContext } from '../../context/HeaderContext'
 import { useUserContext } from '../../context/UserContext'
 import InputField from '../../components/common/FormFields/InputField/InputField'
 import Spinner from '../../components/common/Spinner/Spinner'
@@ -14,11 +13,13 @@ import { UserRegisterViewModel } from '../../models/Users/UserRegisterViewModel'
 import styles from './RegisterPage.module.scss'
 import { setAxiosAuthorizationHeaders } from '../../api/AxiosClients'
 import { jwtDecode } from '../../utils/jwtDecode'
+import useHeader from '../../hooks/useHeader'
 
 const RegisterPage = () => {
+  useHeader('Zarejestruj się')
+
   const navigate = useNavigate()
 
-  const { setHeader } = useHeaderContext()
   const { user, setUser } = useUserContext()
 
   const { mutate: registerUser, isLoading } = useRegisterUser({
@@ -28,10 +29,6 @@ const RegisterPage = () => {
       setUser(decodedUser)
     },
   })
-
-  useEffect(() => {
-    setHeader('ZAREJESTRUJ SIĘ')
-  }, [])
 
   useEffect(() => {
     if (user) {

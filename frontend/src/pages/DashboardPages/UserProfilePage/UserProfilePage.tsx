@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import { useHeaderContext } from '../../../context/HeaderContext'
+import React, { useState } from 'react'
 import styles from './UserProfilePage.module.scss'
 import UserProfileEditForm from '../../../components/Forms/UserProfileEditForm/UserProfileEditForm'
 import UserPasswordChangeForm from '../../../components/Forms/UserPasswordChangeForm/UserPasswordChangeForm'
 import { FaUserEdit, FaUserLock } from 'react-icons/fa'
+import useHeader from '../../../hooks/useHeader'
 
 type FilterType = 'editProfile' | 'changePassword'
 
 const UserProfilePage = () => {
   const [filterType, setFilterType] = useState<FilterType>('editProfile')
 
-  const { setHeader } = useHeaderContext()
-
-  useEffect(() => {
-    setHeader('TWÓJ PROFIL')
-  }, [])
+  useHeader('Twój Profil')
 
   const handleFilterChange = (type: FilterType) => {
     switch (type) {

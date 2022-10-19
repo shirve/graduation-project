@@ -1,17 +1,13 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useGetUnapprovedProjects } from '../../../features/projects/queries'
-import { useHeaderContext } from '../../../context/HeaderContext'
 import ProjectsWrapper from '../../../components/ProjectsWrapper/ProjectsWrapper'
 import styles from './UnapprovedProjectsPage.module.scss'
+import useHeader from '../../../hooks/useHeader'
 
 const UnapprovedProjectsPage = () => {
-  const { setHeader } = useHeaderContext()
+  useHeader('Niezatwierdzone Projekty')
 
   const { data: projects = [], isLoading, refetch } = useGetUnapprovedProjects()
-
-  useEffect(() => {
-    setHeader('NIEZATWIERDZONE PROJEKTY')
-  }, [])
 
   return (
     <React.Fragment>

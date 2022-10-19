@@ -1,15 +1,16 @@
 import { useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useGetProjectDetails } from '../../features/projects/queries'
-import { useHeaderContext } from '../../context/HeaderContext'
 import ProjectItem from '../../components/common/ProjectItem/ProjectItem'
 import Spinner from '../../components/common/Spinner/Spinner'
 import styles from './ProjectDetailsPage.module.scss'
 import { IoArrowUndo } from 'react-icons/io5'
+import useHeader from '../../hooks/useHeader'
 
 const ProjectDetailsPage = () => {
+  useHeader('Projekty')
+
   const { projectId } = useParams()
-  const { setHeader } = useHeaderContext()
 
   const {
     data: project,
@@ -18,10 +19,6 @@ const ProjectDetailsPage = () => {
   } = useGetProjectDetails(projectId ?? '')
 
   const navigate = useNavigate()
-
-  useEffect(() => {
-    setHeader('PROJEKTY')
-  }, [])
 
   useEffect(() => {
     if (isError) navigate('/not-found')

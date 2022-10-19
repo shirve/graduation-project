@@ -1,17 +1,13 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useGetUnapprovedPosts } from '../../../features/posts/queries'
-import { useHeaderContext } from '../../../context/HeaderContext'
 import PostsWrapper from '../../../components/PostsWrapper/PostsWrapper'
 import styles from './UnapprovedPostsPage.module.scss'
+import useHeader from '../../../hooks/useHeader'
 
 const UnapprovedPostsPage = () => {
-  const { setHeader } = useHeaderContext()
+  useHeader('Niezatwierdzone Posty')
 
   const { data: posts = [], isLoading, refetch } = useGetUnapprovedPosts()
-
-  useEffect(() => {
-    setHeader('NIEZATWIERDZONE POSTY')
-  }, [])
 
   return (
     <React.Fragment>

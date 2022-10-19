@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useGetUserPosts } from '../../../features/posts/queries'
-import { useHeaderContext } from '../../../context/HeaderContext'
 import { PostViewModel } from '../../../models/Posts/PostViewModel'
 import PostsWrapper from '../../../components/PostsWrapper/PostsWrapper'
 import styles from './UserPostsPage.module.scss'
+import useHeader from '../../../hooks/useHeader'
 
 type FilterType = 'approved' | 'unapproved' | 'rejected'
 
 const UserPostsPage = () => {
-  const { setHeader } = useHeaderContext()
+  useHeader('Twoje Propozycje Gier')
 
   const { data: posts = [], isFetched, isLoading, refetch } = useGetUserPosts()
 
@@ -48,10 +48,6 @@ const UserPostsPage = () => {
   useEffect(() => {
     if (isFetched) handleFilterChange(filterType)
   }, [isFetched, posts])
-
-  useEffect(() => {
-    setHeader('TWOJE PROPOZYCJE GIER')
-  }, [])
 
   return (
     <React.Fragment>

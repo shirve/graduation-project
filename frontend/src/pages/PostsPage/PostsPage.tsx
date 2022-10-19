@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useGetApprovedPosts } from '../../features/posts/queries'
-import { useHeaderContext } from '../../context/HeaderContext'
 import { useUserContext } from '../../context/UserContext'
 import Select from 'react-select'
 import { GameGenres } from '../../constants/SelectFieldOptions/GameGenres'
@@ -12,14 +11,16 @@ import styles from './PostsPage.module.scss'
 import { CustomSelectFieldStyles } from '../../styles/SelectField/CustomSelectFieldStyles'
 import Pagination from '../../components/common/Pagination/Pagination'
 import PostCreateModal from '../../components/Modals/Posts/PostCreateModal/PostCreateModal'
+import useHeader from '../../hooks/useHeader'
 
 const PostsPage = () => {
+  useHeader('Propozycje Gier')
+
   const [page, setPage] = useState(0)
   const [limit, setLimit] = useState(10)
   const [genre, setGenre] = useState<SelectFieldOptionViewModel | null>(null)
   const [showPostFormModal, setShowPostFormModal] = useState<boolean>(false)
 
-  const { setHeader } = useHeaderContext()
   const { user } = useUserContext()
 
   const {
@@ -27,10 +28,6 @@ const PostsPage = () => {
     isLoading,
     refetch,
   } = useGetApprovedPosts({ page, limit, genre: genre?.value })
-
-  useEffect(() => {
-    setHeader('PROPOZYCJE GIER')
-  }, [])
 
   const handleShowPostFormModal = () => {
     setShowPostFormModal((prevState) => !prevState)

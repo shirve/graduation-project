@@ -1,25 +1,40 @@
-.wrapper {
+@import '../../styles/CommonStyles.scss';
+
+.name {
+  background-color: $primary-500;
+  border-radius: 0.5rem;
+  padding: 0.5rem 2rem;
+  font-size: 1.2rem;
+  color: $text-white;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.info {
+  display: flex;
+  padding: 0 2rem;
+  .label {
+    font-weight: bold;
+    flex-basis: 100px;
+    flex-shrink: 0;
+  }
+}
+
+.posts, .projects {
+  margin-top: 1rem;
+  .header {
+    font-size: 1.5rem;
+  }
+}
+
+.notFound {
+  text-align: center;
+}
+
+@include breakpoint(small) {
   .user {
-    table {
-      tbody {
-        tr {
-          display: flex;
-          th {
-            min-width: 100px;
-          }
-        }
-      }
+    .info {
+      padding: 0;
     }
-  }
-  .posts, .projects {
-    .header {
-      margin-top: 1rem;
-      h4 {
-        margin: 0;
-      }
-    }
-  }
-  .notFound {
-    text-align: center;
   }
 }

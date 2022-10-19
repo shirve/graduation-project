@@ -25,6 +25,7 @@ const PostContributors = ({ post, onRefetch }: Props) => {
 
   return (
     <React.Fragment>
+      <div className={styles.w}></div>
       <div className={styles.wrapper}>
         <h4 className={styles.header}>Współtwórcy</h4>
         <div className={styles.contributors}>
