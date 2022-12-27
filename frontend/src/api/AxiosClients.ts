@@ -1,27 +1,23 @@
 import axios from 'axios'
 
+const headers = {
+  'Content-Type': 'application/json',
+  Accept: 'application/json',
+}
+
 const usersClient = axios.create({
   baseURL: '/api/users',
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  },
+  headers,
 })
 
 const postsClient = axios.create({
   baseURL: '/api/posts',
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  },
+  headers,
 })
 
 const projectsClient = axios.create({
   baseURL: '/api/projects',
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  },
+  headers,
 })
 
 const setAxiosAuthorizationHeaders = (token: string): void => {
