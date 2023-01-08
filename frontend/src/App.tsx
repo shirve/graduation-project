@@ -69,7 +69,7 @@ const App = () => {
                 <Route path='register' element={<RegisterPage />} />
                 <Route path='login' element={<LoginPage />} />
                 <Route path='not-found' element={<NotFoundPage />} />
-                <Route path='/' element={<Navigate to='/posts' />} />
+                <Route path='/' element={<PostsPage />} />
                 <Route path='*' element={<Navigate to='/not-found' />} />
               </Routes>
             </main>
