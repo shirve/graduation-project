@@ -16,19 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16.x'
-
-      - name: Install BE dependencies
-        working-directory: backend
-        run: npm install
-        
-      - name: Install FE dependencies
-        working-directory: frontend
-        run: npm install
-        
       - name: Build app
         working-directory: frontend
         run: npm run build
