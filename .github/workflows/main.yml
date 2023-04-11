@@ -19,7 +19,7 @@ jobs:
       - name: Validate HTML
         uses: anishathalye/proof-html@v2.0.3
         with:
-          directory: "${{ github.workspace }}/out"
+          directory: "${{ github.workspace }}/*"
           check_html: true
           check_opengraph: true
           check_favicon: true
