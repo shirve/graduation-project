@@ -21,7 +21,11 @@ jobs:
         with:
           node-version: '16.x'
 
-      - name: Install dependencies
+      - name: Install BE dependencies
+        working-directory: backend
+        run: npm install
+        
+      - name: Install FE dependencies
         working-directory: frontend
         run: npm install
         
