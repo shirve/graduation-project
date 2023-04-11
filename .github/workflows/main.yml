@@ -9,14 +9,17 @@ on:
       - main
 
 jobs:
-  proof-html:
+  build:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Build app
+        run: npm run build
+        
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Validate HTML
         uses: anishathalye/proof-html@v2.0.3
         with:
-          directory: "frontend"
+          directory: "build"
